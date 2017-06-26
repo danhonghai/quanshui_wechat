@@ -1,0 +1,23 @@
+<ion-view view-title="我的">
+    <ion-content class="light-bg">
+        <div class="myuser_topbox">
+            <div class="list myuser_top" style="background: url({{data.backimgtx}}) left top no-repeat; background-size: 100% 2.4rem;">
+            </div>
+            <div class="touxiang_box">
+                <div class="touxiang" style="background: url({{data.backimgtx}}) left top no-repeat; background-size: 100% .9rem;"></div>
+                <p>点击修改头像</p>
+            </div>
+            <input id="imgFile" style="position: absolute; opacity: 0; width: .9rem; height: .9rem; display: block; left: 50%; margin-left: -.45rem; bottom: -.45rem;" type="file" accept="image/*" capture="camera" ng-model="data.imgtx">
+        </div>
+        <div class="myuserlist">
+            <div class="row">
+                <div ng-if="!shtx" class="col col-33">账户</div>
+                <div ng-if="!shtx" class="col">{{userInfosession.username | mphone}}</div>
+            </div>
+            <div class="row">
+                <div ng-if="!shtx" class="col col-33">实名</div>
+                <div ng-if="!shtx" class="col blue">{{userInfosession.realname?userInfosession.realname:'立即认证'}}<span ng-class="{true:'green',false:'red'}[userInfosession.id==1]">{{userInfosession.id==1?'已认证':'未认证'}}</span></div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,16 @@
+<ion-view view-title="提现记录">
+    <ion-content class="stable-bg">
+        <div class="row text-center">
+            <div class="col padding0">金额</div>
+            <div class="col padding0">状态</div>
+            <div class="col padding0">时间</div>
+        </div>
+        <ul class="list">
+            <li class="row item text-center" style="margin-top: 0px;" ng-repeat="withdrawal in withdrawalData">
+                <div class="col green text-left">- {{withdrawal.moneyWithdraw}}元</div>
+                <div class="col">{{withdrawal.status}}</div>
+                <div class="col">{{withdrawal.createdAt | timeymd}}</div>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,31 @@
+<ion-view view-title="地址管理">
+    <ion-content class="stable-bg">
+        <div class="list addressbox" ng-if="settingaddressdata.address">
+            <div class="item">
+                <div class="row padding0">
+                    <div class="col col-25 font-size14 cs9 text-right">收件人：</div>
+                    <div class="col font-size14">{{settingaddressdata.realname}}</div>
+                </div>
+                <div class="row padding0">
+                    <div class="col col-25 font-size14 cs9 text-right">手机号：</div>
+                    <div class="col font-size14">{{settingaddressdata.username}}</div>
+                </div>
+                <div class="row padding0">
+                    <div class="col col-25 font-size14 cs9 text-right">地址：</div>
+                    <div class="col whitespaceinitial font-size14">{{settingaddressdata.address}}</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row padding0">
+                    <div class="col text-left font-size14 red" ui-sref="manageaddress">修改</div>
+                </div>
+            </div>
+        </div>
+        <div class="item row addressbtn" ui-sref="manageaddress" ng-if="!settingaddressdata.address">
+            <div class="col col-33 cs3">添加新地址</div>
+            <div class="col text-right">
+                <i class="icon ion-ios-arrow-right font-size20 vam"></i>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

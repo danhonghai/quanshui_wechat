@@ -1,0 +1,45 @@
+<ion-view>
+    <ion-header-bar align-title="center" class="bar-positive">
+  <h1 class="title">债权转让</h1>
+  <div class="buttons">
+    <button class="button" ui-sref="mytransferlist">转让记录</button>
+  </div>
+</ion-header-bar>
+    <div class="paymentmanagetop" style="top: 44px; position: relative;">
+        <div class="row padding0">
+            <div class="col col-20 text-center" style="line-height: 34px;">时间:</div>
+            <div class="col padding0">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div ng-repeat="pro in prolisttit" class="paymentmanagetoptab swiper-slide" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ion-content class="stable-bg" style="top:88px;">
+        <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="list">
+            <div class="item paymentbox" ng-repeat="financial in financialData">
+                <h2>
+                    <span ng-if="borrowstatelists[0].success" class="fr blue" style="padding-right: 10px;">投标中：{{financial.scales*100}}%</span>
+                    <span ng-if="borrowstatelists[1].success" class="fr blue" style="padding-right: 10px;">还款中</span>
+                    <span ng-if="borrowstatelists[2].success" class="fr blue" style="padding-right: 10px;">逾期中</span>
+                    {{financial.borrowName}}
+                </h2>
+                <div class="row paymentrowtop" style="border-bottom: none;">
+                    <div class="col">投资金额
+                        <br><span class="red font-size16">{{financial.account}}元</span></div>
+                    <div class="col">待收金额
+                        <br><span class="red font-size16">{{financial.repayment_account}}元</span></div>
+                    <div ng-if="borrowstatelists[0].success" class="col">投资时间
+                        <br><span>{{financial.addtime*1000 | date:"yyyy-MM-dd"}}</span></div>
+                    <div ng-if="borrowstatelists[1].success || borrowstatelists[2].success" class="col">还款时间
+                        <br><span>2017-3-15</span></div>
+                </div>
+            </div>
+        </div>
+        <ion-infinite-scroll icon="ion-loading-c" ng-if="!moredata" on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

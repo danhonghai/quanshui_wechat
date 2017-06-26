@@ -1,0 +1,28 @@
+<ion-view view-title="积分记录">
+        <div class="paymentmanagetop">
+            <div class="row padding0">
+                <div class="col col-20 text-center" style="line-height: 34px;">时间:</div>
+                <div class="col padding0">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div ng-repeat="pro in prolisttit" class="paymentmanagetoptab swiper-slide" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="" style=" position: absolute; right: 0; left: 0; line-height: 30px; z-index: 9;top: 44px; background: #ecf0f1; border-bottom: 1px solid #dbdbdb;">
+        <div class="tickettab row padding0" style="padding-left: 10px !important;">
+            <div class="col padding0 font-size14 cs6">项目</div>
+            <div class="col padding0 font-size14 cs6">积分</div>
+            <div class="col padding0 font-size14 cs6">时间</div>
+        </div>
+    </div>
+    <ion-content class="stable-bg" style="top:74px;">
+        <div class="row item" ng-repeat="pointlist in pointlists">
+            <div class="col">{{pointlist.summary}}</div>
+            <div class="col" ng-class="{true:'red',false:'green'}[pointlist.cdFlag=='C']">{{pointlist.cdFlag=='C'?'+':'-'}}{{pointlist.points}}</div>
+            <div class="col">{{pointlist.busiDate}}</div>
+        </div>
+    </ion-content>
+</ion-view>

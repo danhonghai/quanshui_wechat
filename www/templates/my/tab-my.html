@@ -1,0 +1,84 @@
+<ion-view view-title="我的">
+    <ion-content class="stable-bg">
+        <div class="list my_top">
+            <div class="my_title" align-title="center">
+                <div class="buttons buttons-left header-item" ui-sref="setting">
+                    <span class="left-buttons">
+                <i class="button ion-ios-gear-outline"></i>
+              </span>
+                </div>
+                <div class="title title-center header-item">{{userInfosession.username | mphone}}</div>
+                <div class="buttons buttons-right header-item">
+                    <span class="right-buttons">
+                      <i class="button ion-ios-bell-outline">
+                        <p class="badge badge-assertive">1</p>
+                      </i>
+                  </span>
+                </div>
+            </div>
+            <div class="imgmoney">
+                <img ui-sref="myuser" ng-src="{{userInfosession.imagePath}}" onerror="javascript:this.src='img/loaderror.jpg'" />
+                <p class="light">可用金额(元)</p>
+                <p class="light">{{userUserInfoData.moneyUsable}}</p>
+            </div>
+            <div class="row">
+                <div class="col light">账户总额(元)
+                    <br>{{userUserInfoData.moneyTotal}}</div>
+                <div class="col light text-right">冻结金额(元)
+                    <br>{{userUserInfoData.moneyTenderFreeze}}</div>
+            </div>
+        </div>
+        <div class="row padding lchk">
+            <div class="col lcjl" ui-sref="financial">
+                <p class="lchktit_top">理财记录</p>
+                <p class="lchktit_bot">待收：<span class="lchkmoney">{{userUserInfoData.moneyCollection}}</span></p>
+            </div>
+            <div class="col hkjl" ui-sref="borrowmanage">
+                <p class="lchktit_top">借款记录</p>
+                <p class="lchktit_bot">待还：<span class="lchkmoney">{{userUserInfoData.stillRepayMoney}}</span></p>
+            </div>
+        </div>
+        <div class="row cztxbutton">
+            <div class="col">
+                <button ui-sref="recharge">充值</button>
+            </div>
+            <div class="col">
+                <button ui-sref="withdrawal" class="tixian">提现</button>
+            </div>
+        </div>
+        <div class="row myjf" ui-sref="mypoints">
+            <div class="col myjf_top">
+                <p class="myjftit_top">我的积分</p>
+                <p class="myjftit_bot">当前积分：<span class="myjfmoney">{{userUserInfoData.credit}}</span></p>
+            </div>
+            <div class="col myjf_bot">
+                <span>签到得积分</span>
+            </div>
+        </div>
+        <div class="row redquan">
+            <div class="col" ng-click="gomyticket(0)">
+                <i><img src="img/icon_redb.png"></i>红包<span>({{userUserInfoData.redPaperCount}})</span>
+            </div>
+            <div class="col" ng-click="gomyticket(1)">
+                <i><img src="img/icon_jxquan.png"></i>加息券<span>({{userUserInfoData.couponCount}})</span>
+            </div>
+        </div>
+        <div class="mymenu text-center">
+            <div class="row">
+                <div class="col" ui-sref="rechargelist"><i><img src="img/icon_zjjl.png"></i><p>资金记录</p></div>
+                <div class="col"><i><img src="img/icon_zqzr.png" ui-sref="mytransfer"></i><p>债权转让</p></div>
+                <div class="col" ui-sref="borrowmanage"><i><img src="img/icon_hkgl.png"></i><p>还款管理</p></div>
+            </div>
+            <div class="row">
+                <div class="col" ui-sref="integralmall"><i><img src="img/icon_spdh.png"></i><p>商品兑换</p></div>
+                <div class="col"><i><img src="img/icon_wdsp.png"></i><p>我的商品</p></div>
+                <div class="col" ui-sref="problems"><i><img src="img/icon_bz.png"></i><p>常见问题</p></div>
+            </div>
+            <div class="row">
+                <div class="col" ui-sref="invitefriends"><i><img src="img/icon_yqhy.png"></i><p>邀请好友</p></div>
+                <div class="col"><a style="display: inline-block;" href="tel://400-4000-400"><i><img src="img/icon_zskf.png"></i><p>专属客服</p></a></div>
+                <div class="col" ui-sref="more"><i><img src="img/icon_gd.png"></i><p>更多</p></div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

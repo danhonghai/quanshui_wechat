@@ -1,0 +1,25 @@
+<ion-view view-title="提现">
+    <ion-content class="stable-bg">
+        <div class="list light-bg page_recharge margin0">
+            <div class="item item-input item-stacked-label">
+                <span class="input-label"><i><img src="img/icon_withdrawal.png" alt=""></i>金额</span>
+                <span class="recharge_jl" ng-click="rechargelist(1)">提现记录</span>
+                <div class="row padding0">
+                    <div class="col col-20">提现</div>
+                    <div class="col"><input type="num" ng-model="data.money" placeholder="请输入金额"></div>
+                    <div class="col col-10"><i class="icon ion-ios-close-empty" ng-click="clearmoney()"></i></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="item row">
+                <div class="col col-25 cs9 font-size16 text-center" style="line-height: 26px;">银行卡</div>
+                <div class="col" style="line-height: 24px;">
+                    <input style="border:none; background: none; background: url(img/icon_bank.png) no-repeat left center; background-size: 20px; padding-left: 25px;" class="select_bank font-size14" id="select_bank" ng-model="data.redb" placeholder="请选择银行卡" />
+                    <i class="icon ion-ios-arrow-right fr font-size26"></i>
+                </div>
+            </div> -->
+        <div class="padding-left padding-right">
+            <button class="button button-block button-positive">确定</button>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,28 @@
+<ion-view view-title="绑定邮箱">
+    <ion-content class="stable-bg">
+         <form name="EmailForm" novalidate>
+            <div class="list assertive-border">
+                <label class="item item-input">
+                	<span class="cs6">邮箱</span>
+                    <input type="text" class="regisphone padding-left5" name="email" placeholder="请输入邮箱" ng-model="data.email" required pattern="^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$">
+                    <div class="tip_tishi" ng-if="EmailForm.email.$error.required">
+                        邮箱必填
+                    </div>
+                    <div class="tip_tishi" ng-if="EmailForm.email.$error.pattern">
+                        邮箱不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right">
+                	<span class="cs6">验证码</span>
+                    <input type="text" class="padding-left5" name="yzm" ng-model="data.yzm" required placeholder="请输入邮箱验证码">
+                    <button ng-click="getemailCodefun()" id="sendButton_reg" class="btn_hqyzm">发送至邮箱</button>
+                </div>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="EmailForm.$invalid" ng-click="bindemail()">
+                    确定
+                </button>
+            </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

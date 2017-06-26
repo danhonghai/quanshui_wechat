@@ -1,0 +1,93 @@
+<ion-view>
+    <ion-content class="stable-bg">
+        <div class="prodetail_top">
+            <div class="prolist">
+                <div class="proitem" style="overflow: hidden;">
+                    <div class="row">
+                        <div class="col padding0" ng-bind="prodetail.name"></div>
+                        <div class="col-20 padding0 icon_cc">
+                            <img  ng-if="prolist.borrowType==1" src="img/icon_xs.png">
+                            <img  ng-if="prolist.borrowType==2" src="img/icon_cc.png">
+                            <img  ng-if="prolist.borrowType==3" src="img/icon_wl.png">
+                            <img  ng-if="prolist.borrowType==4" src="img/icon_xwqy.png">
+                            <img  ng-if="prolist.borrowType==5" src="img/icon_gyl.png">
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col padding0"><span style="font-size: 36px;color: #ff3c00;line-height: 80px;">{{prodetail.apr}}%</span></div>
+                    </div>
+                    <div class="row lastrow">
+                        <div class="col">
+                            <span class="spantop">剩余可投</span>
+                            <br>
+                            <span class="spanbot">{{prodetail.accountRemain | number:2}}</span>
+                        </div>
+                        <div class="col">
+                            <span class="spantop">理财期限</span>
+                            <br>
+                            <span class="spanbot">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</span>
+                        </div>
+                        <div class="col">
+                            <span class="spantop">还款方式</span>
+                            <br>
+                            <span class="spanbot">{{prodetail.repaymentStyle}}</span>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar">
+                        </div>
+                    </div>
+                    <div class="progressbot" ng-bind="prodetail.scales*100 + '%'"></div>
+                </div>
+            </div>
+            <div class="payway">支付支持：红包、加息券</div>
+        </div>
+        <ul class="list prodetailpaymenu">
+            <li class="item row">
+                <div class="col">投资金额</div>
+                <div class="col">
+                <input class="numinput" ng-model="data.tzmoney" type="num" style="width: 80%; color:#ff3c00;" placeholder="请输入投资金额">
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col">使用红包</div>
+                <div class="col">
+                    <img ng-if="data.redb" src="img/icon_redb.png" alt="">
+                    <div style="display: inline-block;width: 56%" id="redb">点击选择</div>
+                    <i class="icon ion-ios-arrow-down"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col">加息券</div>
+                <div class="col">
+                    <img ng-if="data.jxquan" src="img/icon_jxquan.png" alt="">
+                    <div style="display: inline-block;width: 56%" id="select_jxq">点击选择</div>
+                    <i class="icon ion-ios-arrow-down"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col">实付金额</div>
+                <div class="col"><span>{{data.tzmoney-choiceredmoney<0?0:data.tzmoney-choiceredmoney}}</span></div>
+            </li>
+            <li class="item row">
+                <div class="col">预期收益</div>
+                <div class="col"><span>{{prodetail.isDay == 1?data.tzmoney*prodetail.apr/100/365*prodetail.timeLimit : data.tzmoney*prodetail.apr/100/365*prodetail.timeLimit*30 | number:2}}</span></div>
+            </li>
+            <li class="item row">
+                <div class="col">付款方式</div>
+                <div class="col">账户余额</div>
+            </li>
+        </ul>
+    </ion-content>
+    <ion-footer-bar class="prodetail_footer padding0">
+        <div class="row padding0">
+            <div class="col-10" ng-click="gocalculator()"><img src="img/icon_jsq.png" alt=""></div>
+            <div class="col padding0">
+                <input type="text" disabled="disabled"  placeholder='{{prodetail.lowestAccount=="0"?"需一次性承接全款":"起投金额：" + prodetail.lowestAccount+"元"}}'>
+            </div>
+            <div class="col-25 padding0">
+                <button class="button" ng-click="paybtn()">支付</button>
+            </div>
+        </div>
+    </ion-footer-bar>
+</ion-view>

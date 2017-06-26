@@ -1,0 +1,69 @@
+<ion-view>
+    <ion-nav-bar>
+        <ion-nav-title side="center">
+            <div class="buyprotittop" style="background: none; padding: 0px; overflow: hidden; display: inline-block;
+    margin: 9px auto;">
+                <a ng-repeat="pro in prolisttit" class="protittoptab stockoptional_hushentab" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)" style="width: 76px;">{{pro.name}}</a>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+    <ion-header-bar class="bar-light padding0" style="top: 44px;">
+        <div class="tickettab">
+            <a ng-repeat="pro in borrowstatelists" class="protittoptab stockoptional_hushentab" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="borrowstatefun($index)">{{pro.name}}</a>
+        </div>
+    </ion-header-bar>
+    <ion-content class="stable-bg" style="top: 88px;">
+    <div class="list">
+        <div ng-if="prolisttit[0].success && redblists.length<=0" class="item padding10 ticketitem">
+            <img src="img/noredb.png">
+        </div>
+        <div ng-if="prolisttit[1].success && raiselists.length<=0" class="item padding10 ticketitem">
+            <img src="img/noticket.png">
+        </div>
+        <div ng-if="prolisttit[0].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redblists">
+            <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
+            <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
+            <div class="row padding0">
+                <div class="col col-25 text-center">
+                    <img width="60" src="img/pic_redb.png">
+                    <!-- <p ng-bind="ticketlist.ratecouponName "></p> -->
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col"><p>金额<span class="red">{{ticketlist.amount}}</span>元</p></div>
+                        <!-- <div class="col"><p>类型：<span>{{ticketlist.type}}</span></p></div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>过期时间：{{ticketlist.expiredTime | timeymd}}</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p>备注：<span>{{ticketlist.summary}}</span></p>
+            </div>
+        </div>
+        <div ng-if="prolisttit[1].success" class="item padding0 ticketitem" ng-repeat="ticketlist in raiselists">
+            <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
+            <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
+            <div class="row padding0">
+                <div class="col col-25 text-center">
+                    <img width="60" src="img/pic_jx.png">
+                    <!-- <p ng-bind="ticketlist.ratecouponName "></p> -->
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col"><p>金额<span class="red">{{ticketlist.rate}}</span>元</p></div>
+                        <!-- <div class="col"><p>类型：<span>{{ticketlist.type}}</span></p></div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>过期时间：{{ticketlist.expireTime}}</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p>备注：<span>{{ticketlist.ratecouponName}}</span></p>
+            </div>
+        </div>
+    </div>
+    </ion-content>
+</ion-view>

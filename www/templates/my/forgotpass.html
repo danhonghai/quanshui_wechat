@@ -1,0 +1,56 @@
+<ion-view view-title="忘记密码">
+    <ion-content class="stable-bg">
+        <form name="forgotForm" novalidate>
+            <div class="list assertive-border">
+                <label class="item item-input">
+                	<!-- <span class="cs6">手机号</span> -->
+                    <input type="text" class="regisphone padding-left5" name="phone" placeholder="请输入手机号码" ng-model="data.phone" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-if="forgotForm.phone.$error.required">
+                        手机号码必填
+                    </div>
+                    <div class="tip_tishi" ng-if="forgotForm.phone.$error.pattern">
+                        手机号码不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right">
+                <!-- <span class="cs6">图片验证码</span> -->
+                    <input type="text" name="yzm" ng-model="data.inimgcode" required placeholder="请输入图片验证码">
+                    <!-- <div style="color:#f00; font-size: 0.8rem;" ng-if="regisForm.yzm.$error.required">
+                        请输入验证码
+                    </div> -->
+                    <img style="width: 90px; height: 34px;" ng-click="imgcodefun()" ng-src="{{data.imgcode}}">
+                </div>
+                <div class="item item-input padding-right">
+                	<!-- <span class="cs6">手机验证码</span> -->
+                    <input type="text" class="padding-left5" name="yzm" ng-model="data.yzm" required placeholder="请输入手机验证码">
+                    <!-- <div style="color:#f00; font-size: 0.8rem;" ng-if="forgotForm.yzm.$error.required">
+                        请输入验证码
+                    </div> -->
+                    <button ng-click="getphoneCodefun()" id="sendButton_reg" class="btn_hqyzm">发送验证码</button>
+                </div>
+                <div class="item item-input padding-right">
+                	<!-- <span class="cs6">新密码</span> -->
+                    <input type="password" class="padding-left5" name="newpassword" ng-model="data.password" required placeholder="请输入您的新密码">
+                    <div class="tip_tishi" ng-show="forgotForm.newpassword.$error.required">
+                        密码必填
+                    </div>
+                </div>
+                <div class="item item-input padding-right">
+                	<!-- <span class="cs6">重复</span> -->
+                    <input type="password" class="padding-left5" name="agagnewpassword" ng-model="data.passwordagag" required placeholder="再次输入您的新密码">
+                    <div class="tip_tishi" ng-show="forgotForm.agagnewpassword.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-if="data.passwordagag && data.password && data.passwordagag != data.password">
+                        两次密码输入不一致
+                    </div>
+                </div>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="forgotForm.$invalid" ng-click="backPassword()">
+                    确定
+                </button>
+            </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

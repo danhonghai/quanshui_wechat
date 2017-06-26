@@ -1,0 +1,27 @@
+<ion-view>
+    <ion-nav-bar>
+        <ion-nav-title side="center">
+            <div class="buyprotittop" style="background: none; padding: 0px; overflow: hidden; display: inline-block;
+    margin: 9px auto;">
+                <a ng-repeat="pro in prolisttit" class="protittoptab stockoptional_hushentab" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)" style="width: 76px;">{{pro.name}}</a>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+    <div class="moneypx" style="width:100%; height: 30px; top: 44px; position: relative;    background: #ECF0F1;line-height: 30px;">
+            <div class="row text-center">
+            <div class="col padding0">金额</div>
+            <div class="col padding0">状态</div>
+            <div class="col padding0">时间</div>
+        </div>
+        </div>
+    <ion-content class="stable-bg" style="top: 74px;">
+        
+        <ul class="list">
+            <li class="row item text-center" style="margin-top: 0px;" ng-repeat="recharge in rechargeData">
+                <div class="col red text-left" ng-class="{true:'red',false:'green'}[recharge.moneyRecharge]">{{recharge.moneyRecharge?"+":"-"}}{{recharge.moneyRecharge?recharge.moneyRecharge:recharge.moneyWithdraw}}元</div>
+                <div class="col cs6" ng-class="{'成功':'green','失败':'red','交易中':'blue'}[recharge.status]">{{recharge.status}}</div>
+                <div class="col cs9">{{recharge.createdAt | timeymd}}</div>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

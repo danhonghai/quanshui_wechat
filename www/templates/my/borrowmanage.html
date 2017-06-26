@@ -1,0 +1,54 @@
+<ion-view>
+		<ion-nav-bar>
+        <ion-nav-title side="center">
+            <div class="borrowtop row padding0">
+                <div ng-repeat="borrowstate in borrowstatelists" class="col padding0" ng-class="{true: 'dq', false: ''}[borrowstate.success]" ng-click="borrowstatefun($index)">{{borrowstate.name}}</div>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+        <!-- <div class="paymentmanagetop" style="top: 44px; position: relative;">
+            <div class="row padding0">
+                <div class="col col-20 text-center" style="line-height: 34px;">时间:</div>
+                <div class="col padding0">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div ng-repeat="pro in prolisttit" class="paymentmanagetoptab swiper-slide" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    <ion-content class="stable-bg" style="top:44px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="list">
+            <div class="item paymentbox" ng-repeat="paymentlist in financialData">
+                <h2>
+	                <span ng-if="borrowstatelists[0].success" class="fr blue" style="padding-right: 10px;">审核中</span>
+	                <span ng-if="borrowstatelists[1].success" class="fr blue" style="padding-right: 10px;">筹集中：50%</span>
+	                <span ng-if="borrowstatelists[2].success" class="fr blue" style="padding-right: 10px;">还款中</span>
+	                <span ng-if="borrowstatelists[3].success" class="fr blue" style="padding-right: 10px;">已逾期：20天</span>
+	                推荐理财第一期
+                </h2>
+                <div class="row paymentrowtop" style="border-bottom: none;">
+                	<div ng-if="borrowstatelists[0].success || borrowstatelists[1].success" class="col">借款金额<br><span class="red font-size16">10000</span></div>
+                	<div ng-if="borrowstatelists[0].success || borrowstatelists[1].success" class="col">利息<br><span class="red font-size16">2000</span></div>
+                	<div  ng-if="borrowstatelists[0].success || borrowstatelists[1].success" class="col">借款时间<br><span>2017-3-15</span></div>
+
+                	<div ng-if="borrowstatelists[2].success || borrowstatelists[3].success" class="col">需还本息<br><span class="red font-size16">10000</span></div>
+                	<div ng-if="borrowstatelists[2].success || borrowstatelists[3].success" class="col">待还本息<br><span class="red font-size16">2000</span></div>
+                	<div ng-if="borrowstatelists[2].success" class="col">下个还款日<br><span>2017-4-15</span></div>
+
+                	<div ng-if="borrowstatelists[3].success" class="col">罚款<br><span class="red font-size16">10000</span></div>
+                </div>
+                <div class="row havebutton" ng-if="borrowstatelists[2].success || borrowstatelists[3].success">
+                	<div class="col">本期应还本息：<span class="red">3000</span></div>
+                	<div class="col col-33">
+                		<button>还款</button>
+                	</div>
+                </div>
+            </div>
+        </div>
+        <ion-infinite-scroll icon="ion-loading-c" ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,18 @@
+<ion-view view-title="充值">
+    <ion-content class="stable-bg">
+        <div class="list light-bg page_recharge">
+            <div class="item item-input item-stacked-label">
+                <span class="input-label"><i><img src="img/icon_recharge.png" alt=""></i>金额</span>
+                <span class="recharge_jl" ng-click="rechargelist(0)">充值记录</span>
+                <div class="row padding0">
+                    <div class="col col-20">充值</div>
+                    <div class="col"><input type="num" ng-model="data.money" placeholder="请输入金额"></div>
+                    <div class="col col-10"><i class="icon ion-ios-close-empty" ng-click="clearmoney()"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="padding-left padding-right">
+            <button class="button button-block button-positive" ng-click="rechargefun()">确定</button>
+        </div>
+    </ion-content>
+</ion-view>

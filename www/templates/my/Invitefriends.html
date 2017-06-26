@@ -1,0 +1,38 @@
+<ion-view view-title="邀请好友">
+    <ion-content class="stable-bg" style="background: #fdb52b">
+        <img src="img/bg_yqhy.jpg" alt="">
+        <button class="invittopbbtn" ui-sref="invitefriendslist">查看邀请记录</button>
+        <div class="invitwayone">
+            <div class="invitwayone_tit">
+                方法一
+            </div>
+            <div class="invitwayone_cen">
+                <p>发送链接邀请好友</p>
+                <div class="row padding0">
+                    <div class="col padding0">
+                        <span id="target">{{invitefriends.invateUrl}}</span>
+                    </div>
+                    <div class="col col-33 padding0">
+                        <button class="btn" ngclipboard data-clipboard-text="{{invitefriends.invateUrl}}" ng-click="invitedbtn()">复制</button></div>
+                </div>
+                <p>发送邀请码邀请好友</p>
+                <div class="row padding0">
+                    <div class="col padding0">
+                        <span id="target1">{{invitefriends.invateCode}}</span>
+                    </div>
+                    <div class="col col-33 padding0">
+                        <button ngclipboard data-clipboard-text="{{invitefriends.invateCode}}" ng-click="invitedbtn()">复制</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="invitwayone">
+            <div class="invitwayone_tit">
+                方法二
+            </div>
+            <div class="invitwayone_cen center">
+                <img style="display: block; width: 70%; margin: 0 auto;" src="http://qr.liantu.com/api.php?&bg=ffffff&fg=000000&text={{invitefriends.invateUrl}}"><br>
+                <button class="button" style="width: 100%; display:inline-block;">分享给好友</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

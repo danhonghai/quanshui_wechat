@@ -1,0 +1,87 @@
+<ion-view view-title="登入注册">
+    <ion-content class="light-bg">
+        <div class="login_top">
+            <img class="loginlogo" src="img/logo.png">
+            <img class="loginbg" src="img/bg_logintop.png">
+        </div>
+        <div class="logintab row padding0 text-center">
+            <div class="col padding0" ng-class="{true:'dq'}[logintit.success]" ng-repeat="logintit in logintabtit" ng-click="logintabfun($index)">{{logintit.name}}</div>
+        </div>
+        <form ng-if="logintabtit[0].success" name="signForm" novalidate>
+            <div class="list assertive-border margin10" style="margin: 30px;">
+                <label class="item item-input">
+                    <input type="text" name="loginphone" placeholder="请输入您的手机号" ng-model="data.loginphone" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-show="signForm.loginphone.$error.required">
+                        手机号必填
+                    </div>
+                    <div class="tip_tishi" ng-show="signForm.loginphone.$error.pattern">
+                        手机号不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="password" name="loginpassword" ng-model="data.loginpassword" required placeholder="请输入您的密码" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$">
+                    <div class="tip_tishi" ng-show="signForm.loginpassword.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="signForm.loginpassword.$error.pattern">
+                        密码必须6到15为数字字母组合
+                    </div>
+                </div>
+            </div>
+            <div class="padding0 text-center" style="margin:0px 30px;">
+                <button class="button button-block button-positive" ng-disabled="signForm.$invalid" ng-click="login()">
+                    登录
+                </button>
+            </div>
+            <div class="padding10 blue text-center" ui-sref="forgotpass">
+                忘记密码？
+            </div>
+        </form>
+        <form ng-if="logintabtit[1].success" name="regisForm" novalidate>
+            <div class="list assertive-border" style="margin:10px 30px">
+                <label class="item item-input">
+                    <input type="text" class="regisphone" name="phone" placeholder="请输入手机号码" ng-model="data.phone" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-show="regisForm.phone.$error.required">
+                        手机号码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="regisForm.phone.$error.pattern">
+                        手机号码不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="text" name="yzm" ng-model="data.inimgcode" required placeholder="请输入图片验证码">
+                    <!-- <div style="color:#f00; font-size: 0.8rem;" ng-show="regisForm.yzm.$error.required">
+                        请输入验证码
+                    </div> -->
+                    <img style="width: 90px; height: 34px;" ng-click="imgcodefun()" ng-src="{{data.imgcode}}">
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="text" name="yzm" ng-model="data.code" required placeholder="请输入验证码">
+                    <!-- <div style="color:#f00; font-size: 0.8rem;" ng-show="regisForm.yzm.$error.required">
+                        请输入验证码
+                    </div> -->
+                    <button ng-click="getphoneCodefun()" id="sendButton_reg" class="btn_hqyzm">发送验证码</button>
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="password" name="yzm" ng-model="data.password" required placeholder="请输入您的密码" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$">
+                    <div class="tip_tishi" ng-show="regisForm.yzm.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="regisForm.yzm.$error.pattern">
+                        密码必须6到15为数字字母组合
+                    </div>
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="text" name="yqm" ng-model="data.yqm" placeholder="请输入邀请码">
+                </div>
+                 <ion-checkbox class="cs9 text-left tip_login fl inputxy" ng-true-value="true" ng-false-value="false" ng-model="play_lights" ng-click="agreexy()" required>我已阅读并同意
+            </ion-checkbox><a class="fl yhxy">《用户协议》</a>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="regisForm.$invalid" ng-click="register()">
+                    注册
+                </button>
+            </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

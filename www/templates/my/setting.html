@@ -1,0 +1,72 @@
+<ion-view view-title="设置">
+    <ion-content class="stable-bg">
+        <ul class="list prodetailpaymenu">
+            <li class="item row">
+                <div class="col col-33 cs3">用户名</div>
+                <div class="col" ui-sref="setusername">
+                <span>{{settingaddressdata.realname?settingaddressdata.realname:settingaddressdata.username}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">头像</div>
+                <div class="col" ui-sref="myuser">
+                <span ng-class="{true:'green',false:'blue'}[settingaddressdata.imagePath!='']">{{settingaddressdata.imagePath?"已设置":"未设置"}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">实名认证</div>
+                <div class="col">
+                <span ng-class="{true:'blue',false:'green'}[settingaddressdata.realVerifyStatus =='0']">{{settingaddressdata.realVerifyStatus =='0'?'未认证':'已认证'}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">银行卡管理</div>
+                <div class="col" ui-sref="bankcard">
+                <span ng-class="{true:'blue',false:'green'}[settingaddressdata.cardBindingStatus =='0']">{{settingaddressdata.cardBindingStatus =='0'?'未绑定':'已绑定'}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">手机</div>
+                <div class="col">
+                <span>{{settingaddressdata.username | mphone}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">通讯地址</div>
+                <div class="col" ui-sref="address">
+                <span ng-class="{true:'blue',false:'green'}[settingaddressdata.address =='0']">{{settingaddressdata.address =='0'?'未设置':'已设置'}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">邮箱</div>
+                <div class="col" ui-sref="modifyemail">
+                <span ng-class="{true:'blue',false:''}[settingaddressdata.emailBindingStatus =='0']">{{settingaddressdata.emailBindingStatus =='0'?'未绑定':settingaddressdata.email}}</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">登入密码</div>
+                <div class="col" ui-sref="forgotpass">
+                <span class="blue">修改</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="item row">
+                <div class="col col-33 cs3">支付密码</div>
+                <div class="col">
+                <span class="blue">修改</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
+            <li class="row">
+                <button style="width: 80%; height: 40px; color: #fff; background: #CE0606; border: none; margin: 20px auto; border-radius: 5px;" class="backlogin" ng-click="exitfun()">退出登入</button>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>
