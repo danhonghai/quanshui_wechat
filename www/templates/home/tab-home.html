@@ -10,7 +10,7 @@
             <div class="swiper-container swiper-container1">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" ng-repeat="homebannerlist in homebannerlists">
-                    <img style="width: 100%;" ng-src="{{homebannerlist.imgurl}}" onerror="javascript:this.src='img/logo1.png'" /></div>
+                    <img style="width: 100%;" ng-src="{{homebannerlist.imgUrl}}" onerror="javascript:this.src='img/logo1.png'" /></div>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
@@ -21,7 +21,7 @@
             <div class="home_notivce_right">
                 <div class="swiper-container swiper-container3">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" ng-repeat="notic in noticList" ng-bind-html="notic.summary"></div>
+                        <div class="swiper-slide" ng-repeat="notic in noticList" ng-bind-html="notic.title"></div>
                     </div>
                 </div>
             </div>
@@ -60,11 +60,12 @@
                 <div class="swiper-slide" ng-repeat="tjpro in borrowInfoPage">
                     <div class="home_pro">
                         <div class="prg-cont rad-prg" id="indicatorContainer{{$index}}"></div>
+                        <div class="bottext" style="background: #fff;z-index: 9;bottom: 58px;width: 100px;margin-left: -50px;font-size: 40px;padding: 10px 0;color: #198dfc;">{{tjpro.apr}}%</div>
                         <div class="bottext">年化收益率</div>
                     </div>
                     <div class="row text-center">
                         <div class="col"><span>{{tjpro.lowestAccount}}元起投</span></div>
-                        <div class="col"><span>期限{{tjpro.lowestAccount}}{{tjpro.isday==1?'天':'月'}}</span></div>
+                        <div class="col"><span>期限{{tjpro.timeLimit}}{{tjpro.isDay==1?'天':'月'}}</span></div>
                     </div>
                     <div style="margin:0 15px;">
                         <button class="button button-block button-positive" ng-click="goprodetail('{{tjpro.id}}')">

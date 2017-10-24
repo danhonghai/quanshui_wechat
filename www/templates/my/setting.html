@@ -4,49 +4,49 @@
             <li class="item row">
                 <div class="col col-33 cs3">用户名</div>
                 <div class="col" ui-sref="setusername">
-                <span>{{settingaddressdata.realname?settingaddressdata.realname:settingaddressdata.username}}</span>
+                <span>{{userInfo.realName}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
             <li class="item row">
                 <div class="col col-33 cs3">头像</div>
                 <div class="col" ui-sref="myuser">
-                <span ng-class="{true:'green',false:'blue'}[settingaddressdata.imagePath!='']">{{settingaddressdata.imagePath?"已设置":"未设置"}}</span>
+                <span ng-class="{true:'green',false:'blue'}[userInfo.litpic!='']">{{userInfo.litpic?"已设置":"未设置"}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
             <li class="item row">
                 <div class="col col-33 cs3">实名认证</div>
                 <div class="col">
-                <span ng-class="{true:'blue',false:'green'}[settingaddressdata.realVerifyStatus =='0']">{{settingaddressdata.realVerifyStatus =='0'?'未认证':'已认证'}}</span>
+                <span ng-class="{true:'blue',false:'green'}[userInfo.realVerifyStatus =='0']">{{settingaddressdata.realVerifyStatus =='0'?'未认证':'已认证'}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
             <li class="item row">
                 <div class="col col-33 cs3">银行卡管理</div>
                 <div class="col" ui-sref="bankcard">
-                <span ng-class="{true:'blue',false:'green'}[settingaddressdata.cardBindingStatus =='0']">{{settingaddressdata.cardBindingStatus =='0'?'未绑定':'已绑定'}}</span>
+                <span ng-class="{true:'blue',false:'green'}[userInfo.cardBindingStatus =='0']">{{userInfo.cardBindingStatus =='0'?'未绑定':'已绑定'}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
             <li class="item row">
                 <div class="col col-33 cs3">手机</div>
                 <div class="col">
-                <span>{{settingaddressdata.username | mphone}}</span>
+                <span>{{userInfo.mobile | mphone}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
-            <li class="item row">
+            <!-- <li class="item row">
                 <div class="col col-33 cs3">通讯地址</div>
                 <div class="col" ui-sref="address">
                 <span ng-class="{true:'blue',false:'green'}[settingaddressdata.address =='0']">{{settingaddressdata.address =='0'?'未设置':'已设置'}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
-            </li>
+            </li> -->
             <li class="item row">
                 <div class="col col-33 cs3">邮箱</div>
                 <div class="col" ui-sref="modifyemail">
-                <span ng-class="{true:'blue',false:''}[settingaddressdata.emailBindingStatus =='0']">{{settingaddressdata.emailBindingStatus =='0'?'未绑定':settingaddressdata.email}}</span>
+                <span ng-class="{true:'blue',false:''}[userInfo.emailBindingStatus =='0']">{{userInfo.emailBindingStatus =='0'?'未绑定':userInfo.email}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>

@@ -1,45 +1,31 @@
 <ion-view>
-    <ion-nav-bar>
-        <ion-nav-title side="center">
-            <div class="buyprotittop" style="background: none; padding: 0px; overflow: hidden; display: inline-block;
-    margin: 9px auto;">
-                <a ng-repeat="pro in prolisttit" class="protittoptab stockoptional_hushentab" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)" style="width: 76px;">{{pro.name}}</a>
-            </div>
-        </ion-nav-title>
-    </ion-nav-bar>
-    <div class="moneypx" style="width:100%; height: 44px; top: 44px; position: relative;    background: #ECF0F1;line-height: 44px;">
+    <div class="moneypx" style="width:100%; height: 44px; top: 0px; position: relative;    background: #ECF0F1;line-height: 44px;" ng-if="prolisttit[0].success">
             <div class="row padding0 text-center">
-                <div class="col padding0" ng-click="sortfun(1)">
-                    按收益
-                    <img ng-if="nhsyOrder==''" src="img/paixu_icon.png">
-                    <img ng-if="nhsyOrder==2" src="img/paixu_icontop.png">
-                    <img ng-if="nhsyOrder==1" src="img/paixu_iconbom.png">
-                </div>
-                <div class="col padding0" ng-click="sortfun(2)">
-                    按期限
-                    <img ng-if="qixianOrder==''" src="img/paixu_icon.png">
-                    <img ng-if="qixianOrder==2" src="img/paixu_icontop.png">
-                    <img ng-if="qixianOrder==1" src="img/paixu_iconbom.png">
-                </div>
-                <div class="col padding0" ng-if="prolisttit[0].success" ng-click="sortfun(3)">
-                    按进度
-                    <img ng-if="touzijinduOrder==''" src="img/paixu_icon.png">
-                    <img ng-if="touzijinduOrder==2" src="img/paixu_icontop.png">
-                    <img ng-if="touzijinduOrder==1" src="img/paixu_iconbom.png">
-                </div>
-                <div class="col padding0" ng-if="prolisttit[1].success" ng-click="sortfun(4)">
-                    按总额
-                    <img ng-if="moneyOrder==''" src="img/paixu_icon.png">
-                    <img ng-if="moneyOrder==2" src="img/paixu_icontop.png">
-                    <img ng-if="moneyOrder==1" src="img/paixu_iconbom.png">
-                </div>
+            <div class="col padding0" ng-click="sortfun('apr')">
+                年化收益
+                <img ng-if="postdata.orderBy=='' || postdata.orderBy!='apr'" src="img/paixu_icon.png">
+                <img ng-if="postdata.orderBy=='apr' && postdata.direction == 'asc'" src="img/paixu_icontop.png">
+                <img ng-if="postdata.orderBy=='apr' && postdata.direction == 'desc'" src="img/paixu_iconbom.png">
+            </div>
+            <div class="col padding0" ng-click="sortfun('numberOfDays')">
+                理财期限
+                <img ng-if="postdata.orderBy=='' || postdata.orderBy!='numberOfDays'" src="img/paixu_icon.png">
+                <img ng-if="postdata.orderBy=='numberOfDays' && postdata.direction == 'asc'" src="img/paixu_icontop.png">
+                <img ng-if="postdata.orderBy=='numberOfDays' && postdata.direction == 'desc'" src="img/paixu_iconbom.png">
+            </div>
+            <div class="col padding0" ng-click="sortfun('percentage')">
+                投资进度
+                <img ng-if="postdata.orderBy=='' || postdata.orderBy!='percentage'" src="img/paixu_icon.png">
+                <img ng-if="postdata.orderBy=='percentage' && postdata.direction == 'asc'" src="img/paixu_icontop.png">
+                <img ng-if="postdata.orderBy=='percentage' && postdata.direction == 'desc'" src="img/paixu_iconbom.png">
             </div>
         </div>
-    <ion-content class="stable-bg" style="top:88px;">
+        </div>
+    <ion-content class="stable-bg" style="top:44px;">
         <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
         </ion-refresher>
         <div class="prolist" style="margin-top: 0px">
-            <div class="proitem" ng-repeat="prolist in prolists | orderBy:sorttext" ng-click="goprodetail('{{prolist.id ? prolist.id : prolist.tenderId}}','{{prolist.transferRegisterRid}}')">
+            <div class="proitem" ng-repeat="prolist in borrowlists" ng-click="goprodetail('{{prolist.id ? prolist.id : prolist.tenderId}}','{{prolist.transferRegisterRid}}')">
                 <div class="row">
                     <div ng-if="prolisttit[0].success" class="col padding0" ng-bind="prolist.name"></div>
                     <div ng-if="prolisttit[1].success" class="col padding0" ng-bind="prolist.borrowName"></div>
@@ -71,8 +57,8 @@
                         <br><span>剩余金额</span></div> -->
                 </div>
                 <div ng-if="prolisttit[0].success" class="progress">
-                    <div class="progress-bar" style="width: {{prolist.scales*100}}%; height: 3px; background:#198dfc;">
-                        <span>{{prolist.scales*100}}%</span>
+                    <div class="progress-bar" style="width: {{prolist.percentage*100}}%; height: 3px; background:#198dfc;">
+                        <span>{{prolist.percentage*100}}%</span>
                     </div>
                 </div>
             </div>

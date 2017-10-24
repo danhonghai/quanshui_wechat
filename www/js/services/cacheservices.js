@@ -40,7 +40,7 @@ angular.module('CacheService', [])
                     sessionStorage.setItem("__tempCache", JSON.stringify(cache));
                  }
             },
-            ///缓存对象 period 有效期 单位 秒 servicefun 服务方法  url 访问服务端URL  args 服务方法参数
+            //缓存对象 period 有效期 单位 秒 servicefun 服务方法  url 访问服务端URL  args 服务方法参数
             cacheObject: function(key, period, servicefun, thisobj, args) {
                 var me = this;
                 var d = $q.defer();
@@ -60,9 +60,7 @@ angular.module('CacheService', [])
                 } else {
                     var that=this;
                     servicefun.apply(thisobj, args).success(function(data) {
-                        console.log(data);
-                        that.console(data);
-                        if (data.respHead.respCode=="000000") {
+                        if (data.code=="1111" || data.code=="1111" || data.code=="1111") {
                             me.putCache(key, period, data);
                         }
                         d.resolve(data);
@@ -100,4 +98,4 @@ angular.module('CacheService', [])
                 return Math.round(date.getTime() / 1000);
             }
         };
-    }])
+    }]);

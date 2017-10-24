@@ -91,15 +91,15 @@
         getExplorer: function(newStatus){
             var explorer = window.navigator.userAgent;
             this.setStatus(newStatus)
-            console.log(explorer)
-            console.log(url)
+            //console.log(explorer)
+            //console.log(url)
             if((explorer.indexOf('Firefox') >= 0 || explorer.indexOf('MSIE') >= 0)&&url){
-                console.log("getExplorer:1")
+                //console.log("getExplorer:1")
                 this.checkOnLine()
                 this.setStatus(newStatus)
                 this.startCheck(newStatus)
             }else{
-                console.log("getExplorer:2")
+                //console.log("getExplorer:2")
                 this.eventStatus(newStatus)
             }
         },

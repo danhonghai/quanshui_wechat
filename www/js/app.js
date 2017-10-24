@@ -23,7 +23,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             return timeymd
         };
     })
-    .run(function($ionicPlatform, $rootScope, $state, Services, $ionicHistory, $state) {
+    .run(function($ionicPlatform, $rootScope, $state, Services, $ionicHistory, $state, $interval) {
         console.log("%c 泉水金服 %c Copyright \xa9 2016%s", 'font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:90px;color:#00bbee;-webkit-text-fill-color:#00bbee;-webkit-text-stroke: 1px #00bbee;', "font-size:12px;color:#999999;", (new Date).getFullYear())
             //ionic基本配置
         $ionicPlatform.ready(function() {
@@ -37,11 +37,12 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             }
         });
         //基础路劲配置
-        $rootScope.baseUrl = "/apis/eps/appService/direct.htm"; //首页
+        $rootScope.baseUrl = "/apis/api/"; //首页
         $rootScope.homeUrl = "/apis/weixin/index.html"; //其他
         $rootScope.uploadtxUrl = "/apis/eps/appService/appGateway/upload.htm"; //上传头像
         $rootScope.gatewayUrl = "/apis/eps/appService/appGateway/pcrimg.htm"; //网关
         $rootScope.stateonline = false;
+        $rootScope.debug = true;
         //点击按钮倒计时
         $rootScope.timer = function(time, buttonid) {
             var btn = $(buttonid);
@@ -58,6 +59,17 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
                 }
             }, 1000);
         };
+        if (sessionStorage.token) {
+            $rootScope.tokentime = $interval(function(){
+                Services.getDataget("refreshToken", "", function(tokendata){
+                    Services.console(tokendata)
+                    if (tokendata.code=="0000") {
+                        Services.console(tokendata.data.token)
+                        sessionStorage.token = tokendata.data.token;
+                    }
+                })
+            },600000);
+        }
         var online = onlinenetwork({
             "time": 1000,
             "url": ""
@@ -88,7 +100,39 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
     $ionicConfigProvider.platform.ios.views.transition('ios');
     $ionicConfigProvider.platform.android.views.transition('android');
     $ionicConfigProvider.scrolling.jsScrolling(true);
-    var htmlv = "2017-3-30 11:13:06";
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    var param = function(obj) {
+      var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
+      for(name in obj) {
+        value = obj[name];
+        if(value instanceof Array) {
+          for(i=0; i<value.length; ++i) {
+            subValue = value[i];
+            fullSubName = name + '[' + i + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += param(innerObj) + '&';
+          }
+        }
+        else if(value instanceof Object) {
+          for(subName in value) {
+            subValue = value[subName];
+            fullSubName = name + '[' + subName + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += param(innerObj) + '&';
+          }
+        }
+        else if(value !== undefined && value !== null)
+          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+      }
+      return query.length ? query.substr(0, query.length - 1) : query;
+    };
+    // Override $http service's default transformRequest
+    $httpProvider.defaults.transformRequest = [function(data) {
+        return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
+    }];
+    var htmlv = "2017-9-19 09:21:08";
     //ionic路由
     $stateProvider
         .state('tab', {

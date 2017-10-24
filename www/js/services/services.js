@@ -1,13 +1,45 @@
 angular.module('services', [])
-    .service('Services', ['$http', '$rootScope', 'cacheService', '$ionicLoading', '$ionicPopup', '$state', '$filter', function($http, $rootScope, cacheService, $ionicLoading, $ionicPopup, $state, $filter) {
+    .service('Services', ['$http', '$rootScope', 'cacheService', '$ionicLoading', '$ionicPopup', '$state', '$filter', '$interval', function($http, $rootScope, cacheService, $ionicLoading, $ionicPopup, $state, $filter, $interval) {
         return {
             //请求数据遮罩层
             ionicLoading: function() {
                 $ionicLoading.show({
                     template: '请稍后...',
                     hideOnStateChange: true, //切换视图隐藏
-                    duration: 15000 //后台长时间没响应，15秒后自动隐藏
+                    duration: 10000 //后台长时间没响应，15秒后自动隐藏
                 });
+            },
+            //console
+            console: function(data){
+                if ($rootScope.debug) {
+                    console.log(data)
+                }
+            },
+            //判断是否登录
+            islogin: function(){
+                if (sessionStorage.token) {
+                    return true;
+                }else{
+                    $rootScope.optionsPopup = $ionicPopup.show({
+                        template: "您未登入，是否立即登入",
+                        title: "温馨提示",
+                        rootScope: $rootScope,
+                        buttons: [{
+                            text: "返回",
+                            // type: "button-positive",
+                            onTap: function(e) {
+                                $ionicHistory.goBack();
+                            }
+                        }, {
+                            text: "立即登入",
+                            type: "calm",
+                            onTap: function(e) {
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false
+                }
             },
             //时间转化成多长时间前
             zhtime: function(timesdata) {
@@ -89,19 +121,95 @@ angular.module('services', [])
                 })
             },
             //主要的数据接口
-            getData: function(functionId, parameter) {
-                var data = {
-                    "reqHead": {
-                        "functionId": functionId,
-                        "terminalType": "3",
-                        "terminalId": "",
-                        "transTime": this.getNowTime(),
-                        "version": "1.0.0",
-                        "clientIp": ""
-                    },
-                    "body": parameter
+            getData: function(apiurl, cachetime, parameter, bacfun) {//apiurl是url链接, cachetime是设置的缓存时间, parameter是传的数据, bacfun是回调函数
+                var that = this;
+                var token = "";
+                if (sessionStorage.token) {
+                    var token = sessionStorage.token;
                 }
-                return cacheService.cacheObject(functionId, 600, $http.post, this, [$rootScope.baseUrl, angular.toJson(data)]);
+                cacheService.cacheObject(apiurl, cachetime, $http.post, this, [$rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token} }])
+                    .then(function successCallback(response) {
+                        if (response.code=="0000" || response.code=="1010" || response.code=="1000") {
+                            return bacfun(response);
+                        }else{
+                            that.ionicpopup("",response.msg)
+                        }
+                    }, function errorCallback(response) {
+                        if(response.status=="401"){
+                            $rootScope.optionsPopup = $ionicPopup.show({
+                                template: "登录过期，请重新登录",
+                                title: "温馨提示",
+                                scope: $rootScope,
+                                buttons: [{
+                                    text: "取消"
+                                }, {
+                                    text: "重新登录",
+                                    type: "calm",
+                                    onTap: function(e) {
+                                        sessionStorage.token = "";
+                                        sessionStorage.__tempCache = "";
+                                        $state.go("login");
+                                    }
+                                }]
+                            });
+                            if (apiurl == "refreshToken") {
+                                $interval.cancel($rootScope.tokentime);
+                            }
+                            return false;
+                        }else{
+                            that.ionicpopup("", "错误500" + response.message)
+                        }
+                  });
+            },
+            getDataget: function(apiurl, parameter, backfun) {//apiurl是url链接, cachetime是设置的缓存时间, parameter是传的数据, bacfun是回调函数
+                var that = this;
+                var token = "";
+                if (sessionStorage.token) {
+                    var token = sessionStorage.token;
+                }
+                $.ajax({
+                    url: $rootScope.baseUrl + apiurl,
+                    data: parameter,
+                    beforeSend: function(request) {
+                        request.setRequestHeader("token", token);
+                    },
+                    dataType: 'JSON',
+                    type: 'GET',
+                    success: function (list) {
+                        return backfun(list);
+                    },
+                    error: function (error) {
+                        $rootScope.optionsPopup = $ionicPopup.show({
+                                template: "登录过期，请重新登录",
+                                title: "温馨提示",
+                                scope: $rootScope,
+                                buttons: [{
+                                    text: "取消"
+                                }, {
+                                    text: "重新登录",
+                                    type: "calm",
+                                    onTap: function(e) {
+                                        sessionStorage.token = "";
+                                        sessionStorage.__tempCache = "";
+                                        $state.go("login");
+                                    }
+                                }]
+                            });
+                            if (apiurl == "refreshToken") {
+                                $interval.cancel($rootScope.tokentime);
+                            }
+                            return false;
+                    }
+                });
+            },
+            //return数据接口
+            getReturnData: function(apiurl, parameter) {//apiurl是url链接, parameter是传的数据
+                var that = this;
+                var token = "";
+                if (sessionStorage.token) {
+                    var token = sessionStorage.token;
+                }
+                return $http.post($rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token} });
             },
             //上传头像
             getupdatatx: function(functionId, parameter) {

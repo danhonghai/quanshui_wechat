@@ -1,120 +1,181 @@
 angular.module('money.controllers', [])
-    .controller('MoneyCtrl', ['$scope', '$state', 'MoneyServices', '$ionicScrollDelegate', 'Services', '$ionicLoading', function (
-        $scope, $state, MoneyServices, $ionicScrollDelegate, Services, $ionicLoading) {
-        $scope.pageNumber = 0; //分页的第几页
-        $scope.pageSize = 30; //分页一页显示几条
-        $scope.functionId = "A040"; //初始功能ID
+    .controller('MoneyCtrl', ['$scope', '$state', '$ionicModal', '$ionicScrollDelegate', 'Services', '$ionicLoading', '$timeout', function (
+        $scope, $state, $ionicModal, $ionicScrollDelegate, Services, $ionicLoading, $timeout) {
+        $scope.postdata = {
+            interestRange:"",
+            type:"",
+            dueTime:"",
+            status:"",
+            name:"",
+            orderBy:"",
+            direction:"",
+            page:0,
+            size:10
+        }
         $scope.moredata = false; //控制加载更多
-        $scope.nhsyOrder = ''; //年化收益排序
-        $scope.qixianOrder = ''; //投资期限排序
-        $scope.moneyOrder = ''; //理财金额排序
-        $scope.touzijinduOrder = ''; //投资进度排序
         var vm = [];
+        var protitleurl = "noauth/getInvestmentList";
         if (!localStorage.guide) {
             $state.go('guide');
         }
-        Services.ionicLoading();
-        //点击排序
-        $scope.sortfun = function (index) {
-            if (index == 1) {
-                $scope.qixianOrder = '';
-                $scope.touzijinduOrder = '';
-                $scope.moneyOrder = '';
-                if ($scope.nhsyOrder == '' || $scope.nhsyOrder == 1) {
-                    $scope.nhsyOrder = 2;
-                } else if ($scope.nhsyOrder == 2) {
-                    $scope.nhsyOrder = 1;
-                }
-            } else if (index == 2) {
-                $scope.nhsyOrder = '';
-                $scope.touzijinduOrder = '';
-                $scope.moneyOrder = '';
-                if ($scope.qixianOrder == '' || $scope.qixianOrder == 1) {
-                    $scope.qixianOrder = 2;
-                } else if ($scope.qixianOrder == 2) {
-                    $scope.qixianOrder = 1;
-                }
-            } else if (index == 3) {
-                $scope.nhsyOrder = '';
-                $scope.qixianOrder = '';
-                $scope.moneyOrder = '';
-                if ($scope.touzijinduOrder == '' || $scope.touzijinduOrder == 1) {
-                    $scope.touzijinduOrder = 2;
-                } else if ($scope.touzijinduOrder == 2) {
-                    $scope.touzijinduOrder = 1;
-                }
-            } else {
-                $scope.nhsyOrder = '';
-                $scope.qixianOrder = '';
-                $scope.touzijinduOrder = '';
-                if ($scope.moneyOrder == '' || $scope.moneyOrder == 1) {
-                    $scope.moneyOrder = 2;
-                } else if ($scope.moneyOrder == 2) {
-                    $scope.moneyOrder = 1;
+        $scope.BorrowTypes = angular.fromJson(sessionStorage.BorrowTypes);
+            $timeout(function(){
+                var swiper = new Swiper('.swiper-container', {
+                    slidesPerView: 3.5,
+                    paginationClickable: true,
+                    spaceBetween: 0,
+                    freeMode: true
+                });
+            },200)
+        //标类型切换
+        $scope.borrowstatefun = function(index,BorrowTypeid){
+            for (var j = 0; j < $scope.BorrowTypes.length; j++) {
+                if (j==index) {
+                    $scope.BorrowTypes[j].success = true;
+                }else{
+                    $scope.BorrowTypes[j].success = false;
                 }
             }
-            $scope.doRefresh();
+            $scope.postdata.orderBy = "";
+            $scope.postdata.direction == "";
+            $scope.postdata.type = BorrowTypeid;
+            $scope.postdata.page = 0;
+            vm = [];
+            $scope.loadMore()
             $ionicScrollDelegate.scrollTop()
         }
-        //获取数据
-        $scope.getMoneyData = function (functionId, pageNumber, pageSize, nhsyOrder, qixianOrder, moneyOrder,
-            touzijinduOrder) {
-            MoneyServices.getMoney(functionId, pageNumber, pageSize, nhsyOrder, qixianOrder, moneyOrder,
-                touzijinduOrder).success(function (data) {
-                console.log(data);
-                $ionicLoading.hide();
-                if (data.respHead.respCode == "000000") {
-                    $scope.prolists = data.body.list;
+        //绘画投资进度
+        $scope.bcircleChartfun = function(index,circlenum){
+            if (circlenum == 0) {
+                circlenum = null;
+            }
+            $(".bcircleChart").eq(index).circleChart({
+                size: 52,
+                value: circlenum,
+                text: 0,
+                textSize:14,
+                color: "#ff304a",
+                onDraw: function(el, circle) {
+                    circle.text(Math.round(circle.value) + "%");
                 }
-            })
-            .finally(function () {
-                // 停止广播ion-refresher
-                $scope.$broadcast('scroll.refreshComplete');
             });
+        }
+        //绘画投资进度
+        $scope.searchbcircleChartfun = function(index,circlenum){
+            if (circlenum == 0) {
+                circlenum = null;
+            }
+            $(".searchbcircleChart").eq(index).circleChart({
+                size: 52,
+                value: circlenum,
+                text: 0,
+                textSize:14,
+                color: "#ff304a",
+                onDraw: function(el, circle) {
+                    circle.text(Math.round(circle.value) + "%");
+                }
+            });
+        }
+        //点击排序
+        $scope.sortfun = function (orderBy) {
+            if (orderBy!="percentage") {
+                if ($scope.postdata.direction == "" || $scope.postdata.direction == "asc") {
+                    $scope.postdata.direction = "desc"
+                }else{
+                    $scope.postdata.direction = "asc"
+                }
+            }else{
+                if ($scope.postdata.direction == "" || $scope.postdata.direction == "desc") {
+                    $scope.postdata.direction = "asc"
+                }else{
+                    $scope.postdata.direction = "desc"
+                }
+            }
+            
+
+            if (orderBy != $scope.postdata.orderBy) {
+                $scope.postdata.orderBy = orderBy;
+                $scope.postdata.direction == "";
+            }
+            //console.log($scope.postdata.direction);
+            $scope.postdata.page = 0;
+            vm = [];
+            $scope.loadMore()
+            $ionicScrollDelegate.scrollTop()
         }
         //下拉刷新
         $scope.doRefresh = function () {
-            $scope.getMoneyData($scope.functionId, "1", $scope.pageSize, $scope.nhsyOrder, $scope.qixianOrder, $scope.moneyOrder,
-                $scope.touzijinduOrder);
+            $scope.postdata.page = 0;
+            vm = [];
+            $scope.loadMore()
         };
         //上滑加载更多
         $scope.loadMore = function () {
-            $scope.pageNumber += 1;
-            console.log($scope.nhsyOrder);
-            console.log($scope.qixianOrder);
-            console.log($scope.touzijinduOrder);
-            MoneyServices.getMoney($scope.functionId, $scope.pageNumber, $scope.pageSize, $scope.nhsyOrder, $scope.qixianOrder,
-                $scope.moneyOrder, $scope.touzijinduOrder).success(function (data) { // 调用service里面community文件里面的wbindexservice服务
-                console.log(data);
-                $ionicLoading.hide();
-                if (data.respHead.respCode == "000000") {
-                    vm = vm.concat(data.body.list);
-                    $scope.prolists = vm;
-                    var wblength = data.body.list.length;
-                    if (wblength < $scope.pageSize) {
+            $scope.postdata.page += 1;
+            Services.getReturnData(protitleurl, $scope.postdata).then(
+            function successCallback(response) {
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    vm = vm.concat(response.data.data.investmentList.content);
+                    $scope.borrowlists = vm;
+                    var wblength = response.data.data.investmentList.content.length;
+                    if (wblength < $scope.postdata.size) {
                         $scope.moredata = true;
+                    }else{
+                        $scope.moredata = false;
                     }
                     $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.$broadcast('scroll.refreshComplete');
+                }else{
+                    Services.ionicpopup("",response.msg)
                 }
- 
-            }).error(function () {});
+            }, 
+            function errorCallback(response) {
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("", "错误500<br>" + response.data.message)
+                }
+            });
         };
         //页面tab
-        $scope.prolisttit = [{
+        $scope.prolisttit = [
+            {
                 "name": "理财",
-                "success": true
-        }, {
-                "name": "转让",
-                "success": false
-        }];
+                "success": true,
+                "url":"noauth/getInvestmentList"
+            }
+        ];
         //切换tab
         $scope.protittopfc = function (index) {
-            Services.ionicLoading();
             $ionicScrollDelegate.scrollTop()
-            $scope.nhsyOrder = ''; //年化收益排序
-            $scope.qixianOrder = ''; //投资期限排序
-            $scope.moneyOrder = ''; //理财金额排序
-            $scope.touzijinduOrder = ''; //投资进度排序
+            $scope.postdata = {
+                interestRange:"",
+                type:"",
+                dueTime:"",
+                status:"",
+                name:"",
+                orderBy:"",
+                direction:"",
+                page:0,
+                size:10
+            }
+            protitleurl = $scope.prolisttit[index].url;
             for (var i = 0, len = $scope.prolisttit.length; i < len; i++) {
                 if (index === i) {
                     $scope.prolisttit[i].success = true;
@@ -122,31 +183,36 @@ angular.module('money.controllers', [])
                     $scope.prolisttit[i].success = false;
                 }
             }
-            if (index == 0) {
-                $scope.functionId = "A040"
-            } else {
-                $scope.functionId = "A043"
-            }
-            $scope.pageNumber = 0;
+            $scope.postdata.page = 0;
             vm = [];
             $scope.loadMore();
  
         }
         //跳转产品详细页
-        $scope.goprodetail = function (proid, transferRegisterRid) {
-            console.log(proid);
+        $scope.goprodetail = function (proid,marketId) {
+            $scope.modal.hide()
             var curside;
             if ($scope.prolisttit[0].success) {
                 curside = 1;
+                $state.go('moneydetail', {id: proid,curside:curside});
             } else {
                 curside = 2;
+                $state.go('moneydetail', {id: marketId,curside:curside});
             }
-            $state.go('prodetail', {
-                proid: proid,
-                transferRegisterRid: transferRegisterRid,
-                curside: curside
-            });
         }
+        $scope.protittopfc(0);
+        $scope.searchpostdata = {
+            interestRange:"",
+            type:"",
+            dueTime:"",
+            status:"",
+            name:"",
+            orderBy:"",
+            direction:"",
+            page:1,
+            size:9999
+        }
+        $scope.searchmoredata = false; //控制加载更多
     }])
     .controller('ProdetailCtrl', ['$scope', '$state', '$stateParams', '$ionicModal', 'Services', '$ionicScrollDelegate', function (
         $scope, $state, $stateParams, $ionicModal, Services, $ionicScrollDelegate) {

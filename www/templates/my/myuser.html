@@ -11,12 +11,12 @@
         </div>
         <div class="myuserlist">
             <div class="row">
-                <div ng-if="!shtx" class="col col-33">账户</div>
-                <div ng-if="!shtx" class="col">{{userInfosession.username | mphone}}</div>
+                <div class="col col-33">账户</div>
+                <div class="col">{{userInfosession.mobile | mphone}}</div>
             </div>
             <div class="row">
-                <div ng-if="!shtx" class="col col-33">实名</div>
-                <div ng-if="!shtx" class="col blue">{{userInfosession.realname?userInfosession.realname:'立即认证'}}<span ng-class="{true:'green',false:'red'}[userInfosession.id==1]">{{userInfosession.id==1?'已认证':'未认证'}}</span></div>
+                <div class="col col-33">实名</div>
+                <div class="col blue">{{userInfosession.realName?userInfosession.realName:'立即认证'}}<span ng-class="{true:'green',false:'red'}[userInfosession.realVerifyStatus==1]">{{userInfosession.realVerifyStatus==1?'已认证':'未认证'}}</span></div>
             </div>
         </div>
     </ion-content>

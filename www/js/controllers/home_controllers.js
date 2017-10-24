@@ -1,6 +1,6 @@
 angular.module('home.controllers', ['services'])
     //首页
-    .controller('HomeCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
+    .controller('HomeCtrl', ['$scope', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, $timeout, $state, Services, $ionicLoading) {
         //判断是否是首次进入系统从而控制是否跳转引导页
         if (!localStorage.guide) {
             $state.go('guide');
@@ -12,14 +12,21 @@ angular.module('home.controllers', ['services'])
         }
         Services.ionicLoading();
         //获取首页数据
-        HomeServices.getHomeData(function(data) {
+        var homedata = {
+            type:1,
+            count1:1,
+            count2:2,
+            count3:999,
+            code:"platform_info"
+        }
+        Services.getData("noauth/bannerShow", 60000, homedata, function(data){
             console.log(data);
             $ionicLoading.hide();
-            if (data.bannerlist) {
-                $scope.homebannerlists = data.bannerlist;
-                $scope.xslist = data.xslist;
-                $scope.borrowInfoPage = data.borrowInfoPage.items;
-                $scope.noticList = data.noticList.items;
+            if (data.data.data) {
+                $scope.homebannerlists = data.data.data;
+                $scope.xslist = data.data.recommendBorrow;
+                $scope.borrowInfoPage = data.data.rapidInvestmentBorrow;
+                $scope.noticList = data.data.articles;
                 var radialObjfun = function(index, value) {
                     var radialObj = $('#indicatorContainer' + index).radialIndicator({
                         radius: 70,
@@ -31,7 +38,7 @@ angular.module('home.controllers', ['services'])
                         format: '##%'
 
                     }).data('radialIndicator');
-                    radialObj.animate(value);
+                    radialObj.animate(value*100);
                 }
                 $timeout(function() {
                     var swiper = new Swiper('.swiper-container1', {
@@ -52,10 +59,10 @@ angular.module('home.controllers', ['services'])
                         pagination: '.swiper-pagination',
                         paginationClickable: true,
                         onSlideChangeStart: function(swiper) {
-                            radialObjfun(swiper.activeIndex, $scope.borrowInfoPage[swiper.activeIndex].apr);
+                            radialObjfun(swiper.activeIndex, $scope.borrowInfoPage[swiper.activeIndex].planRat);
                         }
                     });
-                    radialObjfun(0, $scope.borrowInfoPage[0].apr);
+                    radialObjfun(0, $scope.borrowInfoPage[0].planRat);
                 }, 1000);
             }
 

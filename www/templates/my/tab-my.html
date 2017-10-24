@@ -7,7 +7,7 @@
                 <i class="button ion-ios-gear-outline"></i>
               </span>
                 </div>
-                <div class="title title-center header-item">{{userInfosession.username | mphone}}</div>
+                <div class="title title-center header-item">{{userInfo.userName | mphone}}</div>
                 <div class="buttons buttons-right header-item">
                     <span class="right-buttons">
                       <i class="button ion-ios-bell-outline">
@@ -17,25 +17,25 @@
                 </div>
             </div>
             <div class="imgmoney">
-                <img ui-sref="myuser" ng-src="{{userInfosession.imagePath}}" onerror="javascript:this.src='img/loaderror.jpg'" />
+                <img ui-sref="myuser" ng-src="{{userInfo.litpic}}" onerror="javascript:this.src='img/loaderror.jpg'" />
                 <p class="light">可用金额(元)</p>
-                <p class="light">{{userUserInfoData.moneyUsable}}</p>
+                <p class="light">{{userAccount.moneyUsable | number:2}}</p>
             </div>
             <div class="row">
                 <div class="col light">账户总额(元)
-                    <br>{{userUserInfoData.moneyTotal}}</div>
+                    <br>{{userAccount.moneyTotal | number:2}}</div>
                 <div class="col light text-right">冻结金额(元)
-                    <br>{{userUserInfoData.moneyTenderFreeze}}</div>
+                    <br>{{userAccount.tenderFreeze+userAccount.withdrawFreeze | number:2}}</div>
             </div>
         </div>
         <div class="row padding lchk">
             <div class="col lcjl" ui-sref="financial">
                 <p class="lchktit_top">理财记录</p>
-                <p class="lchktit_bot">待收：<span class="lchkmoney">{{userUserInfoData.moneyCollection}}</span></p>
+                <p class="lchktit_bot">待收：<span class="lchkmoney">{{userAccount.moneyCollection | number:2}}</span></p>
             </div>
             <div class="col hkjl" ui-sref="borrowmanage">
                 <p class="lchktit_top">借款记录</p>
-                <p class="lchktit_bot">待还：<span class="lchkmoney">{{userUserInfoData.stillRepayMoney}}</span></p>
+                <p class="lchktit_bot">待还：<span class="lchkmoney">{{userAccount.moneyRepay | number:2}}</span></p>
             </div>
         </div>
         <div class="row cztxbutton">
@@ -49,7 +49,7 @@
         <div class="row myjf" ui-sref="mypoints">
             <div class="col myjf_top">
                 <p class="myjftit_top">我的积分</p>
-                <p class="myjftit_bot">当前积分：<span class="myjfmoney">{{userUserInfoData.credit}}</span></p>
+                <p class="myjftit_bot">当前积分：<span class="myjfmoney">{{userCredit.pointsTotal}}</span></p>
             </div>
             <div class="col myjf_bot">
                 <span>签到得积分</span>
@@ -57,10 +57,10 @@
         </div>
         <div class="row redquan">
             <div class="col" ng-click="gomyticket(0)">
-                <i><img src="img/icon_redb.png"></i>红包<span>({{userUserInfoData.redPaperCount}})</span>
+                <i><img src="img/icon_redb.png"></i>红包<span>({{redpackets.length}})</span>
             </div>
             <div class="col" ng-click="gomyticket(1)">
-                <i><img src="img/icon_jxquan.png"></i>加息券<span>({{userUserInfoData.couponCount}})</span>
+                <i><img src="img/icon_jxquan.png"></i>加息券<span>({{couponList.length}})</span>
             </div>
         </div>
         <div class="mymenu text-center">
