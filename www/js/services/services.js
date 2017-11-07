@@ -113,11 +113,10 @@ angular.module('services', [])
                 return currentdate;
             },
             //获取服务器时间
-            getServerTime: function(day, backfun) {
-                $http.post("http://192.168.5.17:8080/eps/getSystemTime.htm").success(function(data){
-                    var begintime = $filter('date')(data.time,'yyyy-MM-dd');
-                    var endtime = $filter('date')(data.time+86400000*day,'yyyy-MM-dd');
-                    backfun(begintime + '_' + endtime)
+            getServerTime: function(bacfun) {
+                $http.get($rootScope.baseUrl + "noauth/getCurrentTime").success(function(data){
+                    console.log(data);
+                    return bacfun(data);
                 })
             },
             //主要的数据接口
@@ -127,14 +126,16 @@ angular.module('services', [])
                 if (sessionStorage.token) {
                     var token = sessionStorage.token;
                 }
-                cacheService.cacheObject(apiurl, cachetime, $http.post, this, [$rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token} }])
+                cacheService.cacheObject(apiurl, cachetime, $http.post, this, [$rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token,'Clients' : "wechat"} }])
                     .then(function successCallback(response) {
                         if (response.code=="0000" || response.code=="1010" || response.code=="1000") {
                             return bacfun(response);
                         }else{
+                            $ionicLoading.hide();
                             that.ionicpopup("",response.msg)
                         }
                     }, function errorCallback(response) {
+                        $ionicLoading.hide();
                         if(response.status=="401"){
                             $rootScope.optionsPopup = $ionicPopup.show({
                                 template: "登录过期，请重新登录",
@@ -172,6 +173,7 @@ angular.module('services', [])
                     data: parameter,
                     beforeSend: function(request) {
                         request.setRequestHeader("token", token);
+                        request.setRequestHeader("Clients", "wechat");
                     },
                     dataType: 'JSON',
                     type: 'GET',
@@ -179,6 +181,7 @@ angular.module('services', [])
                         return backfun(list);
                     },
                     error: function (error) {
+                        $ionicLoading.hide();
                         $rootScope.optionsPopup = $ionicPopup.show({
                                 template: "登录过期，请重新登录",
                                 title: "温馨提示",
@@ -209,7 +212,7 @@ angular.module('services', [])
                 if (sessionStorage.token) {
                     var token = sessionStorage.token;
                 }
-                return $http.post($rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token} });
+                return $http.post($rootScope.baseUrl + apiurl, parameter,{ headers : {'token' : token,'Clients' : 'wechat'} });
             },
             //上传头像
             getupdatatx: function(functionId, parameter) {

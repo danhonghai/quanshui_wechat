@@ -63,22 +63,37 @@
                 <i><img src="img/icon_jxquan.png"></i>加息券<span>({{couponList.length}})</span>
             </div>
         </div>
-        <div class="mymenu text-center">
-            <div class="row">
-                <div class="col" ui-sref="rechargelist"><i><img src="img/icon_zjjl.png"></i><p>资金记录</p></div>
-                <div class="col"><i><img src="img/icon_zqzr.png" ui-sref="mytransfer"></i><p>债权转让</p></div>
-                <div class="col" ui-sref="borrowmanage"><i><img src="img/icon_hkgl.png"></i><p>还款管理</p></div>
-            </div>
-            <div class="row">
-                <div class="col" ui-sref="integralmall"><i><img src="img/icon_spdh.png"></i><p>商品兑换</p></div>
-                <div class="col"><i><img src="img/icon_wdsp.png"></i><p>我的商品</p></div>
-                <div class="col" ui-sref="problems"><i><img src="img/icon_bz.png"></i><p>常见问题</p></div>
-            </div>
-            <div class="row">
-                <div class="col" ui-sref="invitefriends"><i><img src="img/icon_yqhy.png"></i><p>邀请好友</p></div>
-                <div class="col"><a style="display: inline-block;" href="tel://400-4000-400"><i><img src="img/icon_zskf.png"></i><p>专属客服</p></a></div>
-                <div class="col" ui-sref="more"><i><img src="img/icon_gd.png"></i><p>更多</p></div>
-            </div>
+        <div class="list" style="margin-top:.1rem">
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="rechargelist">
+                <i class="icon"><img src="img/icon_zjjl.png" width="20"></i>
+                资金记录
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="borrowmanage">
+                <i class="icon"><img src="img/icon_hkgl.png" width="20"></i>
+                还款管理
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="problems">
+                <i class="icon"><img src="img/icon_bz.png" width="20"></i>
+                常见问题
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="invitefriends">
+                <i class="icon"><img src="img/icon_yqhy.png" width="20"></i>
+                邀请好友
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" href="tel://400-4000-400">
+                <i class="icon"><img src="img/icon_zskf.png" width="20"></i>
+                专属客服
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="more">
+                <i class="icon"><img src="img/icon_gd.png" width="20"></i>
+                更多
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
         </div>
     </ion-content>
 </ion-view>

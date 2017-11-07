@@ -10,18 +10,18 @@
                 <p>发送链接邀请好友</p>
                 <div class="row padding0">
                     <div class="col padding0">
-                        <span id="target">{{invitefriends.invateUrl}}</span>
+                        <span id="target">{{data.webpath}}</span>
                     </div>
                     <div class="col col-33 padding0">
-                        <button class="btn" ngclipboard data-clipboard-text="{{invitefriends.invateUrl}}" ng-click="invitedbtn()">复制</button></div>
+                        <button class="btn" ngclipboard data-clipboard-text="{{data.webpath}}" ng-click="invitedbtn()">复制</button></div>
                 </div>
                 <p>发送邀请码邀请好友</p>
                 <div class="row padding0">
                     <div class="col padding0">
-                        <span id="target1">{{invitefriends.invateCode}}</span>
+                        <span id="target1">{{data.inviteCode}}</span>
                     </div>
                     <div class="col col-33 padding0">
-                        <button ngclipboard data-clipboard-text="{{invitefriends.invateCode}}" ng-click="invitedbtn()">复制</button></div>
+                        <button ngclipboard data-clipboard-text="{{data.inviteCode}}" ng-click="invitedbtn()">复制</button></div>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 方法二
             </div>
             <div class="invitwayone_cen center">
-                <img style="display: block; width: 70%; margin: 0 auto;" src="http://qr.liantu.com/api.php?&bg=ffffff&fg=000000&text={{invitefriends.invateUrl}}"><br>
+                <img style="display: block; width: 70%; margin: 0 auto;" src="http://qr.liantu.com/api.php?&bg=ffffff&fg=000000&text={{data.webpath}}"><br>
                 <button class="button" style="width: 100%; display:inline-block;">分享给好友</button>
             </div>
         </div>

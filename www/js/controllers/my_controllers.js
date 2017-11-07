@@ -8,86 +8,110 @@ angular.module('my.controllers', [])
         $scope.userInfo = {};
         $scope.userAccount = {};
         $scope.userCredit = {};
-        Services.getDataget("showAccount", "", function(data){
-            Services.console(data);
-            $scope.userInfo = data.data.userInfo;
-            $scope.userAccount = data.data.userAccount;
-            $scope.userCredit = data.data.userCredit;
-            sessionStorage.userinfo = angular.toJson(data.data.userInfo);
-        })
-        var pointobj = {
-            status: 0,
-            pageSize: 1,
-            pageNumber: 99999
+        if (sessionStorage.token) {
+            Services.getDataget("showAccount", "", function(data){
+                Services.console(data);
+                $scope.userInfo = data.data.userInfo;
+                $scope.userAccount = data.data.userAccount;
+                $scope.userCredit = data.data.userCredit;
+                sessionStorage.userinfo = angular.toJson(data.data.userInfo);
+
+            var pointobj = {
+                status: 0,
+                pageSize: 1,
+                pageNumber: 99999
+            }
+            Services.getReturnData("my_red_coupon", pointobj).then(
+            function successCallback(response) {
+                Services.console(response);
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    Services.console(response.data.data.redCouponList);
+                    $scope.redpackets = response.data.data.redCouponList;
+                }else{
+                    Services.ionicpopup("",response.msg)
+                }
+            }, 
+            function errorCallback(response) {
+                Services.console(response);
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("","错误500<br>" + response.data.message)
+                }
+            });
+            Services.getReturnData("my_coupon", pointobj).then(
+            function successCallback(response) {
+                Services.console(response);
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    Services.console(response.data.data.couponList);
+                    $scope.couponList = response.data.data.couponList;
+                }else{
+                    Services.ionicpopup("",response.msg)
+                }
+            }, 
+            function errorCallback(response) {
+                Services.console(response);
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("","错误500<br>" + response.data.message)
+                }
+            });
+            })
+            $scope.gomyticket = function(index){
+                $state.go("myticket",{"index":index});
+            }
+        }else{
+            $scope.optionsPopup = $ionicPopup.show({
+                template: "暂未登录，请先登录",
+                title: "温馨提示",
+                scope: $scope,
+                buttons: [{
+                    text: "返回",
+                    onTap: function(e) {
+                        $ionicHistory.goBack();
+                    }
+                }, {
+                    text: "登录",
+                    type: "calm",
+                    onTap: function(e) {
+                        $state.go("login");
+                    }
+                }]
+            });
         }
-        Services.getReturnData("my_red_coupon", pointobj).then(
-        function successCallback(response) {
-            Services.console(response);
-            if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
-                Services.console(response.data.data.redCouponList);
-                $scope.redpackets = response.data.data.redCouponList;
-            }else{
-                Services.ionicpopup("",response.msg)
-            }
-        }, 
-        function errorCallback(response) {
-            Services.console(response);
-            if(response.status=="401"){
-                $scope.optionsPopup = $ionicPopup.show({
-                    template: "登录过期，请重新登录",
-                    title: "温馨提示",
-                    scope: $scope,
-                    buttons: [{
-                        text: "取消"
-                    }, {
-                        text: "重新登录",
-                        type: "calm",
-                        onTap: function(e) {
-                            sessionStorage.token = "";
-                            sessionStorage.__tempCache = "";
-                            $state.go("login");
-                        }
-                    }]
-                });
-                return false;
-            }else{
-                Services.ionicpopup("","错误500<br>" + response.data.message)
-            }
-        });
-        Services.getReturnData("my_coupon", pointobj).then(
-        function successCallback(response) {
-            Services.console(response);
-            if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
-                Services.console(response.data.data.couponList);
-                $scope.couponList = response.data.data.couponList;
-            }else{
-                Services.ionicpopup("",response.msg)
-            }
-        }, 
-        function errorCallback(response) {
-            Services.console(response);
-            if(response.status=="401"){
-                $scope.optionsPopup = $ionicPopup.show({
-                    template: "登录过期，请重新登录",
-                    title: "温馨提示",
-                    scope: $scope,
-                    buttons: [{
-                        text: "取消"
-                    }, {
-                        text: "重新登录",
-                        type: "calm",
-                        onTap: function(e) {
-                            sessionStorage.token = "";
-                            sessionStorage.__tempCache = "";
-                            $state.go("login");
-                        }
-                    }]
-                });
-                return false;
-            }else{
-                Services.ionicpopup("","错误500<br>" + response.data.message)
-            }
-        });
         $scope.$on("$ionicView.unloaded", function() {
             if ($scope.optionsPopup) {
                 $scope.optionsPopup.close();
@@ -276,7 +300,7 @@ angular.module('my.controllers', [])
     //充值
     .controller('RechargeCtrl', ['$scope', '$state', '$http', function($scope, $state, $http) {
         $scope.data = {};
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         $scope.clearmoney = function() {
             console.log($scope.data.money);
             $scope.data.money = "";
@@ -287,23 +311,7 @@ angular.module('my.controllers', [])
             })
         }
         $scope.rechargefun = function() {
-            // var paramenter = {
-            //     "functionId": "A032",
-            //     "terminalType": "3",
-            //     "terminalId": "",
-            //     "transTime": "",
-            //     "version": "1.0.0",
-            //     "clientIp": "",
-            //     userId: userInfosession.id,
-            //     userNo: userInfosession.userNo,
-            //     money: $scope.data.money
-            // }
-            $http.get(
-                '/apis/eps/appService/appGateway.htm?functionId=A032&terminalType=3&terminalId=&transTime=&version=1.0.0&clientIp=&userId=' +
-                userInfosession.id + '&userNo=' + userInfosession.userNo + '&money=' + $scope.data.money).success(function(
-                data) {
-                console.log(data);
-            });
+            
         }
     }])
     //充值列表
@@ -311,7 +319,7 @@ angular.module('my.controllers', [])
         '$state', '$stateParams',
         function($scope, $timeout, $rootScope, Services, $ionicPopup, $ionicLoading, $state,
             $stateParams) {
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             $scope.prolisttit = [{
                 name: "充值记录",
                 success: true
@@ -335,18 +343,6 @@ angular.module('my.controllers', [])
                         $scope.prolisttit[i].success = false;
                     }
                 }
-                if (index == 0) {
-                    functionid = "A018"
-                } else {
-                    functionid = "A019"
-                }
-                Services.getData(functionid, parameterObj).success(function(data) {
-                    console.log(data);
-                    $ionicLoading.hide();
-                    if (data.respHead.respCode == "000000") {
-                        $scope.rechargeData = data.body.list ? data.body.list : [];
-                    }
-                });
             }
             if (!$stateParams.index) {
                 $scope.protittopfc(0);
@@ -384,7 +380,7 @@ angular.module('my.controllers', [])
         '$ionicLoading', '$state', '$stateParams',
         function($scope, $timeout, $rootScope, MyServices, Services,
             $ionicPopup, $ionicLoading, $state, $stateParams) {
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             Services.ionicLoading();
             var parameterObj = {
                 userId: userInfosession.id,
@@ -411,7 +407,7 @@ angular.module('my.controllers', [])
             console.log(e);
             var files = this.files;
             var reader = new FileReader();
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             reader.readAsDataURL(files[0]);
             reader.onload = function(e) {
                 console.log(e);
@@ -487,165 +483,92 @@ angular.module('my.controllers', [])
         }
     }])
     //还款记录
-    .controller('BorrowmanageCtrl', ['$scope', '$timeout', 'Services', function($scope, $timeout, Services) {
-        $scope.prolisttit = [{
-            name: "默认",
-            numday: 0,
-            success: true
-        }, {
-            name: "近7天",
-            numday: 7,
-            success: false
-        }, {
-            name: "近1个月",
-            numday: 30,
-            success: false
-        }, {
-            name: "近2个月",
-            numday: 60,
-            success: false
-        }, {
-            name: "近6个月",
-            numday: 180,
-            success: false
-        }, {
-            name: "近1年",
-            numday: 365,
-            success: false
-        }, ]
-        $scope.borrowstatelists = [{
-            name: "投标中",
-            success: true
-        }, {
-            name: "还款中",
-            success: false
-        }, {
-            name: "已完结",
-            success: false
-        }]
-        $timeout(function() {
-            var swiper = new Swiper('.swiper-container', {
-                pagination: '.swiper-pagination',
-                slidesPerView: 4,
-                paginationClickable: true,
-                spaceBetween: 0,
-                freeMode: true
-            });
-        }, 500);
-        $scope.moredata = false; //控制加载更多
-        $scope.pageNumber = 0; //分页的第几页
-        $scope.pageSize = 10; //分页一页显示几条
-        var userInfosession = angular.fromJson(sessionStorage.userinfo);
-        var vm = [];
-        var parameterObj = {
-                userId: userInfosession.id,
-                userNo: userInfosession.userNo,
-                startTime: "",
-                endTime: "",
-                tenderStatus: 0,
-                pageNumber: $scope.pageNumber,
-                pageSize: $scope.pageSize
-            }
-            //获取数据
-        $scope.getMoneyData = function(parameterObj) {
-                Services.getData("A021", parameterObj).success(function(data) {
-                        console.log(data);
-                        if (data.respHead.respCode == "000000") {
-                            vm = [];
-                            $scope.financialData = data.body.list ? data.body.list : [];
-                        }
-                        if (data.body.totalPage == 1) {
-                            $scope.moredata = true;
-                        } else {
-                            $scope.moredata = false;
-                        }
-
-                        $scope.pageNumber = 0;
-                    })
-                    .
-                finally(function() {
-                    // 停止广播ion-refresher
-                    $scope.$broadcast('scroll.refreshComplete');
-                });
-            }
-            //下拉刷 新
-        $scope.doRefresh = function() {
-            parameterObj = {
-                userId: userInfosession.id,
-                userNo: userInfosession.userNo,
-                tenderStatus: 0,
-                pageNumber: $scope.pageNumber,
-                pageSize: $scope.pageSize
-            }
-            for (var i = $scope.borrowstatelists.length - 1; i >= 0; i--) {
-                if ($scope.borrowstatelists[i].success) {
-                    parameterObj.tenderStatus = i;
-                    parameterObj.pageNumber = 1;
-                    $scope.getMoneyData(parameterObj);
-                }
-            }
-        };
-        //上拉加载
-        $scope.loadMore = function() {
-            $scope.pageNumber += 1;
-            console.log($scope.pageNumber);
-            parameterObj.pageNumber = $scope.pageNumber;
-            parameterObj.pageSize = $scope.pageSize;
-            console.log(parameterObj);
-            Services.getData("A021", parameterObj).success(function(data) {
-                console.log(data);
-                if (data.respHead.respCode == "000000") {
-                    vm = vm.concat(data.body.list ? data.body.list : []);
-                    $scope.financialData = vm;
-                    if ($scope.pageNumber >= data.body.totalPage) {
-                        $scope.moredata = true;
-                    }
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                }
-                console.log($scope.financialData);
-            }).error(function() {});
-        };
-        //时间筛选
-        $scope.protittopfc = function(index) {
-                $scope.financialData = [];
-                vm = [];
-                $scope.pageNumber = 0;
-                if (index == 0) {
-                    parameterObj.startTime = "";
-                    parameterObj.endTime = "";
-                } else {
-                    Services.getServerTime($scope.prolisttit[index].numday, function(data) {
-                        console.log(data);
-                        var spicdata = data.split("_");
-                        parameterObj.startTime = spicdata[0];
-                        parameterObj.endTime = spicdata[1];
-                        console.log(parameterObj);
-                    })
-                }
-                for (var i = 0, len = $scope.prolisttit.length; i < len; i++) {
-                    if (index === i) {
-                        $scope.prolisttit[i].success = true;
-                        $scope.moredata = false;
-                    } else {
-                        $scope.prolisttit[i].success = false;
-                    }
-                }
-            }
-            //状态切换
-        $scope.borrowstatefun = function(index) {
-            $scope.financialData = [];
-            vm = [];
-            $scope.pageNumber = 0;
-            for (var i = 0, len = $scope.borrowstatelists.length; i < len; i++) {
-                if (index === i) {
-                    parameterObj.tenderStatus = i;
-                    $scope.moredata = false;
-                    $scope.borrowstatelists[i].success = true;
-                } else {
-                    $scope.borrowstatelists[i].success = false;
-                }
+    .controller('BorrowmanageCtrl', ['$scope', 'Services', '$ionicPopup', '$state', function($scope, Services, $ionicPopup, $state) {
+    $scope.pageNumber = 0; //分页的第几页
+    $scope.pageSize = 10; //分页一页显示几条
+    $scope.moredata = false; //控制加载更多
+    $scope.borrowTenderType = 1;
+    var vm = [];
+    $scope.borrowstatelists = [
+        {name:"进行中",success:true},
+        {name:"待还款",success:false},
+        {name:"逾期中",success:false},
+        {name:"已完结",success:false}
+    ]
+    $scope.borrowstatefun = function(index){
+        $scope.pageNumber = 0;
+        vm = [];
+        $scope.borrowTenderType = index + 1;
+        for (var i = 0; i < $scope.borrowstatelists.length; i++) {
+            if (i==index) {
+                $scope.borrowstatelists[i].success = true;
+            }else{
+                $scope.borrowstatelists[i].success = false;
             }
         }
+        $scope.loadMore();
+    }
+
+    $scope.doRefresh = function () {
+        $scope.pageNumber = 0;
+        vm = [];
+        $scope.loadMore()
+    };
+    //上滑加载更多
+    $scope.loadMore = function () {
+        $scope.pageNumber += 1;
+        var pointobj = {
+            borrowtype: $scope.borrowTenderType,
+            pageSize: $scope.pageSize,
+            pageNumber: $scope.pageNumber
+        }
+        Services.getReturnData("userBorrowPage", pointobj).then(
+        function successCallback(response) {
+            Services.console(response);
+            if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                Services.console(response.data.data.list);
+                vm = vm.concat(response.data.data.list);
+                $scope.pointdetails = vm;
+                var wblength = response.data.data.list.length;
+                if (wblength < $scope.pageSize) {
+                    $scope.moredata = true;
+                }else{
+                    $scope.moredata = false;
+                }
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.$broadcast('scroll.refreshComplete');
+            }else{
+                Services.ionicpopup("",response.msg)
+            }
+        }, 
+        function errorCallback(response) {
+            Services.console(response);
+            if(response.status=="401"){
+                $scope.optionsPopup = $ionicPopup.show({
+                    template: "登录过期，请重新登录",
+                    title: "温馨提示",
+                    scope: $scope,
+                    buttons: [{
+                        text: "取消"
+                    }, {
+                        text: "重新登录",
+                        type: "calm",
+                        onTap: function(e) {
+                            sessionStorage.token = "";
+                            sessionStorage.__tempCache = "";
+                            $state.go("login");
+                        }
+                    }]
+                });
+                return false;
+            }else{
+                Services.ionicpopup("", "错误"+response.status+"<br>" + response.data.message)
+            }
+        });
+    };
+    $scope.repaylink = function(borrowRepaymentId){
+        $state.go("repayments",{"repaymentId":borrowRepaymentId});
+    }
     }])
     //理财记录
     .controller('FinancialCtrl', ['$scope', 'Services', '$ionicPopup', '$state', function($scope, Services, $ionicPopup, $state) {
@@ -760,37 +683,11 @@ angular.module('my.controllers', [])
             $scope.redblists = [];
             $scope.raiselists = [];
             $scope.functionId = "";
-            Services.ionicLoading();
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
-            $scope.getmyredbdata = function(functionId, userId, userNo, redPaperStatus, pageNumber, pageSize) {
-                MyServices.getUserredb(functionId, userId, userNo, redPaperStatus, pageNumber, pageSize).success(function(
-                    data) {
-                    console.log(data);
-                    $ionicLoading.hide();
-                    if (data.respHead.respCode == "000000") {
-                        $scope.redblists = data.body.list ? data.body.list : [];
-                    }
-                    console.log($scope.redblists);
-                });
-            }
-            $scope.getmyticketdata = function(functionId, userId, userNo, status, pageNumber, pageSize) {
-                MyServices.getUserticket(functionId, userId, userNo, status, pageNumber, pageSize).success(function(data) {
-                    console.log(data);
-                    $ionicLoading.hide();
-                    if (data.respHead.respCode == "000000") {
-                        $scope.raiselists = data.body.list ? data.body.list : [];
-                    }
-                    console.log($scope.raiselists);
-                });
-            }
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             $scope.showticketlists = [];
             $scope.protittopfc = function(index) {
                 if (index == 0) {
-                    $scope.functionId = "A016";
-                    $scope.getmyredbdata($scope.functionId, userInfosession.id, userInfosession.userNo, "0", "1", "50")
                 } else {
-                    $scope.functionId = "A046";
-                    $scope.getmyticketdata($scope.functionId, userInfosession.id, userInfosession.userNo, "0", "1", "50")
                 }
 
                 for (var i = 0, len = $scope.prolisttit.length; i < len; i++) {
@@ -816,23 +713,13 @@ angular.module('my.controllers', [])
                         $scope.borrowstatelists[i].success = false;
                     }
                 }
-                if ($scope.functionId == "A016") {
-                    if (index == 0) {
-                        $scope.getmyredbdata($scope.functionId, userInfosession.id, userInfosession.userNo, "0", "1", "50")
-                    } else if (index == 1) {
-                        $scope.getmyredbdata($scope.functionId, userInfosession.id, userInfosession.userNo, "2", "1", "50")
-                    } else if (index == 2) {
-                        $scope.getmyredbdata($scope.functionId, userInfosession.id, userInfosession.userNo, "3", "1", "50")
-                    } else {
-                        $scope.getmyredbdata($scope.functionId, userInfosession.id, userInfosession.userNo, "4", "1", "50")
-                    }
-                } else {
-                    $scope.getmyticketdata($scope.functionId, userInfosession.id, userInfosession.userNo, index, "1", "50")
-                }
 
             }
-
-            $scope.protittopfc($stateParams.index)
+            if ($stateParams.index) {
+                $scope.protittopfc($stateParams.index)
+            }else{
+                $scope.protittopfc(0)
+            }
         }
     ])
     //积分签到
@@ -963,89 +850,107 @@ angular.module('my.controllers', [])
             }
             //点击签到
         $scope.pointbtn = function() {
-            Services.ionicLoading();
-            var parapoint = {
-                userNo: userInfosession.userNo,
-                userId: userInfosession.id,
-                username: userInfosession.username
-            }
-            Services.getData("A065", parapoint).success(function(data) {
-                console.log(data);
-                $ionicLoading.hide();
-                if (data.respHead.respCode == "000000") {
-                    Services.ionicpopup('温馨提示', "签到成功");
-                    $scope.pointstate = {
-                        name: "已签到",
-                        success: true
-                    }
-                } else {
-                    Services.ionicpopup('温馨提示', data.respHead.respMsg);
-                }
-            })
+        Services.getDataget("mySign", "", function(data){
+            Services.console(data);
+            Services.ionicpopup('温馨提示', data.msg);
+            $scope.getqdlist($scope.year, $scope.month);
+        })
+        $scope.pointstate = {
+            name: "已签到",
+            success: true
         }
+    }
         $scope.getqdlist($scope.year, $scope.month);
 
     }])
     //积分记录
     .controller('PointlistCtrl', ['$scope', '$timeout', '$rootScope', 'Services', '$ionicPopup', '$ionicLoading', '$state',
-        '$stateParams',
+        '$stateParams', '$ionicScrollDelegate',
         function($scope, $timeout, $rootScope, Services, $ionicPopup, $ionicLoading, $state,
-            $stateParams) {
-            Services.ionicLoading();
-            $scope.prolisttit = [{
-                name: "默认",
-                success: true
-            }, {
-                name: "近7天",
-                success: false
-            }, {
-                name: "近1个月",
-                success: false
-            }, {
-                name: "近2个月",
-                success: false
-            }, {
-                name: "近6个月",
-                success: false
-            }, {
-                name: "近1年",
-                success: false
-            }, ]
-            $timeout(function() {
-                var swiper = new Swiper('.swiper-container', {
-                    pagination: '.swiper-pagination',
-                    slidesPerView: 4,
-                    paginationClickable: true,
-                    spaceBetween: 0,
-                    freeMode: true
-                });
-            }, 500);
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
-            var parameterObj = {
-                    userId: userInfosession.id,
-                    userNo: userInfosession.userNo,
-                    cdFlag: "",
-                    pageNumber: "",
-                    pageSize: ""
-                }
-                //获取用户积分列表
-            Services.getData("A017", parameterObj).success(function(data) {
-                console.log(data);
-                $ionicLoading.hide();
-                if (data.respHead.respCode == "000000") {
-                    $scope.pointlists = data.body.list ? data.body.list : [];
-                }
-            });
-            //列表筛选
-            $scope.protittopfc = function(index) {
-                for (var i = 0, len = $scope.prolisttit.length; i < len; i++) {
-                    if (index === i) {
-                        $scope.prolisttit[i].success = true;
-                    } else {
-                        $scope.prolisttit[i].success = false;
+            $stateParams, $ionicScrollDelegate) {
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
+            $scope.myintegral = {};
+            $scope.pageNumber = 0; //分页的第几页
+            $scope.pageSize = 10; //分页一页显示几条
+            $scope.pointType = 0; //分页一页显示几条
+            $scope.moredata = false; //控制加载更多
+            $scope.findetailslists = [
+                {name:"全部",success:true},
+                {name:"收入",success:false},
+                {name:"支出",success:false}
+            ]
+            var vm = [];
+            $scope.findetailsfun = function(index){
+                $scope.pageNumber = 0;
+                vm = [];
+                $scope.pointType = index;
+                $ionicScrollDelegate.scrollTop();
+                for (var i = 0; i < $scope.findetailslists.length; i++) {
+                    if (i==index) {
+                        $scope.findetailslists[i].success = true;
+                    }else{
+                        $scope.findetailslists[i].success = false;
                     }
                 }
+                $scope.loadMore();
             }
+            $scope.doRefresh = function () {
+                $scope.pageNumber = 0;
+                vm = [];
+                $scope.loadMore()
+            };
+            //上滑加载更多
+            $scope.loadMore = function () {
+                $scope.pageNumber += 1;
+                var pointobj = {
+                    type: $scope.pointType,
+                    pageSize: $scope.pageSize,
+                    pageNumber: $scope.pageNumber
+                }
+                Services.getReturnData("my_integral_detail", pointobj).then(
+                function successCallback(response) {
+                    Services.console(response);
+                    if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                        Services.console(response.data.data.userCreditLogList);
+                        vm = vm.concat(response.data.data.userCreditLogList);
+                        $scope.pointdetails = vm;
+                        var wblength = response.data.data.userCreditLogList.length;
+                        if (wblength < $scope.pageSize) {
+                            $scope.moredata = true;
+                        }else{
+                            $scope.moredata = false;
+                        }
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                        $scope.$broadcast('scroll.refreshComplete');
+                    }else{
+                        Services.ionicpopup("",response.msg)
+                    }
+                }, 
+                function errorCallback(response) {
+                    Services.console(response);
+                    if(response.status=="401"){
+                        $scope.optionsPopup = $ionicPopup.show({
+                            template: "登录过期，请重新登录",
+                            title: "温馨提示",
+                            scope: $scope,
+                            buttons: [{
+                                text: "取消"
+                            }, {
+                                text: "重新登录",
+                                type: "calm",
+                                onTap: function(e) {
+                                    sessionStorage.token = "";
+                                    sessionStorage.__tempCache = "";
+                                    $state.go("login");
+                                }
+                            }]
+                        });
+                        return false;
+                    }else{
+                        Services.ionicpopup("", "错误500<br>" + response.data.message)
+                    }
+                });
+            };
         }
     ])
     //设置
@@ -1065,7 +970,7 @@ angular.module('my.controllers', [])
         })
         //退出登入
         $scope.exitfun = function() {
-            sessionStorage.userInfo = "";
+            sessionStorage.userinfo = "";
             $state.go('login');
         }
     }])
@@ -1075,7 +980,7 @@ angular.module('my.controllers', [])
         function($scope, $timeout, $rootScope, Services, $ionicPopup, $ionicLoading, $state,
             $stateParams) {
             $scope.data = {};
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             console.log(userInfosession);
             $scope.data.name = userInfosession.realname;
             $scope.data.phone = userInfosession.username;
@@ -1203,7 +1108,7 @@ angular.module('my.controllers', [])
         function($scope, $timeout, $rootScope, Services, $ionicPopup, $ionicHistory, $state,
             $stateParams) {
             $scope.data = {};
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             console.log(userInfosession);
             var parameterObj = {
                     email: "",
@@ -1293,7 +1198,7 @@ angular.module('my.controllers', [])
         $scope.moredata = false; //控制加载更多
         $scope.pageNumber = 0; //分页的第几页
         $scope.pageSize = 10; //分页一页显示几条
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         var vm = [];
         var parameterObj = {
                 userId: userInfosession.id,
@@ -1431,7 +1336,7 @@ angular.module('my.controllers', [])
         $scope.moredata = false; //控制加载更多
         $scope.pageNumber = 0; //分页的第几页
         $scope.pageSize = 10; //分页一页显示几条
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         var vm = [];
         var parameterObj = {
                 userId: userInfosession.id,
@@ -1543,37 +1448,23 @@ angular.module('my.controllers', [])
     }])
     //邀请好友
     .controller('InvitefriendsCtrl', ['$scope', '$timeout', 'Services', function($scope, $timeout, Services) {
+        $scope.data = {};
+        Services.getDataget("invitingFriends", "", function(data){
+            Services.console(data);
+            $scope.data = data.data;
+        })
+        Services.getData("invitationRecord", 1, "", function(data){
+            Services.console(data);
+            $scope.invitelists = data.data;
+        })
         $scope.invitedbtn = function() {
-            Services.ionicpopup('复制成功', "您可以使用粘贴操作了！");
+            Services.ionicpopup('复制成功', "复制成功,您可以使用粘贴操作了！");
         }
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
-        var parameterObj = {
-            userId: userInfosession.id
-        }
-        var parameterlistObj = {
-                userId: userInfosession.id,
-                pageId: 1,
-                recordNum: 9999
-            }
-            //获取邀请链接和邀请码
-        Services.getData("A086", parameterObj).success(function(data) {
-            console.log(data);
-            if (data.respHead.respCode == "000000") {
-                $scope.invitefriends = data.body;
-            }
-        });
-        //获取邀请记录
-        Services.getData("A087", parameterlistObj).success(function(data) {
-            console.log(data);
-            if (data.respHead.respCode == "000000") {
-                $scope.invitefriendlists = data.body;
-            }
-        });
     }])
     //银行卡管理
     .controller('BankcardCtrl', ['$scope', '$timeout', 'Services', function($scope, $timeout, Services) {
         $scope.data = {};
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         $(function() {
             function getAddrsArrayById(id) {
                 var results = [];

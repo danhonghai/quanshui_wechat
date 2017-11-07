@@ -189,16 +189,9 @@ angular.module('money.controllers', [])
  
         }
         //跳转产品详细页
-        $scope.goprodetail = function (proid,marketId) {
-            $scope.modal.hide()
-            var curside;
-            if ($scope.prolisttit[0].success) {
-                curside = 1;
-                $state.go('moneydetail', {id: proid,curside:curside});
-            } else {
-                curside = 2;
-                $state.go('moneydetail', {id: marketId,curside:curside});
-            }
+        $scope.goprodetail = function(proid) {
+            console.log(proid);
+            $state.go('prodetail', { proid: proid, curside: "1" });
         }
         $scope.protittopfc(0);
         $scope.searchpostdata = {
@@ -214,8 +207,8 @@ angular.module('money.controllers', [])
         }
         $scope.searchmoredata = false; //控制加载更多
     }])
-    .controller('ProdetailCtrl', ['$scope', '$state', '$stateParams', '$ionicModal', 'Services', '$ionicScrollDelegate', function (
-        $scope, $state, $stateParams, $ionicModal, Services, $ionicScrollDelegate) {
+    .controller('ProdetailCtrl', ['$scope', '$state', '$stateParams', '$ionicModal', 'Services', '$ionicScrollDelegate', '$timeout', function (
+        $scope, $state, $stateParams, $ionicModal, Services, $ionicScrollDelegate, $timeout) {
         //项目tab
         $scope.prolisttit = [{
                 "name": "项目概况",
@@ -230,58 +223,29 @@ angular.module('money.controllers', [])
                 "name": "投资记录",
                 "success": false
         }];
-        //数据请求参数
-        var parameterObj = {
-            id: $stateParams.proid//获取url参数
-        }
-        var parameterObj1 = {
-            id: $stateParams.proid,//获取url参数
-            transferRegisterRid: $stateParams.transferRegisterRid//获取url参数
-        }
         //根据产品类型请求不同的接口$stateParams.curside=1是理财2是转让
-        if ($stateParams.curside == 1) {
-            Services.getData("A041", parameterObj).success(function (data) {
-                console.log(data);
-                $scope.prodetail = data.body;
-                console.log($scope.prodetail);
-                $('.progress-bar').width($scope.prodetail.scales * 100 + '%');
-                $('.progress-bar').css({
-                    animation: "animate-positive 2s"
+        Services.getServerTime(function(data){
+            $scope.nowtime = data;
+            $scope.isFinancing = true;
+            if ($stateParams.proid) {
+                var moneydetaildata = {
+                    borrowId:$stateParams.proid
+                };
+                Services.getData("noauth/showOneBorrow", 1, moneydetaildata, function(data){
+                    Services.console(data);
+                    $scope.prodetail = data.data.borrowInfo;
                 });
-            });
-        } else {
-            Services.getData("A044", parameterObj1).success(function (data) {
-                console.log(data);
-                $scope.prodetail = data.body;
- 
-                $('.progress-bar').width($scope.prodetail.scales * 100 + '%');
-                $('.progress-bar').css({
-                    animation: "animate-positive 2s"
-                });
-            });
-        }
-        var backparameterObj = {
-            borrowId: $stateParams.proid
-        }
-        //获取标的还款计划
-        Services.getData("A081", backparameterObj).success(function (data) {
-            console.log(data);
-            if (data.respHead.respCode == "000000") {
-                $scope.backmoneys = data.body.list ? data.body.list : [];
+                $scope.buyfinancialfun = function(){
+                   $state.go('buyfinancial', {id: $stateParams.proid,curside:$stateParams.curside});
+                };
             }
+            Services.getData("noauth/purchaseRecord", 1, {borrowId:$stateParams.proid,pageNumber:1,pageSize:99999}, function(data){
+                Services.console(data);
+                $scope.tzjl = data.data.articles;
+                
+            });
         });
-        var backparameterObj1 = {
-            borrowId: $stateParams.proid,
-            pageNum: 1,
-            pageSize: 9
-        }
-        //获取标的投资记录
-        Services.getData("A042", backparameterObj1).success(function (data) {
-            console.log(data);
-            if (data.respHead.respCode == "000000") {
-                $scope.tzjl = data.body.list ? data.body.list : [];
-            }
-        });
+
         //项目tab切换
         $scope.protittopfc = function (index) {
             $ionicScrollDelegate.scrollTop()
@@ -295,7 +259,7 @@ angular.module('money.controllers', [])
         }
         //跳转支付页面
         $scope.gopropay = function () {
-            if (sessionStorage.userInfo) {
+            if (sessionStorage.userinfo) {
                 $state.go('propay', {
                     proid: $stateParams.proid,
                     transferRegisterRid: $stateParams.transferRegisterRid,
@@ -330,106 +294,235 @@ angular.module('money.controllers', [])
         });
     }])
     .controller('PropayCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', 'MyServices', 'Services',
-        '$ionicLoading', function ($scope, $state, $stateParams, $ionicPopup, MyServices, Services, $ionicLoading) {
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        '$ionicLoading', '$ionicPopover', function ($scope, $state, $stateParams, $ionicPopup, MyServices, Services, $ionicLoading, $ionicPopover) {
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         $scope.prodetail = {};
+        $scope.returndata = {};
         $('.progress-bar').width($scope.prodetail.yitou);
         $scope.data = {};
-        $scope.functionId1 = "A016";
-        $scope.functionId2 = "A046";
-        var parameterObj = {
-            id: $stateParams.proid
-        }
-        Services.ionicLoading();
-        //获取标的详情
-        Services.getData("A041", parameterObj).success(function (data) {
-            console.log(data);
-            $scope.prodetail = data.body;
-            $('.progress-bar').width($scope.prodetail.scales * 100 + '%');
-            $('.progress-bar').css({
-                animation: "animate-positive 2s"
-            });
-            //获取用户红包
-            MyServices.getUserredb($scope.functionId1, userInfosession.id, userInfosession.userNo, "0", "1", "50").success(function (
-                data) {
-                console.log(data);
+        if ($stateParams.proid) {
+            var moneydetaildata = {
+                borrowId:$stateParams.proid
+            }
+            Services.getData("noauth/showOneBorrow", 1, moneydetaildata, function(data){
+                Services.console(data);
+                $scope.data = data.data.borrowInfo;
+                $('.progress-bar').width($scope.data.planRat * 100 + '%');
+                $('.progress-bar').css({
+                    animation: "animate-positive 2s"
+                });
+                $scope.popover = $ionicPopover.fromTemplateUrl('my-popover.html', {
+            scope: $scope
+        });
+        // .fromTemplateUrl() 方法
+        $ionicPopover.fromTemplateUrl('my-popover.html', {
+          scope: $scope
+        }).then(function(popover) {
+            $scope.popover = popover;
+        });
+        
+        $scope.openPopover = function($event) {
+            Services.ionicLoading();
+            if ($scope.returndata.money) {
+                if ($scope.returndata.money >= $scope.data.lowestAccount) {
+                    $scope.popover.show($event);
+                    $ionicLoading.hide();
+                }else{
+                    Services.ionicpopup("温馨提示", "投资金额必须大于等于" + $scope.data.lowestAccount);
+                    $ionicLoading.hide();
+                }
+            }else{
+                Services.ionicpopup("温馨提示", "请输入投资金额");
                 $ionicLoading.hide();
-                if (data.respHead.respCode == "000000") {
-                    $scope.redblists = data.body.list ? data.body.list : [];
-                    var redbdatalist = [];
-                    for (var i = 0; i < $scope.redblists.length; i++) {
-                        redbdatalist.push({
-                            text: $scope.redblists[i].amount,
-                            value: $scope.redblists[i].redPaperNo
-                        });
-                    }
-                    if (redbdatalist.length == 0) {
-                        raisedatalist.push({
-                            text: "暂无红包",
-                            value: 0
-                        })
-                    }
-                    var redbEl = document.getElementById('redb');
-                    var redb = new Picker({
-                        data: [redbdatalist]
-                    });
-                    redb.on('picker.select', function (selectedVal, selectedIndex) {
-                        redbEl.innerText = redbdatalist[selectedIndex[0]].text;
-                    });
-                    redb.on('picker.change', function (index, selectedIndex) {
-                        // console.log(selectedIndex);
-                    });
-                    redb.on('picker.valuechange', function (selectedVal, selectedIndex) {
-                        $scope.choiceredmoney = parseInt($scope.redblists[selectedIndex[0]].amount)
-                    });
-                    redbEl.addEventListener('click', function () {
-                        redb.show();
+            }
+        };
+        $scope.closePopover = function() {
+          $scope.popover.hide();
+        };
+        // 清除浮动框
+        $scope.$on('$destroy', function() {
+          $scope.popover.remove();
+        });
+        // 在隐藏浮动框后执行
+        $scope.$on('popover.hidden', function() {
+        // 执行代码
+        });
+        // 移除浮动框后执行
+        $scope.$on('popover.removed', function() {
+          // 执行代码
+        });
+                var pointobj = {
+                    status: 0,
+                    pageSize: 99999,
+                    pageNumber: 1
+                };
+        Services.getReturnData("my_red_coupon", pointobj).then(
+        function successCallback(response) {
+            Services.console(response);
+            if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                // console.log(response.data.data.redCouponList);
+                $scope.redblists = response.data.data.redCouponList?response.data.data.redCouponList:[];
+                var redbdatalist = [];
+                for (var i = 0; i < $scope.redblists.length; i++) {
+                    redbdatalist.push({
+                        text: $scope.redblists[i].amount,
+                        value: $scope.redblists[i].redPaperNo
                     });
                 }
-                //获取用户加息券
-                MyServices.getUserticket($scope.functionId2, userInfosession.id, userInfosession.userNo, "0", "1", "50")
-                    .success(function (data) {
-                    console.log(data);
-                    $ionicLoading.hide();
-                    if (data.respHead.respCode == "000000") {
-                        $scope.raiselists = data.body.list ? data.body.list : [];
-                        var raisedatalist = [];
-                        for (var i = 0; i < $scope.raiselists.length; i++) {
-                            raisedatalist.push({
-                                text: $scope.redblists[i].amount,
-                                value: $scope.redblists[i].redPaperNo
-                            });
-                        }
-                        if (raisedatalist.length == 0) {
-                            raisedatalist.push({
-                                text: "暂无加息券",
-                                value: 0
-                            })
-                        }
-                        var select_jxqEl = document.getElementById('select_jxq');
-                        var select_jxq = new Picker({
-                            data: [raisedatalist]
-                        });
-                        select_jxq.on('picker.select', function (selectedVal, selectedIndex) {
-                            select_jxqEl.innerText = raisedatalist[selectedIndex[0]].text;
-                        });
-                        select_jxq.on('picker.change', function (index, selectedIndex) {
-                            // console.log(selectedIndex);
-                        });
-                        select_jxq.on('picker.valuechange', function (selectedVal, selectedIndex) {
-                            // console.log(selectedVal);
-                        });
-                        select_jxqEl.addEventListener('click', function () {
-                            select_jxq.show();
-                        });
-                    }
+                if ($scope.redblists.length == 0) {
+                    redbdatalist.push({
+                        text: "暂无红包",
+                        value: 0
+                    })
+                }
+                var redbEl = document.getElementById('redb');
+                var redb = new Picker({
+                    data: [redbdatalist]
                 });
-            });
-        })
+                redb.on('picker.select', function (selectedVal, selectedIndex) {
+                    redbEl.innerText = redbdatalist[selectedIndex[0]].text;
+                });
+                redb.on('picker.change', function (index, selectedIndex) {
+                    // console.log(selectedIndex);
+                });
+                redb.on('picker.valuechange', function (selectedVal, selectedIndex) {
+                    $scope.choiceredmoney = parseInt($scope.redblists[selectedIndex[0]].amount)
+                });
+                redbEl.addEventListener('click', function () {
+                    redb.show();
+                });
+
+            }else{
+                Services.ionicpopup("",response.msg)
+            }
+        }, 
+        function errorCallback(response) {
+            Services.console(response);
+            if(response.status=="401"){
+                $scope.optionsPopup = $ionicPopup.show({
+                    template: "登录过期，请重新登录",
+                    title: "温馨提示",
+                    scope: $scope,
+                    buttons: [{
+                        text: "取消"
+                    }, {
+                        text: "重新登录",
+                        type: "calm",
+                        onTap: function(e) {
+                            sessionStorage.token = "";
+                            sessionStorage.__tempCache = "";
+                            $state.go("login");
+                        }
+                    }]
+                });
+                return false;
+            }else{
+                Services.ionicpopup("","错误500<br>" + response.data.message)
+            }
+        });
+        Services.getReturnData("my_coupon", pointobj).then(
+        function successCallback(response) {
+            Services.console(response);
+            if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                // console.log(response.data.data.couponList);
+                $scope.raiselists = response.data.data.couponList;
+                var raisedatalist = [];
+                for (var i = 0; i < $scope.raiselists.length; i++) {
+                    raisedatalist.push({
+                        text: $scope.redblists[i].amount,
+                        value: $scope.redblists[i].redPaperNo
+                    });
+                }
+                if (raisedatalist.length == 0) {
+                    raisedatalist.push({
+                        text: "暂无加息券",
+                        value: 0
+                    })
+                }
+                var select_jxqEl = document.getElementById('select_jxq');
+                var select_jxq = new Picker({
+                    data: [raisedatalist]
+                });
+                select_jxq.on('picker.select', function (selectedVal, selectedIndex) {
+                    select_jxqEl.innerText = raisedatalist[selectedIndex[0]].text;
+                });
+                select_jxq.on('picker.change', function (index, selectedIndex) {
+                    // console.log(selectedIndex);
+                });
+                select_jxq.on('picker.valuechange', function (selectedVal, selectedIndex) {
+                    // console.log(selectedVal);
+                });
+                select_jxqEl.addEventListener('click', function () {
+                    select_jxq.show();
+                });
+
+            }else{
+                Services.ionicpopup("",response.msg)
+            }
+        }, 
+        function errorCallback(response) {
+            Services.console(response);
+            if(response.status=="401"){
+                $scope.optionsPopup = $ionicPopup.show({
+                    template: "登录过期，请重新登录",
+                    title: "温馨提示",
+                    scope: $scope,
+                    buttons: [{
+                        text: "取消"
+                    }, {
+                        text: "重新登录",
+                        type: "calm",
+                        onTap: function(e) {
+                            sessionStorage.token = "";
+                            sessionStorage.__tempCache = "";
+                            $state.go("login");
+                        }
+                    }]
+                });
+                return false;
+            }else{
+                Services.ionicpopup("","错误500<br>" + response.data.message)
+            }
+        });
+            })
+            $scope.surepay = function(){
+                Services.ionicLoading();
+                $scope.returndata.borrowId = $stateParams.proid;
+                Services.getData("borrow/tender", 1, $scope.returndata, function(data){
+                    Services.console(data);
+                    $ionicLoading.hide();
+                    if (data.code == "0000") {
+                        $scope.closePopover();
+                        $scope.optionsPopup = $ionicPopup.show({
+                            template: "<img width='70' src='img/icon_register.png' />" + "<h4>投资成功</h4>" + "<p>坐等收钱吧！</p>",
+                            title: "温馨提示",
+                            scope: $scope,
+                            buttons: [{
+                                text: "继续投资",
+                                type: "calm",
+                                onTap: function(e) {
+                                    $state.go("tab.money");
+                                }
+                            },
+                            {
+                                text: "查看订单",
+                                type: "calm",
+                                onTap: function(e) {
+                                    $state.go("financial");
+                                }
+                            }]
+                        });
+                    }else{
+                        $ionicLoading.hide();
+                        Services.ionicpopup("", data.data.fymsg)
+                    }
+                })
+            }
+        }
         //点击支付
         $scope.paybtn = function () {
             if ($scope.data.tzmoney) {
-                if ($scope.data.tzmoney >= $scope.prodetail.lowestAccount) {
+                if ($scope.data.tzmoney >= $scope.data.lowestAccount) {
                     $ionicPopup.show({
                         template: "<p><span>理财项目：</span>推荐理财第一期</p><p><span>理财金额：</span>" + $scope.data.tzmoney + "</p>",
                         title: "支付成功",
@@ -449,7 +542,7 @@ angular.module('money.controllers', [])
                     });
                 } else {
                     $ionicPopup.show({
-                        template: "<p>金额必须大于等于" + $scope.prodetail.lowestAccount + "</p>",
+                        template: "<p>金额必须大于等于" + $scope.data.lowestAccount + "</p>",
                         title: "支付失败",
                         scope: $scope,
                         buttons: [

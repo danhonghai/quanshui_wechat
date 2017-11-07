@@ -4,7 +4,7 @@
             <div class="prolist">
                 <div class="proitem" style="overflow: hidden;">
                     <div class="row">
-                        <div class="col padding0" ng-bind="prodetail.name"></div>
+                        <div class="col padding0" ng-bind="data.borrowName"></div>
                         <div class="col-20 padding0 icon_cc">
                             <img  ng-if="prolist.borrowType==1" src="img/icon_xs.png">
                             <img  ng-if="prolist.borrowType==2" src="img/icon_cc.png">
@@ -14,30 +14,30 @@
                         </div>
                     </div>
                     <div class="row text-center">
-                        <div class="col padding0"><span style="font-size: 36px;color: #ff3c00;line-height: 80px;">{{prodetail.apr}}%</span></div>
+                        <div class="col padding0"><span style="font-size: 36px;color: #ff3c00;line-height: 80px;">{{data.apr}}%</span></div>
                     </div>
                     <div class="row lastrow">
                         <div class="col">
                             <span class="spantop">剩余可投</span>
                             <br>
-                            <span class="spanbot">{{prodetail.accountRemain | number:2}}</span>
+                            <span class="spanbot">{{data.accountResidue | number:2}}</span>
                         </div>
                         <div class="col">
                             <span class="spantop">理财期限</span>
                             <br>
-                            <span class="spanbot">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</span>
+                            <span class="spanbot">{{data.timeLimit?data.timeLimit:data.overplusPeriods}}{{data.isDay == 1?'天':'个月'}}</span>
                         </div>
                         <div class="col">
                             <span class="spantop">还款方式</span>
                             <br>
-                            <span class="spanbot">{{prodetail.repaymentStyle}}</span>
+                            <span class="spanbot">{{data.repaymentStyle}}</span>
                         </div>
                     </div>
                     <div class="progress">
                         <div class="progress-bar">
                         </div>
                     </div>
-                    <div class="progressbot" ng-bind="prodetail.scales*100 + '%'"></div>
+                    <div class="progressbot" ng-bind="data.planRat*100 + '%'"></div>
                 </div>
             </div>
             <div class="payway">支付支持：红包、加息券</div>
@@ -46,7 +46,7 @@
             <li class="item row">
                 <div class="col">投资金额</div>
                 <div class="col">
-                <input class="numinput" ng-model="data.tzmoney" type="num" style="width: 80%; color:#ff3c00;" placeholder="请输入投资金额">
+                <input class="numinput" ng-model="returndata.money" type="num" style="width: 80%; color:#ff3c00;" placeholder="请输入投资金额">
                 </div>
             </li>
             <li class="item row">
@@ -67,11 +67,11 @@
             </li>
             <li class="item row">
                 <div class="col">实付金额</div>
-                <div class="col"><span>{{data.tzmoney-choiceredmoney<0?0:data.tzmoney-choiceredmoney}}</span></div>
+                <div class="col"><span>{{returndata.money-choiceredmoney<0?0:returndata.money-choiceredmoney}}</span></div>
             </li>
             <li class="item row">
                 <div class="col">预期收益</div>
-                <div class="col"><span>{{prodetail.isDay == 1?data.tzmoney*prodetail.apr/100/365*prodetail.timeLimit : data.tzmoney*prodetail.apr/100/365*prodetail.timeLimit*30 | number:2}}</span></div>
+                <div class="col"><span>{{data.isDay == 1?returndata.money*data.apr/100/365*data.timeLimit : returndata.money*data.apr/100/365*data.timeLimit*30 | number:2}}</span></div>
             </li>
             <li class="item row">
                 <div class="col">付款方式</div>
@@ -83,11 +83,39 @@
         <div class="row padding0">
             <div class="col-10" ng-click="gocalculator()"><img src="img/icon_jsq.png" alt=""></div>
             <div class="col padding0">
-                <input type="text" disabled="disabled"  placeholder='{{prodetail.lowestAccount=="0"?"需一次性承接全款":"起投金额：" + prodetail.lowestAccount+"元"}}'>
+                <input type="text" disabled="disabled"  placeholder='{{data.lowestAccount=="0"?"需一次性承接全款":"起投金额：" + data.lowestAccount+"元"}}'>
             </div>
             <div class="col-25 padding0">
-                <button class="button" ng-click="paybtn()">支付</button>
+                <button class="button" ng-click="openPopover($event)">支付</button>
             </div>
         </div>
     </ion-footer-bar>
+    <script id="my-popover.html" type="text/ng-template">
+        <ion-popover-view>
+        <ion-header-bar>
+          <h1 class="title cs3">确认支付</h1>
+        </ion-header-bar>
+        <ion-content>
+        <div class="list" style="padding-left:.2rem;padding-right:.2rem;">
+          <div class="item row bordernone" style="margin-top:.04rem;">
+              <div class="col col-40 cs9">投资金额：</div>
+              <div class="col blue">{{returndata.money}}</div>
+          </div>
+          <div class="item row bordernone" style="margin-top:.04rem;">
+              <div class="col col-40 cs9">标的名称：</div>
+              <div class="col cs6">{{data.borrowName}}</div>
+          </div>
+          <div class="item row bordernone" style="margin-top:.04rem;">
+              <div class="col col-40 cs9">红包：</div>
+              <div class="col cs6">{{redpackacc}}元红包</div>
+          </div>
+          <div class="item row bordernone" style="margin-top:.04rem;">
+              <div class="col col-40 cs9">实付金额：</div>
+              <div class="col cs6">{{returndata.money-redpackacc<0?0:returndata.money-redpackacc}}</div>
+          </div>
+        </div>
+          <button class="button button-block button-positive" ng-disabled="signForm.$invalid" ng-click="surepay()" style="width: 60%;margin: 0 auto;height: 30px;min-height: 30px;line-height: 30px;">确认支付</button>
+        </ion-content>
+      </ion-popover-view>
+    </script>
 </ion-view>

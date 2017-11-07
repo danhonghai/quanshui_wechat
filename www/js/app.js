@@ -87,7 +87,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         })
     })
 
-.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', '$provide', '$httpProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $provide, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', '$provide', '$httpProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $provide, $httpProvider, $locationProvider) {
     //安卓ios兼容性配置
     $ionicConfigProvider.platform.ios.tabs.style('standard');
     $ionicConfigProvider.platform.ios.tabs.position('bottom');
@@ -132,8 +132,9 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
     $httpProvider.defaults.transformRequest = [function(data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-    var htmlv = "2017-9-19 09:21:08";
+    var htmlv = "2017-10-19 09:21:08";
     //ionic路由
+    $locationProvider.html5Mode(true);
     $stateProvider
         .state('tab', {
             url: '/tab',
@@ -156,28 +157,35 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         })
         .state('security', {
             url: '/security',
-            templateUrl: 'templates/home/security.html?v=' + htmlv,
-            controller: 'securityCtrl'
+            templateUrl: 'templates/home/security.html?v=' + htmlv
+        })
+        .state('newuser', {
+            url: '/newuser',
+            templateUrl: 'templates/home/newuser.html?v=' + htmlv
         })
         .state('aboutlist', {
             url: '/aboutlist',
-            templateUrl: 'templates/home/aboutlist.html?v=' + htmlv,
-            controller: 'securityCtrl'
+            templateUrl: 'templates/home/aboutlist.html?v=' + htmlv
         })
         .state('problems', {
             url: '/problems',
             templateUrl: 'templates/home/problems.html?v=' + htmlv,
-            controller: 'securityCtrl'
+            controller: 'problemsCtrl'
         })
         .state('notice', {
             url: '/notice',
             templateUrl: 'templates/home/notice.html?v=' + htmlv,
-            controller: 'securityCtrl'
+            controller: 'noticeCtrl'
         })
         .state('news', {
             url: '/news',
             templateUrl: 'templates/home/news.html?v=' + htmlv,
             controller: 'securityCtrl'
+        })
+        .state('newsdetail', {
+            url: '/newsdetail?newsid',
+            templateUrl: 'templates/home/newsdetail.html?v=' + htmlv,
+            controller: 'newsdetailCtrl'
         })
         .state('integralmall', {
             url: '/integralmall',
@@ -197,6 +205,14 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         .state('error', {
             url: '/error',
             templateUrl: 'templates/home/error.html?v=' + htmlv
+        })
+        .state('tab.mall', {
+            url: '/mall',
+            views: {
+                'tab-mall': {
+                    templateUrl: 'templates/mall/tab-mall.html?v=' + htmlv
+                }
+            }
         })
         .state('tab.money', {
             url: '/money',

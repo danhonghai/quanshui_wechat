@@ -21,32 +21,52 @@ img {
 
 .icontab-home {
     background: url(../img/icon_home.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
 }
 
 .tab-item-active .icontab-home {
     background: url(../img/icon_home_sel.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
+}
+
+.icontab-mall {
+    background: url(../img/icon_b2c.png) no-repeat center;
+    background-size: 22%;
+}
+
+.tab-item-active .icontab-mall {
+    background: url(../img/icon_b2c_sel.png) no-repeat center;
+    background-size: 22%;
 }
 
 .icontab-money {
     background: url(../img/icon_money.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
 }
 
 .tab-item-active .icontab-money {
     background: url(../img/icon_money_sel.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
+}
+
+.icontab-more {
+    background: url(../img/icon_more.png) no-repeat center;
+    background-size: 22%;
+}
+
+.tab-item-active .icontab-more {
+    background: url(../img/icon_more_sel.png) no-repeat center;
+    background-size: 22%;
 }
 
 .icontab-my {
     background: url(../img/icon_my.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
 }
 
 .tab-item-active .icontab-my {
     background: url(../img/icon_my_sel.png) no-repeat center;
-    background-size: 18%;
+    background-size: 22%;
 }
 
 .my_title {
@@ -141,7 +161,6 @@ img {
 
 .home_notivce {
     background-color: #ecf0f1;
-    margin-top: -.06rem;
     padding: .05rem .1rem;
     position: relative;
     .home_notivce_left {
@@ -1433,5 +1452,152 @@ img {
     }
     .row:last-child .col {
         padding-top: 10px;
+    }
+}
+.moneypx {
+    width:100%;
+    height: 30px;
+    top: 44px;
+    position: relative;
+    background: #ECF0F1;
+    line-height: 30px;
+    .col {
+        color:#999;
+        font-size:.13rem;
+    }
+    img {
+        vertical-align: middle;
+        margin-left: 5px;
+        max-width: 8px;
+    }
+}
+.homeborrow {
+    .homeborrow_tit {
+        height: .24rem;
+        line-height: .24rem;
+        margin-top: .1rem;
+        padding-left: .15rem;
+        font-size: 14px;
+        margin-bottom:.1rem;
+        span {
+            padding: 0rem .02rem;
+            background: red;
+            border-radius: .03rem;
+            margin-right: .05rem;
+        }
+    }
+    .list {
+        .item {
+            border:none;
+            margin-bottom:.1rem;
+            padding-bottom:.06rem;
+            h4 {
+                font-size:.14rem;
+                color: #666;
+                font-weight: normal;
+                img {
+                    width:.2rem;
+                    margin-right:.05rem;
+                    vertical-align: middle;
+
+                }
+            }
+            .row {
+                .col {
+                    p{
+                        line-height:.28rem;
+                    }
+                    span{
+                     color:#999;
+                     font-size:.12rem;
+                    }
+                }
+            }
+            .row + .row .col {
+                font-size:12px;
+                color:#999;
+            }
+        }
+    }
+}
+ion-popover-view.popover.none.popover-bottom.ng-enter.active.ng-enter-active {
+    width: 80% !important;
+    left: 50% !important;
+    margin-left: -40% !important;
+    top: 20% !important;
+}
+.about_top {
+    display: inline-block;
+    margin-top: -2px;
+    background:url(../img/bg_about1.png) no-repeat left top;
+    background-size: auto 100%;
+    .icon {
+        display:block;
+        width: 2rem;
+        margin:.2rem auto;
+    }
+    h4 {
+        color: #fff;
+        text-align:center;
+        margin-top:.2rem;
+    }
+    span {
+        color:#fff;
+        display:block;
+        text-align:center;
+        line-height: .3rem;
+        border-bottom: 1px solid #dbdbdb;
+        margin: 0 .15rem;
+        margin-bottom: .2rem;
+    }
+    p{
+        color: #dcdcdc;
+        text-align: justify;
+        padding: 5px 15px;
+        line-height: 1.8em;
+    }
+}
+.ceo {
+    padding:.15rem;
+    p {
+        text-align: justify;
+        line-height: 1.8em;
+        color:#666;
+    }
+}
+.contact {
+    .contact_tit {
+        margin:0 15px;
+        img {
+            width: 30px;vertical-align: middle;margin-right: 5px;
+        }
+    }
+    .contact_cen {
+        padding-top: 2rem;
+        padding-bottom: .2rem;
+        background:url(../img/map_about.png) no-repeat left top;
+        background-size: 100%;
+        .card_contact {
+            width: 90%;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            margin: 0 auto;
+            color:#fff;
+            border-radius: 5px;
+            b{
+                font-size: 30px;
+                font-weight: normal;
+                line-height: .5rem;
+                margin-bottom: .1rem;
+                display: block;
+                border-bottom: 1px solid #dbdbdb;
+            }
+            li {
+                line-height: 0.4rem;
+                a {
+                    color:#fff;
+                }
+            }
+        }
     }
 }

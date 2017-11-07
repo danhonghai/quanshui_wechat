@@ -1,28 +1,40 @@
-<ion-view view-title="积分记录">
-        <div class="paymentmanagetop">
-            <div class="row padding0">
-                <div class="col col-20 text-center" style="line-height: 34px;">时间:</div>
-                <div class="col padding0">
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div ng-repeat="pro in prolisttit" class="paymentmanagetoptab swiper-slide" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</div>
-                        </div>
-                    </div>
-                </div>
+<ion-view>
+    <ion-nav-bar>
+        <ion-nav-title side="center" style="background:#fff;">
+            <div class="borrowtop row padding0">
+                <div ng-repeat="findetails in findetailslists" class="col padding0" ng-class="{true: 'dq', false: ''}[findetails.success]" ng-click="findetailsfun($index)">{{findetails.name}}</div>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+    <div class="moneypx" style="height:44px;">
+        <div class="row text-left">
+            <div class="col">
+                积分数／类型
+            </div>
+            <div class="col text-right">
+                时间／备注
             </div>
         </div>
-        <div class="" style=" position: absolute; right: 0; left: 0; line-height: 30px; z-index: 9;top: 44px; background: #ecf0f1; border-bottom: 1px solid #dbdbdb;">
-        <div class="tickettab row padding0" style="padding-left: 10px !important;">
-            <div class="col padding0 font-size14 cs6">项目</div>
-            <div class="col padding0 font-size14 cs6">积分</div>
-            <div class="col padding0 font-size14 cs6">时间</div>
+    </div>
+    <ion-content class="stable-bg" style="top:88px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
+    <div class="list">
+        <div class="item" style="padding:5px 15px;" ng-repeat="pointdetail in pointdetails">
+            <div class="row padding0">
+                <div class="col"><span ng-bind="pointdetail.changeValue"></span></div>
+                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy-MM-dd hh:mm'"></span></div>
+            </div>
+            <div class="row padding0">
+                <div class="col"><span class="green"  ng-if="pointdetail.opType == 1">收入</span><span class="red"  ng-if="pointdetail.opType == 2">支出</span><span class="blue"  ng-if="pointdetail.opType == 3">冻结</span></div>
+                <div class="col text-right"><span class="cs6">{{pointdetail.type==1?"投资送积分":pointdetail.type==2?"抽奖":pointdetail.type==3?"兑换商品":"签到送积分"}}</span></div>
+            </div>
         </div>
     </div>
-    <ion-content class="stable-bg" style="top:74px;">
-        <div class="row item" ng-repeat="pointlist in pointlists">
-            <div class="col">{{pointlist.summary}}</div>
-            <div class="col" ng-class="{true:'red',false:'green'}[pointlist.cdFlag=='C']">{{pointlist.cdFlag=='C'?'+':'-'}}{{pointlist.points}}</div>
-            <div class="col">{{pointlist.busiDate}}</div>
+    <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+    <div ng-if="moredata && pointdetails.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
         </div>
     </ion-content>
 </ion-view>

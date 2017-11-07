@@ -13,13 +13,13 @@
         <div class="list">
             <div class="item paymentbox" ng-repeat="financial in pointdetails">
                 <h2>
-	                <span ng-if="borrowstatelists[0].success" class="fr blue" style="padding-right: 10px;">投标中：{{financial.jinDu*100 | number:2}}%</span>
+	                <span ng-if="borrowstatelists[0].success" class="fr blue" style="padding-right: 10px;">投标中：{{financial.jinDu*100}}%</span>
 	                <span ng-if="borrowstatelists[1].success" class="fr blue" style="padding-right: 10px;">还款中</span>
 	                <span ng-if="borrowstatelists[2].success" class="fr blue" style="padding-right: 10px;">逾期中</span>
 	                {{financial.borrowName}}
                 </h2>
                 <div class="row paymentrowtop" style="border-bottom: none;">
-                	<div class="col">投资金额<br><span class="red font-size16">{{financial.account}}元</span></div>
+                	<div class="col">投资金额<br><span class="red font-size16">{{financial.amountInvested}}元</span></div>
                 	<div class="col">待收金额<br><span class="red font-size16">{{financial.repayment_account}}元</span></div>
                 	<div ng-if="borrowstatelists[0].success" class="col">投资时间<br><span>{{financial.addtime*1000 | date:"yyyy-MM-dd"}}</span></div>
                 	<div ng-if="borrowstatelists[1].success || borrowstatelists[2].success" class="col">还款时间<br><span>2017-3-15</span></div>

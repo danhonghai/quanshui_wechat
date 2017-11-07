@@ -2,13 +2,13 @@
     <ion-content class="stable-bg">
     <div class="invitefriendslist_top">
         <div class="row text-center padding0">
-            <div class="col">邀请人数(人)<br>{{invitefriendlists.totalRows}}</div>
-            <div class="col">成功认证人数(人)<br>{{invitefriendlists.realnameCount}}</div>
+            <div class="col">邀请人数(人)<br>{{invitelists.totalNumber}}</div>
+            <div class="col">成功认证人数(人)<br>{{invitelists.successNumber}}</div>
         </div>
-        <!-- <div class="row text-center">
-            <div class="col">获得金额(元)<br>{{invitefriendlists.totalRows}}</div>
-            <div class="col">获得红包(个)<br>{{invitefriendlists.totalRows}}</div>
-        </div> -->
+        <div class="row text-center">
+            <div class="col">获得金额(元)<br>{{invitelists.totalRows}}</div>
+            <div class="col">获得红包(个)<br>{{invitelists.totalRows}}</div>
+        </div>
     </div>
     <div class="invitetitle row" style="background-color: #B8DCF5; color: #0981D4;">
         <div class="col">账户</div>
@@ -16,10 +16,10 @@
         <div class="col">时间</div>
     </div>
     <div class="invitecen">
-        <div class="row item" ng-repeat="invitelists in invitefriendlists.list" style=" color: #0981D4;">
-            <div class="col">{{invitelists.username | mphone}}</div>
+        <div class="row item" ng-repeat="invitelists in invitelists.list" style=" color: #0981D4;">
+            <div class="col">{{invitelists.mobile | mphone}}</div>
             <div class="col text-center">{{invitelists.realVerifyStatus == 1?"是":"否"}}</div>
-            <div class="col">{{invitelists.createdAt*1000 | date:"yyyy-MM-dd"}}</div>
+            <div class="col">{{invitelists.createdTime | date:"yyyy-MM-dd"}}</div>
         </div>
     </div>
     </ion-content>

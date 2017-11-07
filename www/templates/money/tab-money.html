@@ -25,10 +25,9 @@
         <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
         </ion-refresher>
         <div class="prolist" style="margin-top: 0px">
-            <div class="proitem" ng-repeat="prolist in borrowlists" ng-click="goprodetail('{{prolist.id ? prolist.id : prolist.tenderId}}','{{prolist.transferRegisterRid}}')">
+            <div class="proitem" ng-repeat="prolist in borrowlists" ng-click="goprodetail(prolist.id)">
                 <div class="row">
-                    <div ng-if="prolisttit[0].success" class="col padding0" ng-bind="prolist.name"></div>
-                    <div ng-if="prolisttit[1].success" class="col padding0" ng-bind="prolist.borrowName"></div>
+                    <div class="col padding0" ng-bind="prolist.borrowName"></div>
                     <div class="col-20 padding0">
                         <img  ng-if="prolist.borrowType==1" src="img/icon_xs.png">
                         <img  ng-if="prolist.borrowType==2" src="img/icon_cc.png">
@@ -43,7 +42,7 @@
                     <!-- <div ng-if="prolisttit[0].success" class="col padding0 text-center"><span style="font-size: 16px;color: #ff3c00;line-height: 42px;">{{prolist.accountRemain | number:0}}</span>
                         <br><span>可投金额</span></div> -->
                     <div ng-if="prolisttit[0].success" class="col padding0 text-center"><span ng-bind="prolist.timeLimit" style="line-height: 42px;"></span>
-                    <span ng-bind="prolist.isday == '1'?'天':'个月'"></span>
+                    <span ng-bind="prolist.isDay == '1'?'天':'个月'"></span>
                         <br><span>投资期限</span></div>
                     <div ng-if="prolisttit[0].success" class="col padding0 text-center"><span ng-bind="prolist.lowestAccount" style="line-height: 42px;"></span>
                         <br><span>起投金额</span></div>
@@ -51,7 +50,7 @@
 
                     <div ng-if="prolisttit[1].success" class="col padding0 text-center"><span style="font-size: 16px;color: #ff3c00;line-height: 42px;">{{prolist.tenderAmount | number:0}}</span>
                         <br><span>转让总额</span></div>
-                    <div ng-if="prolisttit[1].success" class="col padding0 text-center"><span ng-bind="prolist.overplusPeriods" style="line-height: 42px;"></span><span ng-bind="prolist.isday == '1'?'天':'个月'"></span>
+                    <div ng-if="prolisttit[1].success" class="col padding0 text-center"><span ng-bind="prolist.overplusPeriods" style="line-height: 42px;"></span><span ng-bind="prolist.isDay == '1'?'天':'个月'"></span>
                         <br><span>剩余期限</span></div>
                     <!-- <div ng-if="prolisttit[1].success" class="col padding0 text-center"><span ng-bind="prolist.transferAmount" style="line-height: 42px;"></span>
                         <br><span>剩余金额</span></div> -->

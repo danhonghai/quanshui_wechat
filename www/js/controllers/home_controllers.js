@@ -10,6 +10,10 @@ angular.module('home.controllers', ['services'])
             console.log(proid);
             $state.go('prodetail', { proid: proid, curside: "1" });
         }
+        $scope.noticelink = function(newsid){
+            console.log(newsid);
+            $state.go("newsdetail",{"newsid": newsid});
+        }
         Services.ionicLoading();
         //获取首页数据
         var homedata = {
@@ -83,7 +87,7 @@ angular.module('home.controllers', ['services'])
     }])
     .controller('FeedbackCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
         $scope.data = {};
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
+        var userInfosession = angular.fromJson(sessionStorage.userinfo);
         console.log(userInfosession);
         $scope.feedbackbtn = function() {
             var paramterobj = {
@@ -102,17 +106,204 @@ angular.module('home.controllers', ['services'])
 
     }])
     .controller('securityCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
-        var userInfosession = angular.fromJson(sessionStorage.userInfo);
-        $scope.Hbody = $(window).height();
-        var iframe = document.getElementById("iframe");
+        $scope.pageNumber = 0; //分页的第几页
+        $scope.pageSize = 10; //分页一页显示几条
+        $scope.moredata = false; //控制加载更多
+        var vm = [];
+        $scope.doRefresh = function () {
+            $scope.pageNumber = 0;
+            vm = [];
+            $scope.loadMore()
+        };
+        //上滑加载更多
+        $scope.loadMore = function () {
+            $scope.pageNumber += 1;
+            var pointobj = {
+                count: $scope.pageSize,
+                pageNumber: $scope.pageNumber,
+                code: "media_report"
+            }
+            Services.getReturnData("noauth/newsShow", pointobj).then(
+            function successCallback(response) {
+                Services.console(response);
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    Services.console(response.data.data.articles);
+                    vm = vm.concat(response.data.data.articles);
+                    $scope.pointdetails = vm;
+                    var wblength = response.data.data.articles.length;
+                    if (wblength < $scope.pageSize) {
+                        $scope.moredata = true;
+                    }else{
+                        $scope.moredata = false;
+                    }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.$broadcast('scroll.refreshComplete');
+                }else{
+                    Services.ionicpopup("",response.msg)
+                }
+            }, 
+            function errorCallback(response) {
+                Services.console(response);
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("", "错误"+response.status+"<br>" + response.data.message)
+                }
+            });
+        };
+        $scope.linknews = function(newsid){
+            console.log(newsid);
+            $state.go("newsdetail",{"newsid": newsid});
+        }
+    }])
+    .controller('newsdetailCtrl', ['$scope', 'HomeServices', '$stateParams', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $stateParams, $state, Services, $ionicLoading) {
+        if ($stateParams.newsid) {
+            var pointobj = {
+                id:$stateParams.newsid
+            };
+            Services.getReturnData("noauth/newsShowDetail", pointobj).then(
+            function successCallback(response) {
+                Services.console(response);
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    $scope.newdetaildata = response.data.data.article;
+                }else{
+                    Services.ionicpopup("",response.msg);
+                }
+            }, 
+            function errorCallback(response) {
+                Services.console(response);
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("","错误500<br>" + response.data.message);
+                }
+            });
+        }
+
+    }])
+    .controller('noticeCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
+        $scope.pageNumber = 0; //分页的第几页
+        $scope.pageSize = 10; //分页一页显示几条
+        $scope.moredata = false; //控制加载更多
+        var vm = [];
+        $scope.doRefresh = function () {
+            $scope.pageNumber = 0;
+            vm = [];
+            $scope.loadMore()
+        };
+        //上滑加载更多
+        $scope.loadMore = function () {
+            $scope.pageNumber += 1;
+            var pointobj = {
+                count: $scope.pageSize,
+                pageNumber: $scope.pageNumber,
+                code: "platform_news"
+            }
+            Services.getReturnData("noauth/newsShow", pointobj).then(
+            function successCallback(response) {
+                Services.console(response);
+                if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
+                    Services.console(response.data.data.articles);
+                    vm = vm.concat(response.data.data.articles);
+                    $scope.pointdetails = vm;
+                    var wblength = response.data.data.articles.length;
+                    if (wblength < $scope.pageSize) {
+                        $scope.moredata = true;
+                    }else{
+                        $scope.moredata = false;
+                    }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.$broadcast('scroll.refreshComplete');
+                }else{
+                    Services.ionicpopup("",response.msg)
+                }
+            }, 
+            function errorCallback(response) {
+                Services.console(response);
+                if(response.status=="401"){
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "登录过期，请重新登录",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "取消"
+                        }, {
+                            text: "重新登录",
+                            type: "calm",
+                            onTap: function(e) {
+                                sessionStorage.token = "";
+                                sessionStorage.__tempCache = "";
+                                $state.go("login");
+                            }
+                        }]
+                    });
+                    return false;
+                }else{
+                    Services.ionicpopup("", "错误"+response.status+"<br>" + response.data.message)
+                }
+            });
+        };
+        $scope.linknews = function(newsid){
+            console.log(newsid);
+            $state.go("newsdetail",{"newsid": newsid});
+        }
+    }])
+    .controller('problemsCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
+        Services.getData("noauth/helpCenter", 60, "", function(data){
+        Services.console(data);
+        $scope.helplists = data.data.article;
+        for (var i = 0; i < $scope.helplists.length; i++) {
+            $scope.helplists[i].success = false;
+        }
+    })
+    $scope.findetailsfun = function(index){
+        for (var j = 0; j < $scope.helplists.length; j++) {
+            if (index!=j) {
+                $scope.helplists[j].success = false;
+            }
+        }
+        $scope.helplists[index].success = !$scope.helplists[index].success;
+    }
 
     }])
     .controller('integralmallCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
-        if (sessionStorage.userInfo) {
+        if (sessionStorage.userinfo) {
             var paramterObj = {
                 type: '1'
             }
-            var userInfosession = angular.fromJson(sessionStorage.userInfo);
+            var userInfosession = angular.fromJson(sessionStorage.userinfo);
             $scope.integurl = "/apis/jfsc/webapp/goods.html?source=app&userId=" + userInfosession.id + "&sign=B78565A43A7D437267BAAB685B6E5F9D"
             Services.getData("A007", paramterObj).success(function(data) {
                 console.log(data);
