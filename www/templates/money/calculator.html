@@ -6,17 +6,77 @@
             <div class="col text-center font-size14 cs6">还款方式</div>
         </div>
         <div class="row light-bg">
-            <div class="col text-center font-size16 cf60">15.00%</div>
-            <div class="col text-center font-size16 cf60">60天</div>
-            <div class="col text-center font-size16 cf60">先息后本</div>
+            <div class="col text-center font-size16 cf60">{{prodetail.apr}}%</div>
+            <div class="col text-center font-size16 cf60">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</div>
+            <div class="col text-center font-size16 cf60">
+                <span ng-if="prodetail.repaymentStyle = 0" class="spanbot cs9 font-size12">到期还本还息</span>
+                <span ng-if="prodetail.repaymentStyle = 1" class="spanbot cs9 font-size12">按月付息到期还本</span>
+            </div>
         </div>
         <div class="item-input light-bg bortop">
             <span class="input-label text-center">投资金额</span>
-            <input type="text" ng-model="data.jsqtzmoney" placeholder="请输入投资金额">
+            <input type="number" ng-model="data.jsqtzmoney" placeholder="请输入投资金额">
         </div>
         <div class="padding10 cs9 text-center">计算收益仅供参考，最终收益以投资合同为准</div>
         <div class="item-input light-bg bortop">
-            <span class="input-label text-center">预期收益</span><span class="cf60" ng-if="data.jsqtzmoney">{{data.jsqtzmoney*0.15/365*60 | number:2}}</span><span class="cf60" ng-if="!data.jsqtzmoney">0.00</span><span class="cs6 fr">元</span>
+            <span class="input-label text-center">预期收益</span>
+            <span class="cf60" ng-if="data.jsqtzmoney && prodetail.isDay == 1">{{data.jsqtzmoney*prodetail.apr/100/360*prodetail.timeLimit | number:2}}</span>
+            <span class="cf60" ng-if="data.jsqtzmoney && prodetail.isDay == 0">{{data.jsqtzmoney*prodetail.apr/100/12*prodetail.timeLimit | number:2}}</span>
+            <span class="cf60" ng-if="!data.jsqtzmoney">0.00</span><span class="cs6 fr">元</span>
+        </div>
+        <div class="moneypx" style="height:44px; top:0;" ng-if="data.jsqtzmoney">
+            <div class="row">
+                <div class="col col-10 text-center">
+                    期数
+                </div>
+                <div class="col text-center">
+                    利息
+                </div>
+                <div class="col text-center">
+                    本金
+                </div>
+                <div class="col text-center">
+                    本息
+                </div>
+            </div>
+        </div>
+        <div class="list" ng-if="data.jsqtzmoney && prodetail.isDay == 0">
+            <div class="item" style="padding:5px" ng-repeat="arr in arrqs">
+                <div class="row">
+                    <div class="col col-10 text-center cs6">
+                        {{$index+1}}/{{arrqs.length}}
+                    </div>
+                    <div class="col text-center green">
+                        {{data.jsqtzmoney*prodetail.apr/100/12 | number:2}}
+                    </div>
+                    <div class="col text-center blue">
+                        <span ng-if="$index < arrqs.length-1">0.00</span>
+                        <span ng-if="$index == arrqs.length-1">{{data.jsqtzmoney | number:2}}</span>
+                    </div>
+                    <div class="col text-center red">
+                        <span ng-if="$index < arrqs.length-1">{{data.jsqtzmoney*prodetail.apr/100/12 | number:2}}</span>
+                        <span ng-if="$index == arrqs.length-1">{{data.jsqtzmoney+(data.jsqtzmoney*prodetail.apr/100/12) | number:2}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list" ng-if="data.jsqtzmoney && prodetail.isDay == 1">
+            <div class="item" style="padding:5px">
+                <div class="row">
+                    <div class="col col-10 text-center cs6">
+                        1
+                    </div>
+                    <div class="col text-center green">
+                        {{data.jsqtzmoney*prodetail.apr/100/360*prodetail.timeLimit | number:2}}
+                    </div>
+                    <div class="col text-center blue">
+                        <span>{{data.jsqtzmoney | number:2}}</span>
+                    </div>
+                    <div class="col text-center red">
+                        <span>{{data.jsqtzmoney+(data.jsqtzmoney*prodetail.apr/100/360*prodetail.timeLimit) | number:2}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
 </ion-view>

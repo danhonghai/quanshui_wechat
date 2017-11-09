@@ -3,8 +3,9 @@
         <ul class="list prodetailpaymenu">
             <li class="item row">
                 <div class="col col-33 cs3">用户名</div>
-                <div class="col" ui-sref="setusername">
-                <span>{{userInfo.realName}}</span>
+                <div class="col">
+                <span ng-if="userInfo.nickName">{{userInfo.nickName}}</span>
+                <span class="blue" ng-if="!userInfo.nickName" ui-sref="setusername">未设置</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>

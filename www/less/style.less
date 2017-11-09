@@ -281,6 +281,13 @@ img {
                 line-height: 22px;
                 font-size: 12px;
                 margin-right: 20px;
+                .grayscale{
+                    filter: grayscale(100%);
+                    -webkit-filter: grayscale(100%);
+                    -moz-filter: grayscale(100%);
+                    -ms-filter: grayscale(100%);
+                    -o-filter: grayscale(100%);
+                }
             }
         }
         .icon_cc {
@@ -758,6 +765,7 @@ img {
     .myuser_top {
         width: 100%;
         height: 2.4rem;
+        background: url('img/touxiang.png') left top no-repeat;
         background-size: 100% 2.4rem;
         -webkit-filter: blur(.05rem);
         -moz-filter: blur(.05rem);
@@ -1599,5 +1607,61 @@ ion-popover-view.popover.none.popover-bottom.ng-enter.active.ng-enter-active {
                 }
             }
         }
+    }
+}
+.leaderboard_top {
+    background:#f23953;
+    color:#fff;
+    .col{
+        .imgbox {
+            position: relative;
+            text-align: center;
+            width: 1.1rem;
+            padding-top: .8rem;
+            left: 50%;
+            margin-left: -.55rem;
+            .img1 {
+                width: .8rem;
+                height: .8rem;
+                position: absolute;
+                top: 0px;
+                left: 50%;
+                margin-left: -.4rem;
+                z-index: 2;
+            }
+            .img2 {
+                position: absolute;
+                width: .3rem;
+                height: .3rem;
+                right: .1rem;
+                top: -5px;
+                z-index: 1;
+            }
+            .img3 {
+                position: absolute;
+                width: .9rem;
+                height: .3rem;
+                right: .1rem;
+                top: .6rem;
+                z-index: 3;
+            }
+
+        }
+        h4{
+            font-size:.12rem;
+            color:#fff;
+        }
+        p{
+            margin-bottom:0px;
+        }
+    }
+    .num1 {
+        margin-top:30px;
+    }
+    .num2 {
+        margin-top:10px;
+    }
+    .num3 {
+        margin-top:50px;
     }
 }

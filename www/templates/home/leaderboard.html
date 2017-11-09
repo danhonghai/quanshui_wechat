@@ -1,0 +1,41 @@
+<ion-view view-title="英雄榜">
+    <ion-content class="stable-bg" style="background:#ff9797">
+    	<div class="leaderboard_top row" ng-if="datatop.length>0">
+			<div class="col num1">
+				<div class="imgbox" ng-if="datatop[1]">
+					<img class="img1" style="border-radius:50%;" ng-src="{{datatop[1].user.litpic}}" onerror="javascript:this.src='img/touxiang.png'">
+					<img class="img2" src="img/icon_yxbt1.png">
+					<img class="img3" src="img/icon_yxbb1.png">
+					<h4>{{datatop[1].user.mobile | mphone}}</h4>
+					<p>{{datatop[1].totalMoney | number:2}}</p>
+				</div>
+			</div>
+			<div class="col num2">
+				<div class="imgbox" ng-if="datatop[0]">
+					<img class="img1" style="border-radius:50%;" ng-src="{{datatop[0].user.litpic}}" onerror="javascript:this.src='img/touxiang.png'">
+					<img class="img2" src="img/icon_yxbt2.png">
+					<img class="img3" src="img/icon_yxbb2.png">
+					<h4>{{datatop[0].user.mobile | mphone}}</h4>
+					<p>{{datatop[0].totalMoney | number:2}}</p>
+				</div>
+			</div>
+			<div class="col num3">
+				<div class="imgbox" ng-if="datatop[2]">
+					<img class="img1" style="border-radius:50%;" ng-src="{{datatop[2].user.litpic}}" onerror="javascript:this.src='img/touxiang.png'">
+					<img class="img2" src="img/icon_yxbt3.png">
+					<img class="img3" src="img/icon_yxbb3.png">
+					<h4>{{datatop[2].user.mobile | mphone}}</h4>
+					<p>{{datatop[2].totalMoney | number:2}}</p>
+				</div>
+			</div>
+    	</div>
+    	<div class="list leaderboard_bot">
+    		<img src="img/noimg.png" ng-if="datatop.length==0" style="margin: 30px auto; display: block;">
+    		<div class="item bordernone" style="display:flex; background:none;color: #fff;" ng-repeat="a in databot">
+				<div class="col col-20 text-center">No.{{$index+4}}</div>
+				<div class="col text-center">{{a.user.mobile | mphone}}</div>
+				<div class="col text-center">{{a.totalMoney | number:2}}</div>
+    		</div>
+    	</div>
+    </ion-content>
+</ion-view>

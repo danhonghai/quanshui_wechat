@@ -271,7 +271,7 @@ angular.module('money.controllers', [])
         }
         //跳转计算器页面
         $scope.gocalculator = function () {
-            $state.go('calculator');
+            $state.go('calculator',{proid:$stateParams.proid});
         }
         //上滑模板
         $ionicModal.fromTemplateUrl("my-modal.html", {
@@ -365,15 +365,9 @@ angular.module('money.controllers', [])
                 var redbdatalist = [];
                 for (var i = 0; i < $scope.redblists.length; i++) {
                     redbdatalist.push({
-                        text: $scope.redblists[i].amount,
-                        value: $scope.redblists[i].redPaperNo
+                        text: $scope.redblists[i].money+"元",
+                        value: $scope.redblists[i].id
                     });
-                }
-                if ($scope.redblists.length == 0) {
-                    redbdatalist.push({
-                        text: "暂无红包",
-                        value: 0
-                    })
                 }
                 var redbEl = document.getElementById('redb');
                 var redb = new Picker({
@@ -386,7 +380,8 @@ angular.module('money.controllers', [])
                     // console.log(selectedIndex);
                 });
                 redb.on('picker.valuechange', function (selectedVal, selectedIndex) {
-                    $scope.choiceredmoney = parseInt($scope.redblists[selectedIndex[0]].amount)
+                    $scope.choiceredmoney = parseInt($scope.redblists[selectedIndex[0]].money);
+                    $scope.returndata.hongbaoId = selectedVal[0];
                 });
                 redbEl.addEventListener('click', function () {
                     redb.show();
@@ -425,19 +420,14 @@ angular.module('money.controllers', [])
             Services.console(response);
             if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
                 // console.log(response.data.data.couponList);
-                $scope.raiselists = response.data.data.couponList;
+                $scope.raiselists = response.data.data.couponList?response.data.data.couponList:[];
                 var raisedatalist = [];
+                console.log($scope.redblists);
                 for (var i = 0; i < $scope.raiselists.length; i++) {
                     raisedatalist.push({
-                        text: $scope.redblists[i].amount,
-                        value: $scope.redblists[i].redPaperNo
+                        text: $scope.raiselists[i].money+"%",
+                        value: $scope.raiselists[i].id
                     });
-                }
-                if (raisedatalist.length == 0) {
-                    raisedatalist.push({
-                        text: "暂无加息券",
-                        value: 0
-                    })
                 }
                 var select_jxqEl = document.getElementById('select_jxq');
                 var select_jxq = new Picker({
@@ -445,12 +435,13 @@ angular.module('money.controllers', [])
                 });
                 select_jxq.on('picker.select', function (selectedVal, selectedIndex) {
                     select_jxqEl.innerText = raisedatalist[selectedIndex[0]].text;
+
                 });
                 select_jxq.on('picker.change', function (index, selectedIndex) {
                     // console.log(selectedIndex);
                 });
                 select_jxq.on('picker.valuechange', function (selectedVal, selectedIndex) {
-                    // console.log(selectedVal);
+                    $scope.returndata.couponId = selectedVal[0];
                 });
                 select_jxqEl.addEventListener('click', function () {
                     select_jxq.show();
@@ -567,9 +558,26 @@ angular.module('money.controllers', [])
         }
         //跳转计算器页面
         $scope.gocalculator = function () {
-            $state.go('calculator');
+            $state.go('calculator',{proid:$stateParams.proid});
         }
     }])
-    .controller('CalculatorCtrl', ['$scope', '$state', '$stateParams', function ($scope, $state, $stateParams) {
-        $scope.data = {};
+    .controller('CalculatorCtrl', ['$scope', '$state', '$stateParams', 'Services', function ($scope, $state, $stateParams, Services) {
+        $scope.prodetail = {};
+        $scope.arrqs = [];
+        if ($stateParams.proid) {
+            var moneydetaildata = {
+                borrowId:$stateParams.proid
+            };
+            Services.getData("noauth/showOneBorrow", 1, moneydetaildata, function(data){
+                Services.console(data);
+                $scope.prodetail = data.data.borrowInfo;
+                if ($scope.prodetail.isDay == 0) {
+                    for (var i = 0; i < $scope.prodetail.timeLimit; i++) {
+                        $scope.arrqs.push(i)
+                    }
+                    console.log($scope.arrqs);
+                }
+            });
+        }
+
     }]);

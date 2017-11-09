@@ -8,34 +8,38 @@
               </span>
                 </div>
                 <div class="title title-center header-item">{{userInfo.userName | mphone}}</div>
-                <div class="buttons buttons-right header-item">
+                <!-- <div class="buttons buttons-right header-item">
                     <span class="right-buttons">
                       <i class="button ion-ios-bell-outline">
                         <p class="badge badge-assertive">1</p>
                       </i>
                   </span>
-                </div>
+                </div> -->
             </div>
             <div class="imgmoney">
                 <img ui-sref="myuser" ng-src="{{userInfo.litpic}}" onerror="javascript:this.src='img/loaderror.jpg'" />
-                <p class="light">可用金额(元)</p>
-                <p class="light">{{userAccount.moneyUsable | number:2}}</p>
+                <p class="light">可用金额(元)<i class="ion" ng-class="{true:'ion-eye', false:'ion-eye-disabled'}[showacc]" ng-click="showacc = !showacc" style="font-size: 22px;margin-left: 10px;vertical-align: middle;"></i></p>
+                <p class="light" ng-if="showacc">{{userAccount.moneyUsable | number:2}}</p>
+                <p class="light" ng-if="!showacc">******</p>
+
             </div>
             <div class="row">
                 <div class="col light">账户总额(元)
-                    <br>{{userAccount.moneyTotal | number:2}}</div>
+                    <br><span ng-if="showacc">{{userAccount.moneyTotal | number:2}}</span><span ng-if="!showacc">******</span>
+                </div>
                 <div class="col light text-right">冻结金额(元)
-                    <br>{{userAccount.tenderFreeze+userAccount.withdrawFreeze | number:2}}</div>
+                    <br><span ng-if="showacc">{{userAccount.tenderFreeze+userAccount.withdrawFreeze | number:2}}</span><span ng-if="!showacc">******</span>
+                </div>
             </div>
         </div>
         <div class="row padding lchk">
             <div class="col lcjl" ui-sref="financial">
                 <p class="lchktit_top">理财记录</p>
-                <p class="lchktit_bot">待收：<span class="lchkmoney">{{userAccount.moneyCollection | number:2}}</span></p>
+                <p class="lchktit_bot">待收：<span class="lchkmoney" ng-if="showacc">{{userAccount.moneyCollection | number:2}}</span><span class="lchkmoney" ng-if="!showacc">******</span></p>
             </div>
             <div class="col hkjl" ui-sref="borrowmanage">
                 <p class="lchktit_top">借款记录</p>
-                <p class="lchktit_bot">待还：<span class="lchkmoney">{{userAccount.moneyRepay | number:2}}</span></p>
+                <p class="lchktit_bot">待还：<span class="lchkmoney" ng-if="showacc">{{userAccount.moneyRepay | number:2}}</span><span class="lchkmoney" ng-if="!showacc">******</span></p>
             </div>
         </div>
         <div class="row cztxbutton">

@@ -234,7 +234,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             controller: 'PropayCtrl'
         })
         .state('calculator', {
-            url: '/calculator?shouyi&datetime',
+            url: '/calculator?proid',
             templateUrl: 'templates/money/calculator.html?v=' + htmlv,
             controller: 'CalculatorCtrl'
         })
@@ -321,7 +321,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         .state('setusername', {
             url: '/setusername',
             templateUrl: 'templates/my/setusername.html?v=' + htmlv,
-            controller: 'SettingCtrl'
+            controller: 'SetusernameCtrl'
         })
         .state('address', {
             url: '/address',
@@ -368,6 +368,11 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             templateUrl: 'templates/my/addbankcard.html?v=' + htmlv,
             controller: 'BankcardCtrl'
         })
+        .state('leaderboard', {
+            url: '/leaderboard',
+            templateUrl: 'templates/home/leaderboard.html?v=' + htmlv,
+            controller: 'LeaderboardCtrl'
+        });
     if (localStorage.guide) {
         $urlRouterProvider.otherwise('/tab/home');
     } else {

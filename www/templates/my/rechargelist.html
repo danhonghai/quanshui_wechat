@@ -1,27 +1,47 @@
 <ion-view>
     <ion-nav-bar>
-        <ion-nav-title side="center">
-            <div class="buyprotittop" style="background: none; padding: 0px; overflow: hidden; display: inline-block;
-    margin: 9px auto;">
-                <a ng-repeat="pro in prolisttit" class="protittoptab stockoptional_hushentab" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)" style="width: 76px;">{{pro.name}}</a>
+        <ion-nav-title side="center" style="background:#fff;">
+            <div class="borrowtop row padding0">
+                <div ng-repeat="findetails in findetailslists" class="col padding0" ng-class="{true: 'dq', false: ''}[findetails.success]" ng-click="findetailsfun($index+1)">{{findetails.name}}</div>
             </div>
         </ion-nav-title>
     </ion-nav-bar>
-    <div class="moneypx" style="width:100%; height: 30px; top: 44px; position: relative;    background: #ECF0F1;line-height: 30px;">
-            <div class="row text-center">
-            <div class="col padding0">金额</div>
-            <div class="col padding0">状态</div>
-            <div class="col padding0">时间</div>
+    <div class="moneypx" style="height:44px;">
+        <div class="row text-left">
+            <div class="col">
+                金额（元）／类型
+            </div>
+            <div class="col text-right">
+                时间／备注
+            </div>
         </div>
+    </div>
+    <ion-content class="stable-bg" style="top:88px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+    </ion-refresher>
+    <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
+    <div class="list">
+        <div class="item item-icon-right" style="padding:5px 15px; padding-right:30px;" ng-repeat="pointdetail in pointdetails" ng-click="showacdetail($index)"  ng-class="{true:'stable-bg', false:'light-bg'}[pointdetail.success]">
+            <div class="row padding0">
+                <div class="col"><span ng-bind="pointdetail.moneyOperate | number:2"></span></div>
+                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy.MM.dd'"></span></div>
+            </div>
+            <div class="row padding0">
+                <div class="col">
+                    <span ng-class="{true:'green',false:'red'}[pointdetail.category==1]" ng-bind="pointdetail.type==0?'充值':pointdetail.type==1?'提现':pointdetail.type==2?'冻结':pointdetail.type==3?'待收':pointdetail.type==4?'投资回款':pointdetail.type==5?'借款入账':pointdetail.type==6?'手续费':pointdetail.type==7?'还款金额':pointdetail.type==8?'债权转让':pointdetail.type==9?'奖励':pointdetail.type==11?'解冻':pointdetail.type==12?'转让回款':pointdetail.type==13?'转让支付':'逾期利息'"></span>
+                </div>
+                <div class="col text-right">
+                    <span ng-if="pointdetail.success" class="cs9 font-size14" style="white-space: initial; text-align: left; display: inline-block; text-align: justify;" ng-bind="pointdetail.remark"></span>
+                    <span ng-if="!pointdetail.success" class="cs9 font-size14" style="white-space: initial;" ng-bind="pointdetail.remark | limitTo:9"></span>
+                </div>
+            </div>
+
+                <i style="color:#dbdbdb;" ng-class="{true:'ion-ios-arrow-down', false:'ion-ios-arrow-right'}[pointdetail.success]" class="icon"></i>
         </div>
-    <ion-content class="stable-bg" style="top: 74px;">
-        
-        <ul class="list">
-            <li class="row item text-center" style="margin-top: 0px;" ng-repeat="recharge in rechargeData">
-                <div class="col red text-left" ng-class="{true:'red',false:'green'}[recharge.moneyRecharge]">{{recharge.moneyRecharge?"+":"-"}}{{recharge.moneyRecharge?recharge.moneyRecharge:recharge.moneyWithdraw}}元</div>
-                <div class="col cs6" ng-class="{'成功':'green','失败':'red','交易中':'blue'}[recharge.status]">{{recharge.status}}</div>
-                <div class="col cs9">{{recharge.createdAt | timeymd}}</div>
-            </li>
-        </ul>
+    </div>
+    <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+    <div ng-if="moredata && pointdetails.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
+        </div>
     </ion-content>
 </ion-view>

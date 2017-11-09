@@ -30,7 +30,8 @@
                         <div class="col">
                             <span class="spantop">还款方式</span>
                             <br>
-                            <span class="spanbot">{{data.repaymentStyle}}</span>
+                            <span ng-if="data.repaymentStyle = 0" class="spanbot">到期还本还息</span>
+                            <span ng-if="data.repaymentStyle = 1" class="spanbot">按月付息到期还本</span>
                         </div>
                     </div>
                     <div class="progress">

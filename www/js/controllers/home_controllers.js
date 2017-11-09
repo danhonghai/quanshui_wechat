@@ -85,23 +85,31 @@ angular.module('home.controllers', ['services'])
     .controller('MoreCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
 
     }])
-    .controller('FeedbackCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
+    .controller('FeedbackCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicPopup', function($scope, HomeServices, $timeout, $state, Services, $ionicPopup) {
         $scope.data = {};
         var userInfosession = angular.fromJson(sessionStorage.userinfo);
         console.log(userInfosession);
         $scope.feedbackbtn = function() {
-            var paramterobj = {
-                username: userInfosession.username,
-                realname: $scope.data.name,
-                content: $scope.data.problemtext
+            Services.getData("messageFeedback", 1, $scope.data, function(data){
+            Services.console(data);
+            if (data.code=="0000") {
+                $scope.optionsPopup = $ionicPopup.show({
+                    template: "<h4>反馈成功</h4>" + "<p>感谢您的宝贵意见，我们尽快改正。</p>",
+                    title: "温馨提示",
+                    scope: $scope,
+                    buttons: [{
+                        text: "返回",
+                        type: "calm",
+                        onTap: function(e) {
+                            $scope.data.content ="";
+                            $state.go("more");
+                        }
+                    }]
+                });
+            }else{
+                Services.ionicpopup("温馨提示", data.msg)
             }
-            Services.getData("A036", paramterobj).success(function(data) {
-                console.log(data);
-                if (data.respHead.respCode == "000000") {
-                    Services.ionicpopup('反馈成功', "感谢您的反馈，我们一定会及时改正！");
-                    $scope.data = {};
-                }
-            });
+        })
         }
 
     }])
@@ -282,21 +290,45 @@ angular.module('home.controllers', ['services'])
     }])
     .controller('problemsCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
         Services.getData("noauth/helpCenter", 60, "", function(data){
-        Services.console(data);
-        $scope.helplists = data.data.article;
-        for (var i = 0; i < $scope.helplists.length; i++) {
-            $scope.helplists[i].success = false;
-        }
-    })
-    $scope.findetailsfun = function(index){
-        for (var j = 0; j < $scope.helplists.length; j++) {
-            if (index!=j) {
-                $scope.helplists[j].success = false;
+            Services.console(data);
+            $scope.helplists = data.data.article;
+            for (var i = 0; i < $scope.helplists.length; i++) {
+                $scope.helplists[i].success = false;
             }
+        })
+        $scope.findetailsfun = function(index){
+            for (var j = 0; j < $scope.helplists.length; j++) {
+                if (index!=j) {
+                    $scope.helplists[j].success = false;
+                }
+            }
+            $scope.helplists[index].success = !$scope.helplists[index].success;
         }
-        $scope.helplists[index].success = !$scope.helplists[index].success;
-    }
 
+    }])
+    .controller('LeaderboardCtrl', ['$scope', '$state', '$ionicHistory', '$ionicPopup', 'Services', '$ionicLoading', function(
+        $scope, $state, $ionicHistory, $ionicPopup, Services, $ionicLoading) {
+        var Leaderboardata = {
+            count:20
+        }
+        $scope.datatop = [];
+        $scope.databot = [];
+        Services.getData("noauth/heroRank_xnk", 10, Leaderboardata, function(data){
+            Services.console(data);
+            $scope.data = data.data.userToRank;
+            if ($scope.data.length<=3) {
+                $scope.datatop = $scope.data;
+            }else{
+                for (var i = 0; i < $scope.data.length; i++) {
+                    if (i<3) {
+                        $scope.datatop.push($scope.data[i])
+                    }else{
+                        $scope.databot.push($scope.data[i])
+                    }
+                }
+            }
+            // console.log($scope.datatop);
+        })
     }])
     .controller('integralmallCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
         if (sessionStorage.userinfo) {

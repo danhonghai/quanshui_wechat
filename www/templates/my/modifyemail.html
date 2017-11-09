@@ -1,6 +1,6 @@
 <ion-view view-title="绑定邮箱">
     <ion-content class="stable-bg">
-         <form name="EmailForm" novalidate>
+         <form name="EmailForm" novalidate ng-if="userInfosession.emailBindingStatus == 0">
             <div class="list assertive-border">
                 <label class="item item-input">
                 	<span class="cs6">邮箱</span>
@@ -14,11 +14,50 @@
                 </label>
                 <div class="item item-input padding-right">
                 	<span class="cs6">验证码</span>
-                    <input type="text" class="padding-left5" name="yzm" ng-model="data.yzm" required placeholder="请输入邮箱验证码">
-                    <button ng-click="getemailCodefun()" id="sendButton_reg" class="btn_hqyzm">发送至邮箱</button>
+                    <input type="text" class="padding-left5" name="code" ng-model="data.code" required placeholder="请输入邮箱验证码">
+                    <button ng-click="getemailCodefun()" class="btn_hqyzm">发送至邮箱</button>
                 </div>
             <div class="padding">
                 <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="EmailForm.$invalid" ng-click="bindemail()">
+                    确定
+                </button>
+            </div>
+            </div>
+        </form>
+        <form name="exitEmailForm" novalidate ng-if="userInfosession.emailBindingStatus == 1">
+            <div class="list assertive-border">
+                <label class="item item-input">
+                    <span class="cs6">手机号</span>
+                    <input type="text" class="regisphone padding-left5" name="phone" placeholder="请输入手机号" ng-model="data.phone" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-if="exitEmailForm.phone.$error.required">
+                        手机号必填
+                    </div>
+                    <div class="tip_tishi" ng-if="exitEmailForm.phone.$error.pattern">
+                        手机号不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right" ng-if="userInfosession.emailBindingStatus == 1">
+                    <span class="cs6">验证码</span>
+                    <input type="text" class="padding-left5" name="cod" ng-model="data.cod" required placeholder="请输入短信验证码">
+                    <button ng-click="getphoneCodefun()" id="sendButton_reg" class="btn_hqyzm">发送验证码</button>
+                </div>
+                <label class="item item-input">
+                    <span class="cs6">邮箱</span>
+                    <input type="text" class="regisphone padding-left5" name="email" placeholder="请输入邮箱" ng-model="data.email" required pattern="^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$">
+                    <div class="tip_tishi" ng-if="exitEmailForm.email.$error.required">
+                        邮箱必填
+                    </div>
+                    <div class="tip_tishi" ng-if="exitEmailForm.email.$error.pattern">
+                        邮箱不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right">
+                    <span class="cs6">验证码</span>
+                    <input type="text" class="padding-left5" name="code" ng-model="data.code" required placeholder="请输入邮箱验证码">
+                    <button ng-click="getemailCodefun()" class="btn_hqyzm">发送至邮箱</button>
+                </div>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="exitEmailForm.$invalid" ng-click="exitbindemail()">
                     确定
                 </button>
             </div>

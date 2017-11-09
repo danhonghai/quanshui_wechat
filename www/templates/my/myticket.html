@@ -13,14 +13,10 @@
         </div>
     </ion-header-bar>
     <ion-content class="stable-bg" style="top: 88px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
+    <img ng-if="redpackets.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
     <div class="list">
-        <div ng-if="prolisttit[0].success && redblists.length<=0" class="item padding10 ticketitem">
-            <img src="img/noredb.png">
-        </div>
-        <div ng-if="prolisttit[1].success && raiselists.length<=0" class="item padding10 ticketitem">
-            <img src="img/noticket.png">
-        </div>
-        <div ng-if="prolisttit[0].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redblists">
+        <div ng-if="prolisttit[0].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redpackets">
             <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
             <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
             <div class="row padding0">
@@ -30,19 +26,19 @@
                 </div>
                 <div class="col">
                     <div class="row">
-                        <div class="col"><p>金额<span class="red">{{ticketlist.amount}}</span>元</p></div>
+                        <div class="col"><p>金额<span class="red">{{ticketlist.money}}</span>元</p></div>
                         <!-- <div class="col"><p>类型：<span>{{ticketlist.type}}</span></p></div> -->
                     </div>
                     <div class="row">
-                        <div class="col"><p>过期时间：{{ticketlist.expiredTime | timeymd}}</p></div>
+                        <div class="col"><p>过期时间：{{ticketlist.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</p></div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p>备注：<span>{{ticketlist.summary}}</span></p>
+                <p>备注：<span>投资满{{ticketlist.useConditionMoney}}可用</span></p>
             </div>
         </div>
-        <div ng-if="prolisttit[1].success" class="item padding0 ticketitem" ng-repeat="ticketlist in raiselists">
+        <div ng-if="prolisttit[1].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redpackets">
             <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
             <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
             <div class="row padding0">
@@ -52,18 +48,22 @@
                 </div>
                 <div class="col">
                     <div class="row">
-                        <div class="col"><p>金额<span class="red">{{ticketlist.rate}}</span>元</p></div>
+                        <div class="col"><p>加息百分比<span class="red">{{ticketlist.money}}</span>%</p></div>
                         <!-- <div class="col"><p>类型：<span>{{ticketlist.type}}</span></p></div> -->
                     </div>
                     <div class="row">
-                        <div class="col"><p>过期时间：{{ticketlist.expireTime}}</p></div>
+                        <div class="col"><p>过期时间：{{ticketlist.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</p></div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p>备注：<span>{{ticketlist.ratecouponName}}</span></p>
+                <p>备注：<span>投资满{{ticketlist.useConditionMoney}}可用</span></p>
             </div>
         </div>
     </div>
+    <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+        <div ng-if="moredata && redpackets.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
+        </div>
     </ion-content>
 </ion-view>

@@ -83,18 +83,18 @@ gulp.task('js', function () {
 
 // 图片加版本号
 gulp.task('img', function () {
-		gulp.src('www/images/*')
+		gulp.src('www/img/*')
 		.pipe(rev())
-		.pipe(gulp.dest('build/images'))
+		.pipe(gulp.dest('build/img'))
 		.pipe(rev.manifest())
-		.pipe(gulp.dest('rev/images'))
+		.pipe(gulp.dest('rev/img'))
 		.on("end", function () {
 			gulp.run("css");
 		})
 });
 // 压缩图片
 gulp.task('revimg', function () {
-	gulp.src('build/images/*')
+	gulp.src('build/img/*')
 		.pipe(imagemin({
 			progressive: true,
 			svgoPlugins: [{
@@ -102,7 +102,7 @@ gulp.task('revimg', function () {
 			}],
 			use: [pngcrush()]
 		}))
-		.pipe(gulp.dest('build/images'));
+		.pipe(gulp.dest('build/img'));
 });
 
 //css版本号处理
@@ -151,14 +151,11 @@ gulp.task('htmlEnd', function () {
 });
 //html里面的图片版本号处理
 gulp.task('htmlimgEnd', function () {
-	gulp.src(['rev/images/*.json', 'build/templates/*/*'])
+	gulp.src(['rev/img/*.json', 'build/templates/*/*'])
 		.pipe(revCollector({
 			replaceReved: true
 		}))
-		.pipe(gulp.dest('build/templates'))
-		.on("end", function () {
-			gulp.run("revimg");
-		});
+		.pipe(gulp.dest('build/templates'));
 });
 
 // 压缩html
@@ -175,27 +172,24 @@ gulp.task('html', function () {
 			$('link').remove();
 			$('head').append('<link href="lib/ionic/css/ionic.min.css" rel="stylesheet">');
 			$('head').append('<link href="lib/swiper/swiper.min.css" rel="stylesheet">');
-			$('head').append('<link href="lib/mobiscroll/css/mobiscroll.animation.css" rel="stylesheet">');
-			$('head').append('<link href="lib/mobiscroll/css/mobiscroll.frame.css" rel="stylesheet">');
 			$('head').append('<link href="css/ui.css" rel="stylesheet">');
-			$('head').append('<link href="lib/mobiscroll/css/mobiscroll.frame.ios.css" rel="stylesheet">');
-			$('head').append('<link href="lib/mobiscroll/css/mobiscroll.scroller.css" rel="stylesheet">');
-			$('head').append('<link href="lib/mobiscroll/css/mobiscroll.scroller.ios.css" rel="stylesheet">');
 			$('body').append('<script src="lib/ionic/js/ionic.bundle.min.js"></script>');
 			$('body').append('<script src="lib/jquery.min.js"></script>');
 			$('body').append('<script src="lib/swiper/swiper.min.js"></script>');
 			$('body').append('<script src="lib/radialIndicator.js"></script>');
+			$('body').append('<script src="lib/circleChart.min.js"></script>');
 			$('body').append('<script src="lib/jquery.scs.min.js"></script>');
 			$('body').append('<script src="lib/CNAddrArr.min.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.dom.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.core.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.scrollview.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.frame.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.frame.ios.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.scroller.js"></script>');
-			$('body').append('<script src="lib/mobiscroll/js/mobiscroll.i18n.zh.js"></script>');
-			$('body').append('<script src="js/all.js"></script>');
+			$('body').append('<script src="lib/clipboard.min.js"></script>');
+			$('body').append('<script src="lib/ngclipboard.min.js"></script>');
+			$('body').append('<script src="lib/online.js"></script>');
+			$('body').append('<script src="lib/picker/picker.min.js"></script>');
+			$('body').append('<script src="lib/picker/city.js"></script>');
+			$('body').append('<script src="js/iscroll-zoom.js"></script>');
+			$('body').append('<script src="js/hammer.js"></script>');
+			$('body').append('<script src="js/jquery.photoClip.js"></script>');
 			$('body').append('<script src="js/app.js"></script>');
+			$('body').append('<script src="js/all.js"></script>');
 		}))
 		.pipe(htmlmin({
 			collapseWhitespace: true
