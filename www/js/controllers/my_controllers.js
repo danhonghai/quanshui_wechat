@@ -1171,6 +1171,19 @@ angular.module('my.controllers', [])
     }])
     .controller('AutoinvestCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', function($scope, $timeout,
         $stateParams, $state, Services) {
+        $scope.data = {
+            tenderMoneyType:3,
+            status:2,
+            lowestApr:1,
+            mostApr:24,
+            lowestNum:1,
+            mostNum:60,
+            lowestTender:'',
+            mostTender:'',
+            bestChoose:'',
+            bestStrategy:''
+        };
+        $scope.autoswitch = true;
         $scope.settingdata = angular.fromJson(sessionStorage.userinfo);
         //console.log($scope.settingdata);
         //获取用户数据
@@ -1183,6 +1196,55 @@ angular.module('my.controllers', [])
             $scope.userAccount = data.data.userAccount;
             $scope.userCredit = data.data.userCredit;
         })
+        Services.getData("toAutoTenderSetting", 1, "", function(data){
+            if (data.code == "0000") {
+                console.log(data);
+            }else{
+                Services.ionicpopup("温馨提示", data.msg)
+            }
+        })
+        $scope.redbdatalist = [{text:"优先使用红包", value:1},{text:"优先使用加息券", value:2}];
+        var redbEl = document.getElementById('redb');
+        var redb = new Picker({
+            data: [$scope.redbdatalist]
+        });
+        redb.on('picker.select', function (selectedVal, selectedIndex) {
+            redbEl.innerText = $scope.redbdatalist[selectedIndex[0]].text;
+        });
+        redb.on('picker.change', function (index, selectedIndex) {
+            // //console.log(selectedIndex);
+        });
+        redb.on('picker.valuechange', function (selectedVal, selectedIndex) {
+            $scope.data.bestChoose = selectedVal[0];
+        });
+        redb.on('picker.cancel', function () {
+            $scope.data.bestChoose = "";
+            redbEl.innerText = "点击选择";
+        });
+        redbEl.addEventListener('click', function () {
+            redb.show();
+        });
+        $scope.raisedatalist = [{text:"年化或者红包金额优先", value:1},{text:"有效期优先", value:2}];
+        var select_jxqEl = document.getElementById('select_jxq');
+        var select_jxq = new Picker({
+            data: [$scope.raisedatalist]
+        });
+        select_jxq.on('picker.select', function (selectedVal, selectedIndex) {
+            select_jxqEl.innerText = $scope.raisedatalist[selectedIndex[0]].text;
+        });
+        select_jxq.on('picker.change', function (index, selectedIndex) {
+            // //console.log(selectedIndex);
+        });
+        select_jxq.on('picker.valuechange', function (selectedVal, selectedIndex) {
+            $scope.data.bestStrategy = selectedVal[0];
+        });
+        select_jxq.on('picker.cancel', function () {
+            $scope.data.bestStrategy = "";
+            select_jxqEl.innerText = "点击选择";
+        });
+        select_jxqEl.addEventListener('click', function () {
+            select_jxq.show();
+        });
         $('.range-slider1').jRange({
             from: 1,
             to: 24,
@@ -1205,6 +1267,24 @@ angular.module('my.controllers', [])
             showLabels: true,
             isRange: true
         });
+        $scope.autoinvestfun = function(){
+            $scope.data.lowestApr = parseInt($('.firstnum').html());
+            $scope.data.mostApr = parseInt($('.lastnum').html());
+            $scope.data.lowestNum = parseInt($('.firstnum1').html());
+            $scope.data.mostNum = parseInt($('.lastnum1').html());
+            if ($scope.autoswitch) {
+                $scope.data.status = 1;
+            }else{
+                $scope.data.status = 2;
+            }
+            Services.getData("autoTenderSetting", 1, $scope.data, function(data){
+                console.log(data);
+                if (data.code == "0000") {
+                }else{
+                    Services.ionicpopup("温馨提示", data.msg)
+                }
+            })
+        }
     }])
     //设置用户名
     .controller('SetusernameCtrl', ['$scope', '$timeout', '$ionicPopup', '$state', 'Services', function($scope, $timeout,

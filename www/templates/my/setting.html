@@ -75,7 +75,7 @@
             <li class="item row" ui-sref="autoinvest">
                 <div class="col col-33 cs3">自动投标</div>
                 <div class="col">
-                <span class="blue">修改</span>
+                <span ng-class="{true:'blue',false:''}[userInfo.autoType =='0']">{{userInfo.autoType =='0'?'未启动':'已启动'}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>

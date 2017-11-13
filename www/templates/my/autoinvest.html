@@ -1,63 +1,73 @@
 <ion-view view-title="自动投标">
     <ion-content class="stable-bg">
-        <ul class="list prodetailpaymenu">
-            <li class="item">
-                账户可用余额
-                <span class="item-note red">
-                  {{userAccount.moneyUsable | number:2}}
-                </span>
-            </li>
-            <li class="item item-toggle">
-                是否启用
-                <label class="toggle toggle-calm">
-                    <input type="checkbox">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </li>
-            <li class="item">
-                利率范围(%)
-                <span class="item-note red">
-                <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum">1</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum">24</i>
-                </span>
-                <div style="padding:20px 0; margin-top:15px;">
-                    <input class="range-slider range-slider1" type="hidden" value="1,24" />
-                </div>
-            </li>
-            <li class="item">
-                每次投资期数
-                <span class="item-note red">
-                    <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum1">1</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum1">60</i>
+        <form name="autoinvestForm" novalidate>
+            <ul class="list prodetailpaymenu">
+                <li class="item">
+                    账户可用余额
+                    <span class="item-note red">
+                      {{userAccount.moneyUsable | number:2}}
+                    </span>
+                </li>
+                <li class="item item-toggle">
+                    是否启用
+                    <label class="toggle toggle-calm">
+                        <input type="checkbox" ng-model="autoswitch">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </li>
+                <li class="item">
+                    利率范围(%)
+                    <span class="item-note cs6">
+                    <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum">{{data.lowestApr}}</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum">{{data.mostApr}}</i>
                     </span>
                     <div style="padding:20px 0; margin-top:15px;">
-                        <input class="range-slider range-slider2" type="hidden" value="1,60" />
+                        <input class="range-slider range-slider1" type="hidden" value="1,24" />
                     </div>
-                </span>
-            </li>
-            <li class="item row" style="padding-left:11px;">
-                <div class="col col-33 cs3">优惠券</div>
-                <div class="col">
-                <span></span>
-                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
-                </div>
-            </li>
-            <li class="item row" style="padding-left:11px;">
-                <div class="col col-33 cs3">优惠策略</div>
-                <div class="col">
-                <span></span>
-                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
-                </div>
-            </li>
-            <li class="item">
-                账户预留金额
-                <span class="item-note red">
-                    <input style="height:20px; border: 1px solid #ddd; width: 120px;" type="text">
-                </span>
-            </li>
-            <li class="row">
-                <button style="width: 80%; height: 40px; color: #fff; background: #2196F3; border: none; margin: 20px auto; border-radius: 5px;" class="backlogin">确定</button>
-            </li>
-        </ul>
+                </li>
+                <li class="item">
+                    每次投资期数
+                    <span class="item-note cs6">
+                        <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum1">{{data.lowestNum}}</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum1">{{data.mostNum}}</i>
+                        </span>
+                        <div style="padding:20px 0; margin-top:15px;">
+                            <input class="range-slider range-slider2" type="hidden" value="1,60" />
+                        </div>
+                    </span>
+                </li>
+                <li class="item">
+                    每次投资金额(元)
+                    <span class="item-note cs6">
+                    <input type="number" ng-model="data.lowestTender" style="display: inline-block;border: 1px solid #ddd;width: 80px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
+                     ~ 
+                    <input type="number" ng-model="data.mostTender" style="display: inline-block;border: 1px solid #ddd;width: 80px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
+                    </span>
+                </li>
+                <li class="item row" style="padding-left:11px;">
+                    <div class="col col-33 cs3">优惠券</div>
+                    <div class="col">
+                    <span id="redb">请选择</span>
+                    <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                    </div>
+                </li>
+                <li class="item row" style="padding-left:11px;">
+                    <div class="col col-33 cs3">优惠策略</div>
+                    <div class="col">
+                    <span id="select_jxq">请选择</span>
+                    <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                    </div>
+                </li>
+                <li class="item">
+                    账户预留金额
+                    <span class="item-note red">
+                        <input style="height:20px; border: 1px solid #ddd; width: 120px;" ng-model="data.lowestMoney" type="number" required>
+                    </span>
+                </li>
+                <li class="row">
+                    <button ng-disabled="autoinvestForm.$invalid" ng-click="autoinvestfun()" style="width: 80%; height: 40px; color: #fff; background: #2196F3; border: none; margin: 20px auto; border-radius: 5px;" class="backlogin">确定</button>
+                </li>
+            </ul>
+        </form>
     </ion-content>
 </ion-view>
