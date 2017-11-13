@@ -1149,8 +1149,8 @@ angular.module('my.controllers', [])
         }
     ])
     //设置
-    .controller('SettingCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', function($scope, $timeout,
-        $stateParams, $state, Services) {
+    .controller('SettingCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', '$ionicPopup', function($scope, $timeout,
+        $stateParams, $state, Services, $ionicPopup) {
         $scope.settingdata = angular.fromJson(sessionStorage.userinfo);
         //console.log($scope.settingdata);
         //获取用户数据
@@ -1183,7 +1183,10 @@ angular.module('my.controllers', [])
             bestChoose:'',
             bestStrategy:''
         };
-        $scope.autoswitch = true;
+        $scope.redbtext = "请选择";
+        $scope.jxqtext = "请选择";
+        $scope.redbdatalist = [{text:"优先使用红包", value:1},{text:"优先使用加息券", value:2}];
+        $scope.raisedatalist = [{text:"年化或者红包金额优先", value:1},{text:"有效期优先", value:2}];
         $scope.settingdata = angular.fromJson(sessionStorage.userinfo);
         //console.log($scope.settingdata);
         //获取用户数据
@@ -1195,15 +1198,30 @@ angular.module('my.controllers', [])
             $scope.userInfo = data.data.userInfo;
             $scope.userAccount = data.data.userAccount;
             $scope.userCredit = data.data.userCredit;
-        })
-        Services.getData("toAutoTenderSetting", 1, "", function(data){
-            if (data.code == "0000") {
-                console.log(data);
+            if ($scope.userInfo.autoType == 1) {
+                $scope.autoswitch = true;
             }else{
-                Services.ionicpopup("温馨提示", data.msg)
+                $scope.autoswitch = false;
             }
+            Services.getData("toAutoTenderSetting", 1, "", function(data){
+                if (data.code == "0000") {
+                    console.log(data);
+                    if (data.data.autoTenderSetting) {
+                        $scope.data.lowestApr = data.data.autoTenderSetting.lowestApr;
+                        $scope.data.lowestMoney = data.data.autoTenderSetting.lowestMoney;
+                        $scope.data.lowestNum = data.data.autoTenderSetting.lowestNum;
+                        $scope.data.lowestTender = data.data.autoTenderSetting.lowestTender;
+                        $scope.data.mostApr = data.data.autoTenderSetting.mostApr;
+                        $scope.data.mostNum = data.data.autoTenderSetting.mostNum;
+                        $scope.data.mostTender = data.data.autoTenderSetting.mostTender;
+                        $scope.redbtext = $scope.redbdatalist[data.data.autoTenderSetting.bestChoose-1].text;
+                        $scope.jxqtext = $scope.raisedatalist[data.data.autoTenderSetting.bestStrategy-1].text;
+                    }
+                }else{
+                    Services.ionicpopup("温馨提示", data.msg)
+                }
+            })
         })
-        $scope.redbdatalist = [{text:"优先使用红包", value:1},{text:"优先使用加息券", value:2}];
         var redbEl = document.getElementById('redb');
         var redb = new Picker({
             data: [$scope.redbdatalist]
@@ -1224,7 +1242,6 @@ angular.module('my.controllers', [])
         redbEl.addEventListener('click', function () {
             redb.show();
         });
-        $scope.raisedatalist = [{text:"年化或者红包金额优先", value:1},{text:"有效期优先", value:2}];
         var select_jxqEl = document.getElementById('select_jxq');
         var select_jxq = new Picker({
             data: [$scope.raisedatalist]
@@ -1280,6 +1297,17 @@ angular.module('my.controllers', [])
             Services.getData("autoTenderSetting", 1, $scope.data, function(data){
                 console.log(data);
                 if (data.code == "0000") {
+                    $scope.optionsPopup = $ionicPopup.show({
+                        template: "设置成功",
+                        title: "温馨提示",
+                        scope: $scope,
+                        buttons: [{
+                            text: "返回",
+                            onTap: function(e) {
+                                $state.go("setting");
+                            }
+                        }]
+                    });
                 }else{
                     Services.ionicpopup("温馨提示", data.msg)
                 }
