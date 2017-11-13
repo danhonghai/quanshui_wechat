@@ -12,7 +12,6 @@
                     <div class="swiper-slide" ng-repeat="homebannerlist in homebannerlists">
                     <img style="width: 100%;" ng-src="{{homebannerlist.imgUrl}}" onerror="javascript:this.src='img/logo1.png'" /></div>
                 </div>
-                <div class="swiper-pagination"></div>
             </div>
         </div>
         <!-- 首页平台公告 -->
@@ -51,31 +50,29 @@
             <div class="row" style="padding:0px 10px;">
                 <div class="col col-33">{{xslist[0].apr}}%
                     <br><span>预期年化收益</span></div>
-                <div class="col col-40">新手专项001期
+                <div class="col col-40">{{xslist[0].borrowName}}
                     <br><span>期限<i class="bule">{{xslist[0].timeLimit}}</i>天</span></div>
             </div>
         </div>
         <div class="swiper-container swiper-container2">
-            <div class="swiper-wrapper" style="padding: 30px 0px;">
+            <div class="swiper-wrapper" style="padding-bottom: 30px;">
                 <div class="swiper-slide" ng-repeat="tjpro in borrowInfoPage">
-                    <div class="home_pro">
-                        <div class="prg-cont rad-prg" id="indicatorContainer{{$index}}"></div>
-                        <!-- <div class="bottext" style="background: #fff;z-index: 9;bottom: 58px;width: 130px;margin-left: -65px;font-size: 28px;padding: 10px 0;color: #198dfc;">{{tjpro.apr}}%</div> -->
-                        <div class="bottext">募集进度</div>
-                    </div>
-                    <div class="row text-center">
-                        <div class="col"><span>年化收益:{{tjpro.apr}}%</span></div>
-                        <div class="col"><span>起投:{{tjpro.lowestAccount | number:2}}</span></div>
-                        <div class="col"><span>期限:{{tjpro.timeLimit}}{{tjpro.isDay==1?'天':'月'}}</span></div>
-                    </div>
-                    <div style="margin:0 15px;">
-                        <button class="button button-block button-positive" ng-click="goprodetail(tjpro.id)">
-                            立即投资
-                        </button>
+                    <div class="text-center home_prolist" style="margin-top:20px;">
+                        <h4>{{tjpro.borrowName}}</h4>
+                        <canvas id="meter{{$index}}" width="180" height="180"></canvas>
+                        <div class="row text-center">
+                            <div class="col col-40"><span>年化收益:<b class="red font-size18">{{tjpro.apr}}%</b></span></div>
+                            <div class="col"><span>起投:{{tjpro.lowestAccount | number:2}}</span></div>
+                            <div class="col"><span>期限:{{tjpro.timeLimit}}{{tjpro.isDay==1?'天':'月'}}</span></div>
+                        </div>
+                        <div style="margin:0 15px;">
+                            <button class="button button-block button-positive" ng-click="goprodetail(tjpro.id)">
+                                立即投资
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
         </div>
         <!-- 首页资质 -->
         <div class="home_zizhi">

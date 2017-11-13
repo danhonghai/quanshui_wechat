@@ -24,7 +24,7 @@
         <div class="item" style="padding:5px 15px;" ng-repeat="pointdetail in pointdetails">
             <div class="row padding0">
                 <div class="col"><span ng-bind="pointdetail.changeValue"></span></div>
-                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy-MM-dd hh:mm'"></span></div>
+                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy-MM-dd HH:mm'"></span></div>
             </div>
             <div class="row padding0">
                 <div class="col"><span class="green"  ng-if="pointdetail.opType == 1">收入</span><span class="red"  ng-if="pointdetail.opType == 2">支出</span><span class="blue"  ng-if="pointdetail.opType == 3">冻结</span></div>

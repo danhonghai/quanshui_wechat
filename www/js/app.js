@@ -42,7 +42,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         $rootScope.uploadtxUrl = "/apis/eps/appService/appGateway/upload.htm"; //上传头像
         $rootScope.gatewayUrl = "/apis/eps/appService/appGateway/pcrimg.htm"; //网关
         $rootScope.stateonline = false;
-        $rootScope.debug = true;
+        $rootScope.debug = false;
         //点击按钮倒计时
         $rootScope.timer = function(time, buttonid) {
             var btn = $(buttonid);
@@ -100,6 +100,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
     $ionicConfigProvider.platform.ios.views.transition('ios');
     $ionicConfigProvider.platform.android.views.transition('android');
     $ionicConfigProvider.scrolling.jsScrolling(true);
+    $httpProvider.defaults.cache = false;
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     var param = function(obj) {
       var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
@@ -216,6 +217,7 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
         })
         .state('tab.money', {
             url: '/money',
+            cache:false,
             views: {
                 'tab-money': {
                     templateUrl: 'templates/money/tab-money.html?v=' + htmlv,
@@ -273,8 +275,19 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             templateUrl: 'templates/my/borrowmanage.html?v=' + htmlv,
             controller: 'BorrowmanageCtrl'
         })
+        .state('repayments', {
+            url: '/repayments?repaymentId',
+            templateUrl: 'templates/my/repayments.html?v=' + htmlv,
+            controller: 'RepaymentsCtrl'
+        })
+        .state('repaymentlists', {
+            url: '/repaymentlists?repaymentId',
+            templateUrl: 'templates/my/repaymentlists.html?v=' + htmlv,
+            controller: 'RepaymentlistsCtrl'
+        })
         .state('financial', {
             url: '/financial',
+            cache:false,
             templateUrl: 'templates/my/financial.html?v=' + htmlv,
             controller: 'FinancialCtrl'
         })
@@ -317,6 +330,11 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             url: '/setting',
             templateUrl: 'templates/my/setting.html?v=' + htmlv,
             controller: 'SettingCtrl'
+        })
+        .state('autoinvest', {
+            url: '/autoinvest',
+            templateUrl: 'templates/my/autoinvest.html?v=' + htmlv,
+            controller: 'AutoinvestCtrl'
         })
         .state('setusername', {
             url: '/setusername',
@@ -367,6 +385,11 @@ angular.module('starter', ['ionic', 'home.controllers', 'ngclipboard', 'money.co
             url: '/addbankcard',
             templateUrl: 'templates/my/addbankcard.html?v=' + htmlv,
             controller: 'BankcardCtrl'
+        })
+        .state('callback', {
+            url: '/callback?msg&token&code&tab',
+            templateUrl: 'templates/home/callback.html?v=' + htmlv,
+            controller: 'CallbackCtrl'
         })
         .state('leaderboard', {
             url: '/leaderboard',

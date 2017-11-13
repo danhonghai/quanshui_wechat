@@ -6,11 +6,7 @@
                     <div class="row">
                         <div class="col padding0" ng-bind="data.borrowName"></div>
                         <div class="col-20 padding0 icon_cc">
-                            <img  ng-if="prolist.borrowType==1" src="img/icon_xs.png">
-                            <img  ng-if="prolist.borrowType==2" src="img/icon_cc.png">
-                            <img  ng-if="prolist.borrowType==3" src="img/icon_wl.png">
-                            <img  ng-if="prolist.borrowType==4" src="img/icon_xwqy.png">
-                            <img  ng-if="prolist.borrowType==5" src="img/icon_gyl.png">
+                            <img ng-src="{{data.borrowTypeIcon}}">
                         </div>
                     </div>
                     <div class="row text-center">
@@ -20,14 +16,14 @@
                         <div class="col">
                             <span class="spantop">剩余可投</span>
                             <br>
-                            <span class="spanbot">{{data.accountResidue | number:2}}</span>
+                            <span class="spanbot font-size16 red">{{data.accountResidue | number:2}}</span>
                         </div>
                         <div class="col">
                             <span class="spantop">理财期限</span>
                             <br>
-                            <span class="spanbot">{{data.timeLimit?data.timeLimit:data.overplusPeriods}}{{data.isDay == 1?'天':'个月'}}</span>
+                            <span class="spanbot font-size14 blue">{{data.timeLimit?data.timeLimit:data.overplusPeriods}}{{data.isDay == 1?'天':'个月'}}</span>
                         </div>
-                        <div class="col">
+                        <div class="col text-right">
                             <span class="spantop">还款方式</span>
                             <br>
                             <span ng-if="data.repaymentStyle = 0" class="spanbot">到期还本还息</span>
@@ -41,7 +37,16 @@
                     <div class="progressbot" ng-bind="data.planRat*100 + '%'"></div>
                 </div>
             </div>
-            <div class="payway">支付支持：红包、加息券</div>
+            <div class="payway">
+                <span class="light font-size14" ng-if="data.isRedpacket==1 && data.isRateRises==1">
+                可以使用<i ng-if="data.isRedpacket==1">红包</i>
+                <i ng-if="data.isRedpacket==1 && data.isRateRises==1">、</i>
+                <i ng-if="data.isRateRises==1">加息券</i>
+                </span>
+                <span class="light font-size14" ng-if="data.isRedpacket==0 || data.isRateRises==0">
+                不支持红包加息券
+                </span>
+            </div>
         </div>
         <ul class="list prodetailpaymenu">
             <li class="item row">
@@ -50,25 +55,29 @@
                 <input class="numinput" ng-model="returndata.money" type="num" style="width: 80%; color:#ff3c00;" placeholder="请输入投资金额">
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ng-show="data.isRedpacket==1">
                 <div class="col">使用红包</div>
                 <div class="col">
-                    <img ng-if="data.redb" src="img/icon_redb.png" alt="">
+                    <img ng-show="data.redb" src="img/icon_redb.png" alt="">
                     <div style="display: inline-block;width: 56%" id="redb">点击选择</div>
                     <i class="icon ion-ios-arrow-down"></i>
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ng-show="data.isRateRises==1">
                 <div class="col">加息券</div>
                 <div class="col">
-                    <img ng-if="data.jxquan" src="img/icon_jxquan.png" alt="">
+                    <img ng-show="data.jxquan" src="img/icon_jxquan.png" alt="">
                     <div style="display: inline-block;width: 56%" id="select_jxq">点击选择</div>
                     <i class="icon ion-ios-arrow-down"></i>
                 </div>
             </li>
             <li class="item row">
                 <div class="col">实付金额</div>
-                <div class="col"><span>{{returndata.money-choiceredmoney<0?0:returndata.money-choiceredmoney}}</span></div>
+                <div class="col">
+                <span>
+                {{returndata.money-choiceredmoney<0?0:returndata.money-choiceredmoney}}
+                </span>
+                </div>
             </li>
             <li class="item row">
                 <div class="col">预期收益</div>
@@ -106,13 +115,13 @@
               <div class="col col-40 cs9">标的名称：</div>
               <div class="col cs6">{{data.borrowName}}</div>
           </div>
-          <div class="item row bordernone" style="margin-top:.04rem;">
+          <div class="item row bordernone" ng-if="choiceredmoney>0" style="margin-top:.04rem;">
               <div class="col col-40 cs9">红包：</div>
-              <div class="col cs6">{{redpackacc}}元红包</div>
+              <div class="col cs6">{{choiceredmoney}}元红包</div>
           </div>
           <div class="item row bordernone" style="margin-top:.04rem;">
               <div class="col col-40 cs9">实付金额：</div>
-              <div class="col cs6">{{returndata.money-redpackacc<0?0:returndata.money-redpackacc}}</div>
+              <div class="col cs6">{{returndata.money-choiceredmoney<0?0:returndata.money-choiceredmoney}}</div>
           </div>
         </div>
           <button class="button button-block button-positive" ng-disabled="signForm.$invalid" ng-click="surepay()" style="width: 60%;margin: 0 auto;height: 30px;min-height: 30px;line-height: 30px;">确认支付</button>

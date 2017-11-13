@@ -21,22 +21,21 @@
     </ion-refresher>
     <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
     <div class="list">
-        <div class="item item-icon-right" style="padding:5px 15px; padding-right:30px;" ng-repeat="pointdetail in pointdetails" ng-click="showacdetail($index)"  ng-class="{true:'stable-bg', false:'light-bg'}[pointdetail.success]">
+        <div class="item item-icon-right" style="padding:5px; padding-right:30px;" ng-repeat="pointdetail in pointdetails" ng-click="showacdetail($index)"  ng-class="{true:'stable-bg', false:'light-bg'}[pointdetail.success]">
             <div class="row padding0">
                 <div class="col"><span ng-bind="pointdetail.moneyOperate | number:2"></span></div>
-                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy.MM.dd'"></span></div>
+                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy-MM-dd'"></span></div>
             </div>
             <div class="row padding0">
-                <div class="col">
+                <div class="col col-25">
                     <span ng-class="{true:'green',false:'red'}[pointdetail.category==1]" ng-bind="pointdetail.type==0?'充值':pointdetail.type==1?'提现':pointdetail.type==2?'冻结':pointdetail.type==3?'待收':pointdetail.type==4?'投资回款':pointdetail.type==5?'借款入账':pointdetail.type==6?'手续费':pointdetail.type==7?'还款金额':pointdetail.type==8?'债权转让':pointdetail.type==9?'奖励':pointdetail.type==11?'解冻':pointdetail.type==12?'转让回款':pointdetail.type==13?'转让支付':'逾期利息'"></span>
                 </div>
                 <div class="col text-right">
                     <span ng-if="pointdetail.success" class="cs9 font-size14" style="white-space: initial; text-align: left; display: inline-block; text-align: justify;" ng-bind="pointdetail.remark"></span>
-                    <span ng-if="!pointdetail.success" class="cs9 font-size14" style="white-space: initial;" ng-bind="pointdetail.remark | limitTo:9"></span>
+                    <span ng-if="!pointdetail.success" class="cs9 font-size14" style="white-space: initial;" ng-bind="pointdetail.remark | limitTo:16"></span>
                 </div>
             </div>
-
-                <i style="color:#dbdbdb;" ng-class="{true:'ion-ios-arrow-down', false:'ion-ios-arrow-right'}[pointdetail.success]" class="icon"></i>
+            <i style="color:#dbdbdb;" ng-class="{true:'ion-ios-arrow-down', false:'ion-ios-arrow-right'}[pointdetail.success]" class="icon"></i>
         </div>
     </div>
     <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>

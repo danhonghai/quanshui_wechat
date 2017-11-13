@@ -9,9 +9,9 @@
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ui-sref="myuser">
                 <div class="col col-33 cs3">头像</div>
-                <div class="col" ui-sref="myuser">
+                <div class="col">
                 <span ng-class="{true:'green',false:'blue'}[userInfo.litpic!='']">{{userInfo.litpic?"已设置":"未设置"}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
@@ -23,9 +23,9 @@
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ui-sref="bankcard">
                 <div class="col col-33 cs3">银行卡管理</div>
-                <div class="col" ui-sref="bankcard">
+                <div class="col">
                 <span ng-class="{true:'blue',false:'green'}[userInfo.cardBindingStatus =='0']">{{userInfo.cardBindingStatus =='0'?'未绑定':'已绑定'}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
@@ -44,23 +44,23 @@
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li> -->
-            <li class="item row">
+            <li class="item row" ui-sref="modifyemail">
                 <div class="col col-33 cs3">邮箱</div>
-                <div class="col" ui-sref="modifyemail">
+                <div class="col">
                 <span ng-class="{true:'blue',false:''}[userInfo.emailBindingStatus =='0']">{{userInfo.emailBindingStatus =='0'?'未绑定':userInfo.email}}</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ui-sref="address">
                 <div class="col col-33 cs3">地址</div>
-                <div class="col" ui-sref="address">
+                <div class="col">
                 <span class="blue">未绑定</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
-            <li class="item row">
+            <li class="item row" ui-sref="forgotpass">
                 <div class="col col-33 cs3">登入密码</div>
-                <div class="col" ui-sref="forgotpass">
+                <div class="col">
                 <span class="blue">修改</span>
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
@@ -72,8 +72,15 @@
                 <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
                 </div>
             </li>
+            <li class="item row" ui-sref="autoinvest">
+                <div class="col col-33 cs3">自动投标</div>
+                <div class="col">
+                <span class="blue">修改</span>
+                <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                </div>
+            </li>
             <li class="row">
-                <button style="width: 80%; height: 40px; color: #fff; background: #CE0606; border: none; margin: 20px auto; border-radius: 5px;" class="backlogin" ng-click="exitfun()">退出登入</button>
+                <button style="width: 80%; height: 40px; color: #fff; background: #2196F3; border: none; margin: 20px auto; border-radius: 5px;" class="backlogin" ng-click="exitfun()">退出登入</button>
             </li>
         </ul>
     </ion-content>

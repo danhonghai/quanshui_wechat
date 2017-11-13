@@ -11,7 +11,7 @@
         <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
         <div class="homeborrow" style="margin-top:.1rem;">  
             <div class="list">
-                <div class="item" ng-repeat="borrowlist in pointdetails" style="margin: .1rem; padding: 0; border-radius: 5px;">
+                <div class="item" ng-repeat="borrowlist in pointdetails" style="margin: .1rem; padding: 0; padding-right: 30px; border-radius: 5px;">
                     <h4 style="border-bottom: 1px solid #ddd; line-height: 40px; padding: 0 10px;">
                         <span ng-if="borrowstatelists[0].success" class="fr calm">进度：{{borrowlist.jinDu*100}}%</span>
                         <span ng-if="borrowstatelists[1].success" class="fr energized">期数：{{borrowlist.borrowsDqqs}}/{{borrowlist.borrowQs}}</span>
@@ -19,10 +19,10 @@
                         <span ng-if="borrowstatelists[3].success" class="fr">已完结</span>
                         <img ng-src="{{borrowlist.borrowTypeIcon}}">{{borrowlist.borrowName}}</h4>
                     <div class="row">
-                        <div class="col"><p class="bigred">{{borrowlist.apr}}%</p><span>年化收益</span></div>
+                        <div class="col"><p class="bigred">{{borrowlist.account | number:2}}</p><span>借款金额</span></div>
                         <div class="col text-center"><p>{{borrowlist.timeLimit}}<i ng-bind="borrowlist.isDay==1?'天':'个月'"></i></p><span>投资期限</span></div>
-                        <div class="col" ng-if="borrowstatelists[0].success"><p>{{borrowlist.accountYes | number:2}}</p><span>已募集金额：</span></div>
-                        <div class="col" ng-if="!borrowstatelists[0].success"><p>{{borrowlist.borrowRepaymentMoney | number:2}}</p><span>待还金额：</span></div>
+                        <div class="col text-right" ng-if="borrowstatelists[0].success"><p>{{borrowlist.accountYes | number:2}}</p><span>已募集金额：</span></div>
+                        <div class="col text-right" ng-if="!borrowstatelists[0].success"><p>{{borrowlist.borrowRepaymentMoney | number:2}}</p><span>待还金额</span></div>
                     </div>
                     <div ng-if="borrowstatelists[1].success" class="row" style="border-top: 1px solid #ddd; line-height: 30px; padding: 0 5px;">
                         <div class="col">本期还款日：<span class="red">{{borrowlist.borrowRepaymentTime | date:'yyyy-MM-dd'}}</span></div>

@@ -7,11 +7,11 @@ angular.module('home.controllers', ['services'])
         }
         //跳转标详情页
         $scope.goprodetail = function(proid) {
-            console.log(proid);
+            //console.log(proid);
             $state.go('prodetail', { proid: proid, curside: "1" });
         }
         $scope.noticelink = function(newsid){
-            console.log(newsid);
+            //console.log(newsid);
             $state.go("newsdetail",{"newsid": newsid});
         }
         Services.ionicLoading();
@@ -24,7 +24,6 @@ angular.module('home.controllers', ['services'])
             code:"platform_info"
         }
         Services.getData("noauth/bannerShow", 60000, homedata, function(data){
-            console.log(data);
             $ionicLoading.hide();
             if (data.data.data) {
                 $scope.homebannerlists = data.data.data;
@@ -32,17 +31,28 @@ angular.module('home.controllers', ['services'])
                 $scope.borrowInfoPage = data.data.rapidInvestmentBorrow;
                 $scope.noticList = data.data.articles;
                 var radialObjfun = function(index, value) {
-                    var radialObj = $('#indicatorContainer' + index).radialIndicator({
-                        radius: 70,
-                        minValue: 0,
-                        maxValue: 100,
-                        barBgColor: '#ADD8FC',
-                        barColor: '#198dfc',
-                        initValue: 3,
-                        format: '##%'
-
-                    }).data('radialIndicator');
-                    radialObj.animate(value*100);
+                    Meter.setOptions({
+                        element: 'meter'+index,
+                        centerPoint: {
+                            x: 90,
+                            y: 90
+                        },
+                        radius: 90,
+                        data: {
+                            value: value*100,
+                            title: '投资进度(%)',
+                            subTitle: '',
+                            area: [{
+                                min: 0, max: 25, text: ''
+                            },{
+                                min: 25, max: 50, text: ''
+                            },{
+                                min: 50, max: 75, text: ''
+                            },{
+                                min: 75, max: 100, text: ''
+                            }]
+                        }
+                    }).init();
                 }
                 $timeout(function() {
                     var swiper = new Swiper('.swiper-container1', {
@@ -67,7 +77,8 @@ angular.module('home.controllers', ['services'])
                         }
                     });
                     radialObjfun(0, $scope.borrowInfoPage[0].planRat);
-                }, 1000);
+                }, 100);
+                
             }
 
         })
@@ -88,7 +99,7 @@ angular.module('home.controllers', ['services'])
     .controller('FeedbackCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicPopup', function($scope, HomeServices, $timeout, $state, Services, $ionicPopup) {
         $scope.data = {};
         var userInfosession = angular.fromJson(sessionStorage.userinfo);
-        console.log(userInfosession);
+        //console.log(userInfosession);
         $scope.feedbackbtn = function() {
             Services.getData("messageFeedback", 1, $scope.data, function(data){
             Services.console(data);
@@ -176,7 +187,7 @@ angular.module('home.controllers', ['services'])
             });
         };
         $scope.linknews = function(newsid){
-            console.log(newsid);
+            //console.log(newsid);
             $state.go("newsdetail",{"newsid": newsid});
         }
     }])
@@ -284,7 +295,7 @@ angular.module('home.controllers', ['services'])
             });
         };
         $scope.linknews = function(newsid){
-            console.log(newsid);
+            //console.log(newsid);
             $state.go("newsdetail",{"newsid": newsid});
         }
     }])
@@ -327,8 +338,32 @@ angular.module('home.controllers', ['services'])
                     }
                 }
             }
-            // console.log($scope.datatop);
+            // //console.log($scope.datatop);
         })
+    }])
+    .controller('CallbackCtrl', ['$scope', '$timeout', '$state', 'Services', '$ionicLoading', '$location', '$interval', function($scope, $timeout, $state, Services, $ionicLoading, $location, $interval) {
+        $scope.data = {
+            time:4,
+            msg:$location.search().msg,
+            token:$location.search().token,
+            code:$location.search().code,
+            tab:$location.search().tab,
+        };
+        if ($location.search().token) {
+            sessionStorage.token = $location.search().token;
+        }
+        $scope.linkfun = function (){
+            $state.go("tab.my");
+            $interval.cancel($scope.linktime);
+        };
+        $scope.linktime = setInterval(function(){
+            if ($scope.data.time<=0) {
+                $scope.data.time = "0";
+                $scope.linkfun();
+           }else{
+                $scope.data.time--;
+           }
+        },1000); 
     }])
     .controller('integralmallCtrl', ['$scope', 'HomeServices', '$timeout', '$state', 'Services', '$ionicLoading', function($scope, HomeServices, $timeout, $state, Services, $ionicLoading) {
         if (sessionStorage.userinfo) {
@@ -338,7 +373,7 @@ angular.module('home.controllers', ['services'])
             var userInfosession = angular.fromJson(sessionStorage.userinfo);
             $scope.integurl = "/apis/jfsc/webapp/goods.html?source=app&userId=" + userInfosession.id + "&sign=B78565A43A7D437267BAAB685B6E5F9D"
             Services.getData("A007", paramterObj).success(function(data) {
-                console.log(data);
+                //console.log(data);
             });
             $scope.Hbody = $(window).height();
             var iframe = document.getElementById("iframe");

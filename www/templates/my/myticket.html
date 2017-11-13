@@ -17,8 +17,9 @@
     <img ng-if="redpackets.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg.png">
     <div class="list">
         <div ng-if="prolisttit[0].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redpackets">
-            <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
-            <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
+            <img ng-if="borrowstatelists[2].success" class="stamp" src="img/icon_ygq.png">
+            <img ng-if="borrowstatelists[1].success" class="stamp" src="img/icon_ysy.png">
+            <img ng-if="borrowstatelists[3].success" class="stamp" src="img/icon_ydj.png">
             <div class="row padding0">
                 <div class="col col-25 text-center">
                     <img width="60" src="img/pic_redb.png">
@@ -39,8 +40,9 @@
             </div>
         </div>
         <div ng-if="prolisttit[1].success" class="item padding0 ticketitem" ng-repeat="ticketlist in redpackets">
-            <img ng-if="ticketlist.state==3" class="stamp" src="img/icon_ygq.png">
-            <img ng-if="ticketlist.state==2" class="stamp" src="img/icon_ysy.png">
+            <img ng-if="borrowstatelists[2].success" class="stamp" src="img/icon_ygq.png">
+            <img ng-if="borrowstatelists[1].success" class="stamp" src="img/icon_ysy.png">
+            <img ng-if="borrowstatelists[3].success" class="stamp" src="img/icon_ydj.png">
             <div class="row padding0">
                 <div class="col col-25 text-center">
                     <img width="60" src="img/pic_jx.png">

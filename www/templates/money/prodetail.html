@@ -6,11 +6,7 @@
                     <div class="row">
                         <div class="col padding0" ng-bind="prodetail.name?prodetail.name:prodetail.borrowName"></div>
                         <div class="col-20 padding0 icon_cc">
-                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-if="prodetail.borrowType==1" src="img/icon_xs.png">
-                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-if="prodetail.borrowType==2" src="img/icon_cc.png">
-                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-if="prodetail.borrowType==3" src="img/icon_wl.png">
-                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-if="prodetail.borrowType==4" src="img/icon_xwqy.png">
-                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-if="prodetail.borrowType==5" src="img/icon_gyl.png">
+                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-src="{{prodetail.borrowTypeIcon}}">
                         </div>
                     </div>
                     <div class="row text-center">
@@ -20,12 +16,12 @@
                         <div class="col">
                             <span class="spantop">剩余可投</span>
                             <br>
-                            <span class="spanbot">{{prodetail.accountResidue | number:2}}</span>
+                            <span class="spanbot font-size16 red">{{prodetail.accountResidue | number:2}}</span>
                         </div>
                         <div class="col text-center">
                             <span class="spantop">理财期限</span>
                             <br>
-                            <span class="spanbot">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</span>
+                            <span class="spanbot font-size14 blue">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</span>
                         </div>
                         <div class="col col-40 text-right">
                             <span class="spantop">还款方式</span>
@@ -42,19 +38,19 @@
                 </div>
             </div>
             <div class="payway">
-                <span class="cs9 font-size14" ng-if="prodetail.isRedpacket==1 && prodetail.isRateRises==1">
+                <span class="light font-size14" ng-if="prodetail.isRedpacket==1 && prodetail.isRateRises==1">
                 可以使用<i ng-if="prodetail.isRedpacket==1">红包</i>
                 <i ng-if="prodetail.isRedpacket==1 && prodetail.isRateRises==1">、</i>
                 <i ng-if="prodetail.isRateRises==1">加息券</i>
                 </span>
-                <span class="cs9 font-size14" ng-if="prodetail.isRedpacket==0 || prodetail.isRateRises==0">
+                <span class="light font-size14" ng-if="prodetail.isRedpacket==0 || prodetail.isRateRises==0">
                 不支持红包加息券
                 </span>
             </div>
         </div>
-        <ul class="list prodetaillistmenu">
-            <li class="item">借款时间<i class="badge badge-light">{{prodetail.publishStartTime | date:"yyyy-MM-dd hh:mm:ss"}}</i></li>
-            <li class="item">还款时间<i class="badge badge-light">{{prodetail.publishEndTime | date:"yyyy-MM-dd hh:mm:ss"}}</i></li>
+        <ul class="list prodetaillistmenu" ng-if="prodetail">
+            <li class="item">借款时间<i class="badge badge-light">{{prodetail.publishStartTime | date:"yyyy-MM-dd HH:mm:ss"}}</i></li>
+            <li class="item">结束时间<i class="badge badge-light">{{prodetail.publishEndTime | date:"yyyy-MM-dd HH:mm:ss"}}</i></li>
         </ul>
         <div class="row text-center">
             <div class="col"><img src="img/isc.gif"></div>

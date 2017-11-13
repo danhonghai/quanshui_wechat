@@ -16,19 +16,22 @@
 	                <span ng-if="borrowstatelists[0].success" class="fr blue" style="padding-right: 10px;">投标中：{{financial.jinDu*100}}%</span>
 	                <span ng-if="borrowstatelists[1].success" class="fr blue" style="padding-right: 10px;">还款中</span>
 	                <span ng-if="borrowstatelists[2].success" class="fr blue" style="padding-right: 10px;">逾期中</span>
+                    <span ng-if="borrowstatelists[3].success" class="fr blue" style="padding-right: 10px;">已完成</span>
 	                {{financial.borrowName}}
                 </h2>
                 <div class="row paymentrowtop" style="border-bottom: none;">
-                	<div class="col">投资金额<br><span class="red font-size16">{{financial.amountInvested}}元</span></div>
-                	<div class="col">待收金额<br><span class="red font-size16">{{financial.repayment_account}}元</span></div>
-                	<div ng-if="borrowstatelists[0].success" class="col">投资时间<br><span>{{financial.addtime*1000 | date:"yyyy-MM-dd"}}</span></div>
-                	<div ng-if="borrowstatelists[1].success || borrowstatelists[2].success" class="col">还款时间<br><span>2017-3-15</span></div>
+                	<div class="col">投资金额<br><span class="red font-size16">{{financial.amountInvested | number:2}}</span></div>
+                	<div class="col" ng-if="!borrowstatelists[3].success">待收金额<br><span class="red font-size16">{{financial.money | number:2}}</span></div>
+                    <div class="col" ng-if="borrowstatelists[3].success">获取收益<br><span class="red font-size16">{{financial.yihuodejine | number:2}}</span></div>
+                	<div ng-if="borrowstatelists[0].success" class="col">投资时间<br><span>{{financial.createdTime | date:"yyyy-MM-dd"}}</span></div>
+                	<div ng-if="borrowstatelists[1].success || borrowstatelists[2].success" class="col">还款时间<br><span>{{financial.repayTime | date:"yyyy-MM-dd"}}</span></div>
+                    <div ng-if="borrowstatelists[3].success" class="col">完成时间<br><span>{{financial.endtime | date:"yyyy-MM-dd"}}</span></div>
                 </div>
             </div>
         </div>
         <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
         <div ng-if="moredata && pointdetails.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
-            <span style="padding:0px 10px; background:#f5f5f5;">我是有底线的</span>
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
         </div>
     </ion-content>
 </ion-view>

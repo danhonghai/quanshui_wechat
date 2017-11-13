@@ -97,7 +97,7 @@ angular.module('money.controllers', [])
                 $scope.postdata.orderBy = orderBy;
                 $scope.postdata.direction == "";
             }
-            //console.log($scope.postdata.direction);
+            ////console.log($scope.postdata.direction);
             $scope.postdata.page = 0;
             vm = [];
             $scope.loadMore()
@@ -190,7 +190,7 @@ angular.module('money.controllers', [])
         }
         //跳转产品详细页
         $scope.goprodetail = function(proid) {
-            console.log(proid);
+            //console.log(proid);
             $state.go('prodetail', { proid: proid, curside: "1" });
         }
         $scope.protittopfc(0);
@@ -351,16 +351,16 @@ angular.module('money.controllers', [])
         $scope.$on('popover.removed', function() {
           // 执行代码
         });
-                var pointobj = {
-                    status: 0,
-                    pageSize: 99999,
-                    pageNumber: 1
-                };
+        var pointobj = {
+            status: 0,
+            pageSize: 99999,
+            pageNumber: 1
+        };
         Services.getReturnData("my_red_coupon", pointobj).then(
         function successCallback(response) {
             Services.console(response);
             if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
-                // console.log(response.data.data.redCouponList);
+                // //console.log(response.data.data.redCouponList);
                 $scope.redblists = response.data.data.redCouponList?response.data.data.redCouponList:[];
                 var redbdatalist = [];
                 for (var i = 0; i < $scope.redblists.length; i++) {
@@ -377,11 +377,16 @@ angular.module('money.controllers', [])
                     redbEl.innerText = redbdatalist[selectedIndex[0]].text;
                 });
                 redb.on('picker.change', function (index, selectedIndex) {
-                    // console.log(selectedIndex);
+                    // //console.log(selectedIndex);
                 });
                 redb.on('picker.valuechange', function (selectedVal, selectedIndex) {
                     $scope.choiceredmoney = parseInt($scope.redblists[selectedIndex[0]].money);
                     $scope.returndata.hongbaoId = selectedVal[0];
+                });
+                redb.on('picker.cancel', function () {
+                    $scope.choiceredmoney = 0;
+                    $scope.returndata.hongbaoId = "";
+                    redbEl.innerText = "点击选择";
                 });
                 redbEl.addEventListener('click', function () {
                     redb.show();
@@ -419,10 +424,10 @@ angular.module('money.controllers', [])
         function successCallback(response) {
             Services.console(response);
             if (response.data.code=="0000" || response.data.code=="1010" || response.data.code=="1000") {
-                // console.log(response.data.data.couponList);
+                // //console.log(response.data.data.couponList);
                 $scope.raiselists = response.data.data.couponList?response.data.data.couponList:[];
                 var raisedatalist = [];
-                console.log($scope.redblists);
+                //console.log($scope.redblists);
                 for (var i = 0; i < $scope.raiselists.length; i++) {
                     raisedatalist.push({
                         text: $scope.raiselists[i].money+"%",
@@ -438,10 +443,14 @@ angular.module('money.controllers', [])
 
                 });
                 select_jxq.on('picker.change', function (index, selectedIndex) {
-                    // console.log(selectedIndex);
+                    // //console.log(selectedIndex);
                 });
                 select_jxq.on('picker.valuechange', function (selectedVal, selectedIndex) {
                     $scope.returndata.couponId = selectedVal[0];
+                });
+                select_jxq.on('picker.cancel', function () {
+                    $scope.returndata.couponId = "";
+                    select_jxqEl.innerText = "点击选择";
                 });
                 select_jxqEl.addEventListener('click', function () {
                     select_jxq.show();
@@ -575,7 +584,7 @@ angular.module('money.controllers', [])
                     for (var i = 0; i < $scope.prodetail.timeLimit; i++) {
                         $scope.arrqs.push(i)
                     }
-                    console.log($scope.arrqs);
+                    //console.log($scope.arrqs);
                 }
             });
         }
