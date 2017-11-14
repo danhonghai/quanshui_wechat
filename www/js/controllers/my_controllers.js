@@ -1149,8 +1149,8 @@ angular.module('my.controllers', [])
         }
     ])
     //设置
-    .controller('SettingCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', '$ionicPopup', function($scope, $timeout,
-        $stateParams, $state, Services, $ionicPopup) {
+    .controller('SettingCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', function($scope, $timeout,
+        $stateParams, $state, Services) {
         $scope.settingdata = angular.fromJson(sessionStorage.userinfo);
         //console.log($scope.settingdata);
         //获取用户数据
@@ -1169,8 +1169,8 @@ angular.module('my.controllers', [])
             $state.go('login');
         }
     }])
-    .controller('AutoinvestCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', function($scope, $timeout,
-        $stateParams, $state, Services) {
+    .controller('AutoinvestCtrl', ['$scope', '$timeout', '$stateParams', '$state', 'Services', '$ionicPopup', function($scope, $timeout,
+        $stateParams, $state, Services, $ionicPopup) {
         $scope.data = {
             tenderMoneyType:3,
             status:2,
@@ -1185,6 +1185,7 @@ angular.module('my.controllers', [])
         };
         $scope.redbtext = "请选择";
         $scope.jxqtext = "请选择";
+        $scope.data.autoswitch = true;
         $scope.redbdatalist = [{text:"优先使用红包", value:1},{text:"优先使用加息券", value:2}];
         $scope.raisedatalist = [{text:"年化或者红包金额优先", value:1},{text:"有效期优先", value:2}];
         $scope.settingdata = angular.fromJson(sessionStorage.userinfo);
@@ -1198,11 +1199,6 @@ angular.module('my.controllers', [])
             $scope.userInfo = data.data.userInfo;
             $scope.userAccount = data.data.userAccount;
             $scope.userCredit = data.data.userCredit;
-            if ($scope.userInfo.autoType == 1) {
-                $scope.autoswitch = true;
-            }else{
-                $scope.autoswitch = false;
-            }
             Services.getData("toAutoTenderSetting", 1, "", function(data){
                 if (data.code == "0000") {
                     console.log(data);
@@ -1214,8 +1210,44 @@ angular.module('my.controllers', [])
                         $scope.data.mostApr = data.data.autoTenderSetting.mostApr;
                         $scope.data.mostNum = data.data.autoTenderSetting.mostNum;
                         $scope.data.mostTender = data.data.autoTenderSetting.mostTender;
-                        $scope.redbtext = $scope.redbdatalist[data.data.autoTenderSetting.bestChoose-1].text;
-                        $scope.jxqtext = $scope.raisedatalist[data.data.autoTenderSetting.bestStrategy-1].text;
+                        if (data.data.autoTenderSetting.bestChoose) {
+                            $scope.redbtext = $scope.redbdatalist[data.data.autoTenderSetting.bestChoose-1].text;
+                            $scope.data.bestChoose = $scope.redbdatalist[data.data.autoTenderSetting.bestChoose-1].value;
+
+                        }
+                        if (data.data.autoTenderSetting.bestStrategy) {
+                            $scope.jxqtext = $scope.raisedatalist[data.data.autoTenderSetting.bestStrategy-1].text;
+                            $scope.data.bestStrategy = $scope.raisedatalist[data.data.autoTenderSetting.bestStrategy-1].value;
+                        }
+                        if (data.data.autoTenderSetting.status == 1) {
+                            $scope.data.autoswitch = true;
+                        }else{
+                            $scope.data.autoswitch = false;
+                        }
+                        $timeout(function(){
+                            $('.range-slider1').jRange({
+                                from: 1,
+                                to: 24,
+                                isnum: 1,
+                                step: 1,
+                                scale: [1, 6, 12, 18, 24],
+                                format: '%s',
+                                width: 288,
+                                showLabels: true,
+                                isRange: true
+                            });
+                            $('.range-slider2').jRange({
+                                from: 1,
+                                to: 60,
+                                isnum: 2,
+                                step: 1,
+                                scale: [1, 12, 24, 36, 48, 60],
+                                format: '%s',
+                                width: 288,
+                                showLabels: true,
+                                isRange: true
+                            });
+                        },100);
                     }
                 }else{
                     Services.ionicpopup("温馨提示", data.msg)
@@ -1262,34 +1294,20 @@ angular.module('my.controllers', [])
         select_jxqEl.addEventListener('click', function () {
             select_jxq.show();
         });
-        $('.range-slider1').jRange({
-            from: 1,
-            to: 24,
-            isnum: 1,
-            step: 1,
-            scale: [1, 5, 15, 20, 24],
-            format: '%s',
-            width: 288,
-            showLabels: true,
-            isRange: true
-        });
-        $('.range-slider2').jRange({
-            from: 1,
-            to: 60,
-            isnum: 2,
-            step: 1,
-            scale: [1, 12, 24, 36, 48, 60],
-            format: '%s',
-            width: 288,
-            showLabels: true,
-            isRange: true
-        });
         $scope.autoinvestfun = function(){
+            if (!$scope.data.bestChoose) {
+                Services.ionicpopup("温馨提示", "请选择优惠券")
+                return false
+            }
+            if (!$scope.data.bestStrategy) {
+                Services.ionicpopup("温馨提示", "请选择优惠策略")
+                return false
+            }
             $scope.data.lowestApr = parseInt($('.firstnum').html());
             $scope.data.mostApr = parseInt($('.lastnum').html());
             $scope.data.lowestNum = parseInt($('.firstnum1').html());
             $scope.data.mostNum = parseInt($('.lastnum1').html());
-            if ($scope.autoswitch) {
+            if ($scope.data.autoswitch) {
                 $scope.data.status = 1;
             }else{
                 $scope.data.status = 2;

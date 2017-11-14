@@ -11,7 +11,7 @@
                 <li class="item item-toggle">
                     是否启用
                     <label class="toggle toggle-calm">
-                        <input type="checkbox" ng-model="autoswitch">
+                        <input type="checkbox" ng-model="data.autoswitch">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
@@ -20,28 +20,28 @@
                 <li class="item">
                     利率范围(%)
                     <span class="item-note cs6">
-                    <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum">{{data.lowestApr}}</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum">{{data.mostApr}}</i>
+                    <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum" ng-bind="data.lowestApr"></i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum" ng-bind="data.mostApr"></i>
                     </span>
                     <div style="padding:20px 0; margin-top:15px;">
-                        <input class="range-slider range-slider1" type="hidden" value="1,24" />
+                        <input class="range-slider range-slider1" type="hidden" value="{{data.lowestApr}},{{data.mostApr}}" />
                     </div>
                 </li>
                 <li class="item">
                     每次投资期数
                     <span class="item-note cs6">
-                        <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum1">{{data.lowestNum}}</i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum1">{{data.mostNum}}</i>
+                        <i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="firstnum1" ng-bind="data.lowestNum"></i>~<i style="display: inline-block;border: 1px solid #ddd;width: 30px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" class="lastnum1" ng-bind="data.mostNum"></i>
                         </span>
                         <div style="padding:20px 0; margin-top:15px;">
-                            <input class="range-slider range-slider2" type="hidden" value="1,60" />
+                            <input class="range-slider range-slider2" type="hidden" value="{{data.lowestNum}},{{data.mostNum}}" />
                         </div>
                     </span>
                 </li>
                 <li class="item">
                     每次投资金额(元)
                     <span class="item-note cs6">
-                    <input type="number" ng-model="data.lowestTender" style="display: inline-block;border: 1px solid #ddd;width: 80px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
+                    <input type="number" ng-model="data.lowestTender" style="display: inline-block;border: 1px solid #ddd;width: 60px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
                      ~ 
-                    <input type="number" ng-model="data.mostTender" style="display: inline-block;border: 1px solid #ddd;width: 80px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
+                    <input type="number" ng-model="data.mostTender" style="display: inline-block;border: 1px solid #ddd;width: 60px;text-align: center;height: 24px;line-height: 24px;margin: 0 5px;" required>
                     </span>
                 </li>
                 <li class="item row" style="padding-left:11px;">
