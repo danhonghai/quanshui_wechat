@@ -1,0 +1,5 @@
+<ion-view title="新手引导">
+    <ion-content>
+        <img src="img/pic_newuser.png">
+    </ion-content>
+</ion-view>

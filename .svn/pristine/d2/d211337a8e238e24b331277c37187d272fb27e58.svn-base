@@ -1,0 +1,48 @@
+<ion-view>
+    <ion-content class="stable-bg">
+    	<div style="background:#1a9bea; padding:10px;">
+	    	<div class="item bordernone" style="margin: .1rem; padding: 0; border-radius: 5px;">
+				<h4 style="border-bottom: 1px solid #ddd; line-height: 40px; padding: 0 10px;">
+					<span class="fr energized">期数：{{data.borrowsDqqs}}/{{data.borrowQs}}</span>
+					<img style="vertical-align: top; width:65px;" ng-src="{{data.borrowTypeIcon}}">{{data.borrowName}}</h4>
+				<div class="row">
+					<div class="col"><p class="bigred">{{data.apr}}%</p><span>年化收益</span></div>
+					<div class="col text-center"><p>{{data.timeLimit}}<i ng-bind="data.isDay==1?'天':'个月'"></i></p><span>投资期限</span></div>
+					<div class="col text-right"><p>{{data.borrowRepaymentMoney}}</p><span>本期待还</span>
+					</div>
+				</div>
+			</div>
+			<div class="light text-right padding">本期还款日：{{data.borrowRepaymentTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+		</div>
+		<div class="list">
+            <a class="item item-icon-right bordernone">
+                本金
+                <span class="item-note red font-size16" ng-bind="data.capital | number:2">
+                </span>
+            </a>
+            <a class="item item-icon-right">
+                利息
+                <span class="item-note cs3 font-size16" ng-bind="data.interest | number:2">
+                </span>
+            </a>
+            <a class="item item-icon-right">
+                罚息
+                <span class="item-note cs3 font-size16" ng-bind="data.lateInterest | number:2">
+                </span>
+            </a>
+            <a class="item item-icon-right" style="border-bottom:none">
+                待还总额
+                <span class="item-note cs3 font-size16" ng-bind="data.capital + data.interest + data.lateInterest | number:2">
+                </span>
+            </a>
+        </div>
+        <button class="button button-full button-light red" ng-click="gorepaylist()">还款明细</button>
+    </ion-content>
+    <ion-footer-bar class="padding0">
+        <div class="row padding0">
+            <div class="col padding0">
+                <button class="button button-assertive" ng-disabled="data.isOvertime==1 || data.isOvertime==2" ng-click="repayfun()" style="border-radius:0; height:44px; width:100%; font-size:18px; background:#0090e9;">{{data.isOvertime==0?'还款':data.isOvertime==1?'存在逾期':'还款中'}}</button>
+            </div>
+        </div>
+    </ion-footer-bar>
+</ion-view>

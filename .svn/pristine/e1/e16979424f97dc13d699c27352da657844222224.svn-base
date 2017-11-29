@@ -1,0 +1,14 @@
+<ion-view view-title="帮助中心">
+    <ion-content class="stable-bg">
+        <div class="list">
+        <div ng-repeat="helplist in helplists" ng-click="findetailsfun($index)">
+			<a class="item item-icon-right">
+			    {{helplist.title}}
+			    <i ng-if="!helplist.success" style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+			    <i ng-if="helplist.success" style="color:#dbdbdb;" class="icon ion-ios-arrow-down"></i>
+			</a>
+			<div style="padding: 10px;line-height: 1.8em;text-indent: 2em;" ng-if="helplist.success" ng-bind-html="helplist.content"></div>
+        </div>
+        </div>
+    </ion-content>
+</ion-view>

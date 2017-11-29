@@ -1,0 +1,39 @@
+<ion-view view-title="引导页">
+    <ion-content id="menuByDfkInfo-list" overflow-scroll="true" style="overflow: hidden;top:0px">
+        <style>
+            .slider-pager {
+                top:72%;
+            }
+            .slider-pager .slider-pager-page {
+                opacity: .4;
+                margin: 0 6px;
+            }
+            .slider-pager .slider-pager-page i {
+                color: #fff;
+                font-size: 18px;
+            }
+        </style>
+        <ion-slide-box class="loginyd" does-continue="true" auto-play="false" show-pager="true" on-slide-changed="go(index)">
+            <ion-slide>
+                <img src="img/1.png">
+            </ion-slide>
+            <ion-slide>
+                <img src="img/2.png">
+            </ion-slide>
+            <ion-slide>
+                <img src="img/3.png">
+                <div class="padding" style="width: 100%; position: fixed; top: 75%; z-index: 999999;">
+            <button style="border-radius: 7px;" class="button button-block button-calm icon ion-cash" ng-click="enterfun()"> 立即体验</button>
+            <!-- <div class="row padding0">
+                <div class="col padding0" style="padding-right: 10px;">
+                    <button class="button button-block" style=" background: none; color: #fff; border-radius: 7px;" ng-click="jintz('login');">手机登入</button>
+                </div>
+                <div class="col padding0" style="padding-left: 10px;">
+                    <button class="button button-block" style=" background: none; color: #fff; border-radius: 7px;" ng-click="jintz('register')">手机注册</button>
+                </div>
+            </div> -->
+        </div>
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+</ion-view>

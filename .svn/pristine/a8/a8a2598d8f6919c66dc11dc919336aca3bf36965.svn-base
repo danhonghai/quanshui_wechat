@@ -1,0 +1,103 @@
+<ion-view view-title="我的">
+    <ion-content class="stable-bg">
+        <div class="list my_top">
+            <div class="my_title" align-title="center">
+                <div class="buttons buttons-left header-item" ui-sref="setting">
+                    <span class="left-buttons">
+                <i class="button ion-ios-gear-outline"></i>
+              </span>
+                </div>
+                <div class="title title-center header-item">{{userInfo.userName | mphone}}</div>
+                <!-- <div class="buttons buttons-right header-item">
+                    <span class="right-buttons">
+                      <i class="button ion-ios-bell-outline">
+                        <p class="badge badge-assertive">1</p>
+                      </i>
+                  </span>
+                </div> -->
+            </div>
+            <div class="imgmoney">
+                <img ui-sref="myuser" ng-src="{{userInfo.litpic}}" onerror="javascript:this.src='img/loaderror-b740586d11.jpg'" />
+                <p class="light">可用金额(元)<i class="ion" ng-class="{true:'ion-eye', false:'ion-eye-disabled'}[showacc]" ng-click="showacc = !showacc" style="font-size: 22px;margin-left: 10px;vertical-align: middle;"></i></p>
+                <p class="light" ng-if="showacc">{{userAccount.moneyUsable | number:2}}</p>
+                <p class="light" ng-if="!showacc">******</p>
+
+            </div>
+            <div class="row">
+                <div class="col light">账户总额(元)
+                    <br><span ng-if="showacc">{{userAccount.moneyTotal | number:2}}</span><span ng-if="!showacc">******</span>
+                </div>
+                <div class="col light text-right">冻结金额(元)
+                    <br><span ng-if="showacc">{{userAccount.tenderFreeze+userAccount.withdrawFreeze | number:2}}</span><span ng-if="!showacc">******</span>
+                </div>
+            </div>
+        </div>
+        <div class="row padding lchk">
+            <div class="col lcjl" ui-sref="financial">
+                <p class="lchktit_top">理财记录</p>
+                <p class="lchktit_bot">待收：<span class="lchkmoney" ng-if="showacc">{{userAccount.moneyCollection | number:2}}</span><span class="lchkmoney" ng-if="!showacc">******</span></p>
+            </div>
+            <div class="col hkjl" ui-sref="borrowmanage">
+                <p class="lchktit_top">借款记录</p>
+                <p class="lchktit_bot">待还：<span class="lchkmoney" ng-if="showacc">{{userAccount.moneyRepay | number:2}}</span><span class="lchkmoney" ng-if="!showacc">******</span></p>
+            </div>
+        </div>
+        <div class="row cztxbutton">
+            <div class="col">
+                <button ui-sref="recharge">充值</button>
+            </div>
+            <div class="col">
+                <button ui-sref="withdrawal" class="tixian">提现</button>
+            </div>
+        </div>
+        <div class="row myjf" ui-sref="mypoints">
+            <div class="col myjf_top">
+                <p class="myjftit_top">我的积分</p>
+                <p class="myjftit_bot">当前积分：<span class="myjfmoney">{{userCredit.pointsTotal}}</span></p>
+            </div>
+            <div class="col myjf_bot">
+                <span>签到得积分</span>
+            </div>
+        </div>
+        <div class="row redquan">
+            <div class="col" ng-click="gomyticket(0)">
+                <i><img src="img/icon_redb-9dda6116ca.png"></i>红包<span>({{userInfo.kyhb}})</span>
+            </div>
+            <div class="col" ng-click="gomyticket(1)">
+                <i><img src="img/icon_jxquan-c5ebbf372d.png"></i>加息券<span>({{userInfo.kyjx}})</span>
+            </div>
+        </div>
+        <div class="list" style="margin-top:.1rem">
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="rechargelist">
+                <i class="icon"><img src="img/icon_zjjl-92ce4417d0.png" width="20"></i>
+                资金记录
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="borrowmanage">
+                <i class="icon"><img src="img/icon_hkgl-1f57a0645f.png" width="20"></i>
+                还款管理
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="problems">
+                <i class="icon"><img src="img/icon_bz-a503bc9c36.png" width="20"></i>
+                常见问题
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="invitefriends">
+                <i class="icon"><img src="img/icon_yqhy-c2d5e5965a.png" width="20"></i>
+                邀请好友
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" href="tel://400-4000-400">
+                <i class="icon"><img src="img/icon_zskf-5712a3e991.png" width="20"></i>
+                专属客服
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="more">
+                <i class="icon"><img src="img/icon_gd-e207664837.png" width="20"></i>
+                更多
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

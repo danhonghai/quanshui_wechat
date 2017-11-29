@@ -1,0 +1,41 @@
+<ion-view title="更多">
+    <ion-content class="stable-bg">
+        <div class="list">
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem; border-top:none;" ui-sref="aboutlist">
+                <i class="icon"><img src="img/icon_more 5-c28ce309c8.png" width="20"></i>
+                关于我们
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="notice">
+                <i class="icon"><img src="img/icon_more 4-99babb2fdb.png" width="20"></i>
+                平台公告
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="news">
+                <i class="icon"><img src="img/icon_more 1-06e988a846.png" width="20"></i>
+                行业新闻
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="newuser">
+                <i class="icon"><img src="img/icon_more 8-7d7913b713.png" width="20"></i>
+                新手引导
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="feedback">
+                <i class="icon"><img src="img/icon_more 3-150b9485b8.png" width="20"></i>
+                在线反馈
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="security">
+                <i class="icon"><img src="img/icon_more 2-ff659247e6.png" width="20"></i>
+                安全保障
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item item-icon-left item-icon-right" style="padding-left:.4rem;" ui-sref="leaderboard">
+                <i class="icon"><img src="img/icon_more 6-39335e9bcb.png" width="20"></i>
+                英雄榜
+                <i style="color:#dbdbdb;" class="icon ion-ios-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,34 @@
+<ion-view view-title="添加地址">
+    <ion-content class="stable-bg">
+        <form name="addresForm" novalidate>
+            <ul class="list manageaddressbox">
+                <li class="item row">
+                    <div class="col col-25 font-size14 cs6 text-right">姓名</div>
+                    <div class="col">
+                        <input type="text" name="name" placeholder="请输入您的姓名" ng-model="data.name" required>
+                    </div>
+                </li>
+                <li class="item row">
+                    <div class="col col-25 font-size14 cs6 text-right">手机号</div>
+                    <div class="col">
+                        <input type="text" name="phone" placeholder="请输入您的手机号" ng-model="data.phone" required pattern="^[1][3456789][0-9]{9}$">
+                    </div>
+                </li>
+                <li class="item row">
+                    <div class="col col-25 font-size14 cs6 text-right">所在区域</div>
+                    <div class="col">
+                        <input type="text" class="fl" readonly placeholder="请选择区域" id="myAddrs" name="addr" ng-model="data.addr" data-key="11-175-2146" value="山西省 太原市 万柏林区" />
+                        <i style="vertical-align: middle; margin-left: 5px;" class="icon ion-ios-arrow-right font-size20"></i>
+                    </div>
+                </li>
+                <li class="item row">
+                    <div class="col col-25 font-size14 cs6 text-right">详细地址</div>
+                    <div class="col">
+                        <input type="text" name="addres" placeholder="请输入详细地址" ng-model="data.addres" required>
+                    </div>
+                </li>
+            </ul>
+            <button class="button button-positive" ng-disabled="addresForm.$invalid" style="width: 90%; margin: 0 auto; display: block;" ng-click="manageaddressfun()">确定</button>
+        </form>
+    </ion-content>
+</ion-view>

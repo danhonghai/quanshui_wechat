@@ -1,0 +1,18 @@
+<ion-view view-title="设置用户名">
+    <ion-content class="stable-bg">
+        <form name="usernameForm" novalidate>
+            <div class="list assertive-border">
+                <label class="item item-input">
+                	<span class="cs6">新用户名</span>
+                    <input type="text" class="regisphone padding-left5" name="username" placeholder="请输入新用户名" ng-model="data.nickname" required>
+                </label>
+                <div class="tishi cs9 padding10"><span class="red">温馨提示：</span>用户名可用直接用来登录，只能为字母加数字，只能绑定一次。</div>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="usernameForm.$invalid" ng-click="bindusername()">
+                    确定
+                </button>
+            </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

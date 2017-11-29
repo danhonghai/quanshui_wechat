@@ -1,0 +1,132 @@
+<ion-view>
+    <ion-content class="stable-bg" on-swipe-up="openModal()">
+        <div class="prodetail_top">
+            <div class="prolist">
+                <div class="proitem" style="overflow: hidden;">
+                    <div class="row">
+                        <div class="col padding0" ng-bind="prodetail.name?prodetail.name:prodetail.borrowName"></div>
+                        <div class="col-20 padding0 icon_cc">
+                            <img ng-class="{true:'grayscale'}[prodetail.status != 2]" ng-src="{{prodetail.borrowTypeIcon}}">
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col padding0"><span style="font-size: 36px;color: #ff3c00;line-height: 80px;">{{prodetail.apr}}%</span></div>
+                    </div>
+                    <div class="row lastrow">
+                        <div class="col">
+                            <span class="spantop">剩余可投</span>
+                            <br>
+                            <span class="spanbot font-size16 red">{{prodetail.accountResidue | number:2}}</span>
+                        </div>
+                        <div class="col text-center">
+                            <span class="spantop">理财期限</span>
+                            <br>
+                            <span class="spanbot font-size14 blue">{{prodetail.timeLimit?prodetail.timeLimit:prodetail.overplusPeriods}}{{prodetail.isDay == 1?'天':'个月'}}</span>
+                        </div>
+                        <div class="col col-40 text-right">
+                            <span class="spantop">还款方式</span>
+                            <br>
+                            <span ng-if="prodetail.repaymentStyle==0" class="spanbot">到期还本还息</span>
+                            <span ng-if="prodetail.repaymentStyle==1" class="spanbot">按月付息到期还本</span>
+                            <span ng-if="prodetail.repaymentStyle==2" class="spanbot">等额本息</span>
+                        </div>
+                    </div>
+                    <div class="progress" ng-show="prodetail.accountRemain">
+                        <div class="progress-bar">
+                        </div>
+                    </div>
+                    <div class="progressbot" ng-bind="prodetail.scales*100 + '%'" ng-show="prodetail.accountRemain"></div>
+                </div>
+            </div>
+            <div class="payway">
+                <span class="light font-size14" ng-if="prodetail.isRedpacket==1 && prodetail.isRateRises==1">
+                可以使用<i ng-if="prodetail.isRedpacket==1">红包</i>
+                <i ng-if="prodetail.isRedpacket==1 && prodetail.isRateRises==1">、</i>
+                <i ng-if="prodetail.isRateRises==1">加息券</i>
+                </span>
+                <span class="light font-size14" ng-if="prodetail.isRedpacket==0 || prodetail.isRateRises==0">
+                不支持红包加息券
+                </span>
+            </div>
+        </div>
+        <ul class="list prodetaillistmenu" ng-if="prodetail">
+            <li class="item">借款时间<i class="badge badge-light">{{prodetail.publishStartTime | date:"yyyy-MM-dd HH:mm:ss"}}</i></li>
+            <li class="item">结束时间<i class="badge badge-light">{{prodetail.publishEndTime | date:"yyyy-MM-dd HH:mm:ss"}}</i></li>
+        </ul>
+        <div class="row text-center">
+            <div class="col"><img src="img/isc-1391d15b5f.gif"></div>
+        </div>
+        <div class="row text-center">
+            <div class="col" style="color:#999;">上滑查看详情</div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="prodetail_footer padding0">
+        <div class="row padding0">
+            <div class="col-10" ng-click="gocalculator()"><img src="img/icon_jsq-46abf8289a.png" alt=""></div>
+            <div class="col padding0">
+                <input type="text" disabled="disabled" placeholder='{{prodetail.lowestAccount=="0"?"需一次性承接全款":"起投金额：" + prodetail.lowestAccount+"元"}}'>
+            </div>
+            <div class="col-25 padding0">
+                <button class="button" ng-disabled="prodetail.status!=2" ng-click="gopropay()">{{prodetail.status==2?'募集中':prodetail.status==5?'还款中':prodetail.status==6?'已还款':prodetail.status==2?'完成':prodetail.status==3?'已满标':prodetail.status==4?'已满标':''}}</button>
+            </div>
+        </div>
+    </ion-footer-bar>
+    <script id="my-modal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-nav-bar>
+                <ion-nav-title side="center">
+                    <div class="proxqbox row padding0">
+                        <a ng-repeat="pro in prolisttit" class="col proxqtit padding0" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</a>
+                    </div>
+                </ion-nav-title>
+            </ion-nav-bar>
+            <ion-content on-swipe-down="closeModal()" class="stable-bg" style="top:44px;">
+                <div class="xmgk" ng-if="prolisttit[0].success">
+                    <div class="aaa" style="border:none; padding:10px; background: #fff;" ng-bind-html="prodetail.introduce"></div>
+                </div>
+                <div class="fxkz" ng-if="prolisttit[1].success">
+                    <div class="aaa" style="border:none; padding:10px; background: #fff;" ng-bind-html="prodetail.guaranteeApp"></div>
+                </div>
+                <div class="hkjh" ng-if="prolisttit[2].success">
+                    <img style="width:200px;display:block; margin:30px auto;" src="img/noimg-ac3284a1dd.png">
+                    <!-- <div ng-repeat="hkjh in backmoneys" style="margin-bottom: 10px;">
+                        <div class="row">
+                            <div class="col">期数：{{$index+1}}/{{backmoneys.length}}</div>
+                            <div class="col text-right">还款日期：{{hkjh.repaymentTime*1000 | date:"yyyy-MM-dd"}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">实际已还本息
+                                <br><span>{{hkjh.repaymentYesaccount | number:2}}</span></div>
+                            <div class="col">计划还款本息
+                                <br><span>{{hkjh.repaymentAccount | number:2}}</span></div>
+                            <div class="col">状态
+                                <br>
+                                <span ng-if="hkjh.status=='0'">新建</span>
+                                <span ng-if="hkjh.status=='1'">已还款</span>
+                                <span ng-if="hkjh.status=='2'">逾期</span>
+                                <span ng-if="hkjh.status=='3'">待还</span>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="tzjl" ng-if="prolisttit[3].success">
+                    <img ng-if="tzjl.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg-ac3284a1dd.png">
+                    <div ng-if="tzjl.length>0">
+                        <div class="row" style="padding:5px 15px;">
+                            <div class="col padding0">投资人</div>
+                            <div class="col padding0">金额</div>
+                            <div class="col padding0">时间</div>
+                        </div>
+                        <ul class="list">
+                            <li class="row item" style="margin-top: 0px; padding:10px;" ng-repeat="recharge in tzjl">
+                                <div class="col">{{recharge.mobile}}</div>
+                                <div class="col"><span style="color:#ff3c00">{{recharge.account | number:2}}</span></div>
+                                <div class="col">{{recharge.createdTime | date:"yyyy-MM-dd"}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>

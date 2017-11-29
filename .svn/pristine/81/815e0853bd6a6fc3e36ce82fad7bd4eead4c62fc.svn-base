@@ -1,0 +1,71 @@
+<ion-view view-title="我的积分">
+    <ion-content class="stable-bg">
+        <div class="item padding10 mypointop">
+            <div class="row">
+                <div class="col col-25 text-right font-size14 cs6">我的积分</div>
+                <div class="col"><span class="tip">投资项目，赚更多积分>></span></div>
+            </div>
+            <div class="row">
+                <div class="col col-25 text-right font-size14 cs9">可用积分</div>
+                <div class="col font-size18">{{userUserInfoData.pointsUsable}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-25 text-right font-size14 cs9">已获积分</div>
+                <div class="col font-size18">{{userUserInfoData.pointsTotal}}</div>
+            </div>
+            <div class="row mypointopbtn">
+                <div class="col text-left">
+                    <button ng-click="openModal()">积分规则</button>
+                </div>
+                <div class="col text-right">
+                    <button ui-sref="pointlist">积分记录</button>
+                </div>
+            </div>
+        </div>
+        <div class="checkdetabox item padding0" on-swipe-left="switchM('right')" on-swipe-right="switchM('left')">
+            <div class="checkdatekou" style="left: 30px;"><img src="img/tipdate-f7d0fa010f.png"></div>
+            <div class="checkdatekou" style="right: 30px;"><img src="img/tipdate-f7d0fa010f.png"></div>
+            <div class="checkdetaboxtop row">
+                <div class="col col-10" style="padding: 5px 18px;" ng-click="switchM('left')"><i class="icon ion-ios-arrow-left font-size28"></i></div>
+                <div class="col text-center">{{year}}年{{month}}月</div>
+                <div class="col col-10 text-right" style="padding: 5px 18px;" ng-click="switchM('right')"><i class="icon ion-ios-arrow-right font-size28"></i></div>
+            </div>
+            <div class="checkdetaboxbot">
+                <p class="text-center">连续签到{{continuousopint}}天啦~</p>
+            </div>
+            <div class="row text-center">
+                <div class="col">日</div>
+                <div class="col">一</div>
+                <div class="col">二</div>
+                <div class="col">三</div>
+                <div class="col">四</div>
+                <div class="col">五</div>
+                <div class="col">六</div>
+            </div>
+            <div class="checkdetaday">
+                <div class="text-center" ng-repeat="datatext in datatextlist" ng-bind-html="datatext.name">
+                </div>
+            </div>
+            <div class="row checkdetabtn">
+                <div class="col text-center" ng-click="pointbtn()">
+                    <button ng-if="!pointstate.success">{{pointstate.name}}<img src="img/bg_checkdeta-9b311c69b2.png" alt=""></button>
+                    <button style="background-color: #bbb;" ng-if="pointstate.success" disabled="disabled">{{pointstate.name}}<img src="img/bg_checkdeta-9b311c69b2.png" alt=""></button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <script id="my-modal.html" type="text/ng-template">
+        <ion-modal-view>
+            <div class="bar bar-positive">
+                  <h1 class="title">积分规则</h1>
+                  <button class="button button-positive" ng-click="closeModal()"><i class="icon ion-close"></i></button>
+                </div>
+            <ion-content class="light-bg" style="top:44px;">
+                <div class="item" style="background: none;border:none; line-height: 20px;">
+                    <h2 class="cs6" style="margin-bottom: 10px;"><img style="vertical-align: sub;margin-right: 5px;" width="18" src="img/icon_gift-3684c97eea.png">奖励规则</h2>
+                    <p ng-repeat="rule in rules" ng-bind="rule.remark"></p>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>

@@ -1,0 +1,134 @@
+<ion-view view-title="登入注册">
+    <ion-content class="light-bg" overflow-scroll="true">
+        <div class="login_top">
+            <img class="loginlogo" src="img/logo-bdb87ca3d8.png">
+            <img class="loginbg" src="img/bg_logintop-b6ccabb5d1.png">
+        </div>
+        <div class="logintab row padding0 text-center">
+            <div class="col padding0" ng-class="{true:'dq'}[logintit.success]" ng-repeat="logintit in logintabtit" ng-click="logintabfun($index)">{{logintit.name}}</div>
+        </div>
+        <form ng-if="logintabtit[0].success" name="signForm" novalidate>
+            <div class="list assertive-border margin10" style="margin: 30px;">
+                <label class="item item-input">
+                    <input type="text" name="loginphone" placeholder="请输入您的手机号" ng-model="data.userName" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-show="signForm.loginphone.$error.required">
+                        手机号必填
+                    </div>
+                    <div class="tip_tishi" ng-show="signForm.loginphone.$error.pattern">
+                        手机号不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="password" name="loginpassword" ng-model="data.password" required placeholder="请输入您的密码" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$">
+                    <div class="tip_tishi" ng-show="signForm.loginpassword.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="signForm.loginpassword.$error.pattern">
+                        密码必须6到15为数字字母组合
+                    </div>
+                </div>
+            </div>
+            <div class="padding0 text-center" style="margin:0px 30px;">
+                <button class="button button-block button-positive" ng-disabled="signForm.$invalid" ng-click="login()">
+                    登录
+                </button>
+            </div>
+            <div class="padding10 blue text-center" ui-sref="forgotpass">
+                忘记密码？
+            </div>
+        </form>
+        <form ng-if="logintabtit[1].success" name="regisForm" novalidate>
+            <div class="list assertive-border" style="margin:10px 30px">
+                <label class="item item-input">
+                    <input type="text" class="regisphone" name="phone" placeholder="请输入手机号码" ng-model="regdata.userName" required pattern="^[1][3456789][0-9]{9}$">
+                    <div class="tip_tishi" ng-show="regisForm.phone.$error.required">
+                        手机号码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="regisForm.phone.$error.pattern">
+                        手机号码不符合要求
+                    </div>
+                </label>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="text" name="yzm" ng-model="regdata.code" required placeholder="请输入验证码">
+                    <div class="tip_tishi" ng-show="regisForm.password.$error.required">
+                        验证码必填
+                    </div>
+                    <button ng-click="getphoneCodefun()" id="sendButton_reg" class="btn_hqyzm">发送验证码</button>
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="password" name="password" ng-model="regdata.password" required placeholder="请输入您的密码" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$">
+                    <div class="tip_tishi" ng-show="regisForm.password.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="regisForm.password.$error.pattern">
+                        密码必须6到15为数字字母组合
+                    </div>
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="password" name="confirmPassword" ng-model="regdata.confirmPassword" required placeholder="请再次输入您的密码" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$">
+                    <div class="tip_tishi" ng-show="regisForm.confirmPassword.$error.required">
+                        密码必填
+                    </div>
+                    <div class="tip_tishi" ng-show="regisForm.confirmPassword.$error.pattern">
+                        密码必须6到15为数字字母组合
+                    </div>
+                </div>
+                <div class="item item-input padding-right" style="margin-top: 10px;">
+                    <input type="text" name="yqm" ng-disabled="regdata.inviteCode" ng-model="regdata.inviteCode" placeholder="请输入邀请码">
+                </div>
+                 <ion-checkbox class="cs9 text-left tip_login fl inputxy" ng-model="play_lights" required>我已阅读并同意
+            </ion-checkbox><a class="fl yhxy" ng-click="openModal()">《用户协议》</a>
+            <div class="padding">
+                <button style="margin-top: 10px;" class="button button-block button-positive" ng-disabled="regisForm.$invalid || !play_lights" ng-click="register()">
+                    注册
+                </button>
+            </div>
+            </div>
+        </form>
+    </ion-content>
+    <script id="my-modal.html" type="text/ng-template">
+        <ion-modal-view>
+            <div class="bar bar-positive">
+                  <h1 class="title">注册协议</h1>
+                  <button class="button button-positive" ng-click="closeModal()"><i class="icon ion-close"></i></button>
+                </div>
+            <ion-content class="light-bg" style="top:44px;">
+                <div class="item" style="background: none;border:none; line-height: 1.6em;">
+                    <p style="white-space:initial; text-indent: 2em;">e聚富（域名地址www.ejufu.cn）由杭州泉水金融信息服务有限公司创建并运营，以下所称"本网站"即包含了网站本身及网站运营商杭州泉水金融信息服务有限公司。在您注册成为本网站用户前，您已充分阅读并理解本《e聚富注册协议》（"本协议"）的所有条款。您同意以下条款并注册后，将有权依据本协议的条款接受本网站的服务，同时有义务接受本协议条款的约束。</p>
+                     
+                     
+                    <h3 style=" color:#666">一、本协议的文本</h3>
+                     
+                    <p style="white-space:initial; text-indent: 2em;">1.1 本协议的内容包括以下全部条款以及本网站已经发布的及将来可能发布的与出借人用户有关的各项规则，该等规则均为本协议不可分割的一部分，与以下所列条款具有同等法律效力。</p>
+                    <p style="white-space:initial; text-indent: 2em;">1.2 本网站有权根据需要修改本协议的内容。如以下条款或本网站各项规则有任何变更，本网站将在网站上刊载公告。经修订的相关条款和规则一经公告，即于公告规定的特定生效日期自动生效，若您在本协议内容公告变更后继续使用本网站服务的，表示您已充分阅读、理解并接受修改后的协议内容，也将遵循修改后的协议内容使用本网站服务，该等修改即对您产生相应的法律拘束力。</p>
+                    <p style="white-space:initial; text-indent: 2em;">1.3 您只要勾选位于注册页面下方的"我同意《e聚富注册协议》"选项并按照本网站的流程成功注册后，本协议即产生法律效力。您不得以未签署书面协议为由否认本协议的效力。本协议是由您与本网站共同签订的，适用于您在本网站的全部活动。在您注册成为用户时，您已经阅读、理解并接受本协议的全部条款及各类规则，如有违反而导致任何法律后果的发生，您将以自己的名义独立承担所有相应的法律责任。</p>
+                    <p style="white-space:initial; text-indent: 2em;">1.4 本协议不涉及您与本网站的其他用户之间因网上交易而产生的法律关系及法律纠纷。</p>
+                     
+                    <h3 style=" color:#666">二、注册用户的身份限制</h3>
+                    <p style="white-space:initial; text-indent: 2em;">2.1 作为本网站用户，您必须是中国大陆公民，年龄在18周岁以上，且具有完全的民事权利能力及民事行为能力。如不具备上述资格，您应立即停止在本网站的注册程序、停止使用本网站服务，本网站有权随时终止您的注册进程及本网站服务，您应对您的注册给本网站带来的损失承担全额赔偿责任，且您的监护人（如您为限制民事行为能力的自然人）或您的实际控制人（如您为实体）应承担连带责任。</p>
+                    <p style="white-space:initial; text-indent: 2em;">2.2在注册时和使用本网站服务的所有期间，您应提供您自身的真实资料和信息，并保证自您注册之时起至您使用本网站服务的所有期间，所提交的所有资料和信息（包括但不限于电子邮件地址、联系电话、联系地址、邮政编码、个人身份信息、征信信息等）真实、准确、完整，且是最新的。若因您不能按上述约定提供信息或因提供信息不真实、不准确而给网站造成损失的，您将承担赔偿责任。</p>
+                     
+                    <h3 style=" color:#666">三、本网站的服务内容</h3>
+                    <p style="white-space:initial; text-indent: 2em;">在法律法规和本网站经营资质允许的范围内，本网站通过本网站以及其他渠道和方式等向您提供以下服务中的一项或多项：</p>
+                    <p style="white-space:initial; text-indent: 2em;">3.1促成您与借款人/出借人形成借贷交易的居间服务。</p>
+                    <p style="white-space:initial; text-indent: 2em;">3.2促成既有债权转让的居间服务。</p>
+                    <p style="white-space:initial; text-indent: 2em;">3.3其他相关信息、咨询服务。</p>
+                     
+                    <h3 style=" color:#666">四、用户使用限制</h3>
+                     
+                    <p style="white-space:initial; text-indent: 2em;">4.1您不得利用本网站或本网站服务从事任何不符合中国法律法规或侵犯他人权益的活动。本网站在发现您从事该等活动时，有权不经通知而立即停止您对本网站的全部或部分功能的使用，由此给网站造成损失的，您还应当负责赔偿。</p>
+                    <p style="white-space:initial; text-indent: 2em;">4.2 在使用本网站提供的任何服务（包括但不限于站内信服务、群组服务、论坛服务或其他电子邮件转发服务）的过程中，您不得发送、公布或展示任何垃圾邮件、信息或其他可能违反中国法律法规及本协议的内容。本网站在发现您从事该等活动或发布该等内容时，有权不经您同意而删除该等内容，并有权不经通知而立即暂停或停止您对本网站的全部或部分功能的使用。若您因从事该等活动或发布该等内容给他人造成损失的，您还将自行承担对第三人的赔偿责任，如同时给网站造成损失的，网站也有权向您主张赔偿。</p>
+                    <p style="white-space:initial; text-indent: 2em;">4.3 您在注册时向本网站提交的电子邮箱、用户名、密码及安全问题答案是您在本网站的唯一识别信息。您注册成功后，不得将注册的电子邮箱、用户名、密码及安全问题答案转让或授权给第三方使用。您确认，使用您的用户名和密码登录本网站后在本网站的一切行为以及以您在本网站注册时提交的个人电子邮箱发送邮件的行为均代表您本人并由您承担相应的法律后果。</p>
+                    <p style="white-space:initial; text-indent: 2em;">4.4 本网站的所有内容，包括但不限于文本、数据、图片、音频、视频、源代码和其他所有信息，均由本网站享有完整的知识产权权利。未经本网站事先书面同意，您或其他任何人不得复制、改编、传播、公布、展示或以任何其他方式侵犯本网站的知识产权。</p>
+                     
+                    <h3 style=" color:#666">五、用户信息的保护及披露</h3>
+                    <p style="white-space:initial; text-indent: 2em;">5.1 您同意本网站在业务运营中收集和储存您的用户信息，包括但不限于您自行提供的资料和信息，以及本网站自行收集、取得的您在本网站的交易记录和使用信息等。本网站收集和储存您的用户信息的主要目的在于提高为您提供服务的效率和质量。</p>
+                    <p style="white-space:initial; text-indent: 2em;">5.2 您同意本网站在业务运营中使用您的用户信息，包括但不限于（1）向本网站的合作机构（该合作机构仅限于本网站为了完成拟向您提供服务而合作的机构）提供您的用户信息；（2）由人工或自动程序对您信息进行评估、分类、研究；（3）使用您的用户信息以改进本网站的推广；（4）向意向借款人/出借人披露、提供您的基本信息；以及（5）使用您提供的联系方式与您联络并向您传递有关业务和管理方面的信息。本网站在必要时可能调查多个用户以识别问题或解决争议，特别是本网站可审查您的资料以区分使用多个用户名或别名的用户。（6）基于法律、法规或政府主管部门要求提供。</p>
+                     
+                    <h3 style=" color:#666">六、争议的处理</h3>
+                    <p style="white-space:initial; text-indent: 2em;">本协议履行过程中，如发生任何争执或纠纷，双方应友好协商解决，协商不成的，任何一方有权向本网站住所地人民法院提起诉讼。</p>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>

@@ -1,0 +1,6 @@
+<ion-view title="积分商城">
+    <ion-content class="stable-bg">
+    <img src="img/logo1-38d0f79202.png" style="display: block; margin: 20px auto;">
+    <h4 class="cs9 text-center">积分商城暂未开放</h4>
+    </ion-content>
+</ion-view>

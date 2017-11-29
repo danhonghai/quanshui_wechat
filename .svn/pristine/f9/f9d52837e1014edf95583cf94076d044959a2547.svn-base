@@ -1,0 +1,40 @@
+<ion-view>
+    <ion-nav-bar>
+        <ion-nav-title side="center" style="background:#fff;">
+            <div class="borrowtop row padding0">
+                <div ng-repeat="findetails in findetailslists" class="col padding0" ng-class="{true: 'dq', false: ''}[findetails.success]" ng-click="findetailsfun($index)">{{findetails.name}}</div>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+    <div class="moneypx" style="height:44px;">
+        <div class="row text-left">
+            <div class="col">
+                积分数／类型
+            </div>
+            <div class="col text-right">
+                时间／备注
+            </div>
+        </div>
+    </div>
+    <ion-content class="stable-bg" style="top:88px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg-ac3284a1dd.png">
+    <div class="list">
+        <div class="item" style="padding:5px 15px;" ng-repeat="pointdetail in pointdetails">
+            <div class="row padding0">
+                <div class="col"><span ng-bind="pointdetail.changeValue"></span></div>
+                <div class="col text-right"><span class="cs9" ng-bind="pointdetail.createdTime | date:'yyyy-MM-dd HH:mm'"></span></div>
+            </div>
+            <div class="row padding0">
+                <div class="col"><span class="green"  ng-if="pointdetail.opType == 1">收入</span><span class="red"  ng-if="pointdetail.opType == 2">支出</span><span class="blue"  ng-if="pointdetail.opType == 3">冻结</span></div>
+                <div class="col text-right"><span class="cs6">{{pointdetail.remark}}</span></div>
+            </div>
+        </div>
+    </div>
+    <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+    <div ng-if="moredata && pointdetails.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
+        </div>
+    </ion-content>
+</ion-view>

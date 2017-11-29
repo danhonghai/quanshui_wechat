@@ -1,0 +1,40 @@
+<ion-view view-title="提现">
+    <ion-content class="stable-bg">
+        <div class="list light-bg page_recharge margin0">
+            <div class="item item-input item-stacked-label">
+                <span class="input-label"><i><img src="img/icon_withdrawal-458890eb1a.png" alt=""></i>金额</span>
+                <span class="recharge_jl" ng-click="rechargelist(2)">提现记录</span>
+                <div class="row padding0">
+                    <div class="col col-20">提现</div>
+                    <div class="col"><input type="num" ng-model="data.amount" placeholder="请输入金额"></div>
+                    <div class="col col-10"><i class="icon ion-ios-close-empty" ng-click="clearmoney()"></i></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="item row">
+                <div class="col col-25 cs9 font-size16 text-center" style="line-height: 26px;">银行卡</div>
+                <div class="col" style="line-height: 24px;">
+                    <input style="border:none; background: none; background: url(img/icon_bank-6ef92731a7.png) no-repeat left center; background-size: 20px; padding-left: 25px;" class="select_bank font-size14" id="select_bank" ng-model="data.redb" placeholder="请选择银行卡" />
+                    <i class="icon ion-ios-arrow-right fr font-size26"></i>
+                </div>
+            </div> -->
+        <div class="padding-left padding-right">
+            <button class="button button-block button-positive" ng-click="withdrawalbtn()">确定</button>
+        </div>
+    </ion-content>
+    <script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-content>
+            <form id="rechargeForm" action="https://jzh-test.fuiou.com/jzh/app/500003.action" method="post">
+                <input type='hidden' name='mchnt_cd' value="{{submitdata.mchnt_cd}}"/>
+                <input type='hidden' name='mchnt_txn_ssn' value="{{submitdata.mchnt_txn_ssn}}"/>
+                <input type='hidden' name='login_id' value="{{submitdata.login_id}}"/>
+                <input type='hidden' name='amt' value="{{submitdata.amt}}"/>
+                <input type='hidden' name='page_notify_url' value="{{submitdata.page_notify_url}}"/>
+                <input type='hidden' name='back_notify_url' value="{{submitdata.back_notify_url}}"/>
+                <input type='hidden' name='signature' value="{{submitdata.signature}}"/>
+            </form>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

@@ -1,0 +1,42 @@
+<ion-view view-title="充值">
+    <ion-content class="stable-bg">
+        <div class="list light-bg page_recharge">
+            <div class="item item-input item-stacked-label">
+                <span class="input-label"><i><img src="img/icon_recharge-14a02a0778.png" alt=""></i>金额</span>
+                <span class="recharge_jl" ng-click="rechargelist(1)">充值记录</span>
+                <div class="row padding0">
+                    <div class="col col-20">充值</div>
+                    <div class="col"><input type="num" ng-model="data.amount" placeholder="请输入金额"></div>
+                    <div class="col col-10"><i class="icon ion-ios-close-empty" ng-click="clearmoney()"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="padding-left padding-right">
+            <button class="button button-block button-positive" ng-click="rechargebtn()">确定</button>
+        </div>
+        <div class="item" style="background: none;border:none; line-height: 20px; ">
+            <h2 class="cs6" style="margin-bottom: 10px;">温馨提示</h2>
+            <p style=" white-space: initial;">1、为保证充值正常进行，请在充值前开通银行存管账户。</p>
+            <p style=" white-space: initial;">2、使用银行卡进行充值时，不同银行卡的支付额度以各银行限额为准。</p>
+            <p style=" white-space: initial;">3、银行卡余额不足、交易密码错误或银行卡出现挂失注销等情况可能会导致充值失败，请核实后再进行充值。</p>
+            <p style=" white-space: initial;">4、正常情况下，充值即时到账。如果银行提示扣款之后账户余额没有相应增加，可能是存管系统延迟会在10-30分钟后到账，到账后不影响正常使用，也可联系客服（400-839-8848）处理。</p>
+            <p style=" white-space: initial;">5、为遵守国家反洗钱和套现行为的相关规定：充值后的所有资金若不投标须等15天后才能提现。</p>
+
+        </div>
+    </ion-content>
+    <script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-content>
+            <form id="rechargeForm" action="https://jzh-test.fuiou.com/jzh/app/500001.action" method="post">
+                <input type='hidden' name='mchnt_cd' value="{{submitdata.mchnt_cd}}"/>
+                <input type='hidden' name='mchnt_txn_ssn' value="{{submitdata.mchnt_txn_ssn}}"/>
+                <input type='hidden' name='login_id' value="{{submitdata.login_id}}"/>
+                <input type='hidden' name='amt' value="{{submitdata.amt}}"/>
+                <input type='hidden' name='page_notify_url' value="{{submitdata.page_notify_url}}"/>
+                <input type='hidden' name='back_notify_url' value="{{submitdata.back_notify_url}}"/>
+                <input type='hidden' name='signature' value="{{submitdata.signature}}"/>
+            </form>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

@@ -1,0 +1,44 @@
+<ion-view>
+        <ion-nav-bar>
+        <ion-nav-title side="center" style="background:#fff;">
+            <div class="borrowtop row padding0">
+                <div ng-repeat="borrowstate in borrowstatelists" class="col padding0" ng-class="{true: 'dq', false: ''}[borrowstate.success]" ng-click="borrowstatefun($index)">{{borrowstate.name}}</div>
+            </div>
+        </ion-nav-title>
+    </ion-nav-bar>
+    <ion-content class="stable-bg" style="top:44px;">
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
+        <img ng-if="pointdetails.length == 0" style="width:200px;display:block; margin:30px auto;" src="img/noimg-ac3284a1dd.png">
+        <div class="homeborrow" style="margin-top:.1rem;">  
+            <div class="list">
+                <div class="item" ng-repeat="borrowlist in pointdetails" style="margin: .1rem; padding: 0; padding-right: 30px; border-radius: 5px;">
+                    <h4 style="border-bottom: 1px solid #ddd; line-height: 40px; padding: 0 10px;">
+                        <span ng-if="borrowstatelists[0].success" class="fr calm">进度：{{borrowlist.jinDu*100}}%</span>
+                        <span ng-if="borrowstatelists[1].success" class="fr energized">期数：{{borrowlist.borrowsDqqs}}/{{borrowlist.borrowQs}}</span>
+                        <span ng-if="borrowstatelists[2].success" class="fr red">逾期中</span>
+                        <span ng-if="borrowstatelists[3].success" class="fr">已完结</span>
+                        <img style="width:.4rem;" ng-src="{{borrowlist.borrowTypeIcon}}">{{borrowlist.borrowName}}</h4>
+                    <div class="row">
+                        <div class="col"><span>借款金额</span><p class="bigred red">{{borrowlist.account | number:2}}</p></div>
+                        <div class="col text-center"><span>投资期限</span><p class="red">{{borrowlist.timeLimit}}<i ng-bind="borrowlist.isDay==1?'天':'个月'"></i></p></div>
+                        <div class="col text-right" ng-if="borrowstatelists[0].success"><span>已募集金额</span><p>{{borrowlist.accountYes | number:2}}</p></div>
+                        <div class="col text-right" ng-if="borrowstatelists[1].success || borrowstatelists[2].success"><span>待还金额</span><p>{{borrowlist.borrowRepaymentMoney | number:2}}</p></div>
+                        <div class="col text-right" ng-if="borrowstatelists[3].success"><span>完成时间</span><p>{{borrowlist.updatedTime | date:'yyyy-MM-dd'}}</p></div>
+                    </div>
+                    <div ng-if="borrowstatelists[2].success" class="row" style="border-top: 1px solid #ddd; line-height: 30px; padding: 0 5px;">
+                        <div class="col">逾期罚息：<span class="red">{{borrowlist.lateInterest | number:2}}</span></div>
+                        <div class="col text-right"><button ng-if="borrowlist.borrowRepaymentstatus!=4" style="border: 1px solid #fc6969;background: none;color: #fc6969;border-radius: 15px;" ng-click="repaylink(borrowlist.borrowRepaymentId,1)">还款</button><button ng-if="borrowlist.borrowRepaymentstatus==4" style="border: 1px solid #999;background: none;color: #999;border-radius: 15px;">还款中</button></div>
+                    </div>
+                    <div ng-if="borrowstatelists[1].success" class="row" style="border-top: 1px solid #ddd; line-height: 30px; padding: 0 5px;">
+                        <div class="col">本期还款日：<span class="red">{{borrowlist.borrowRepaymentTime | date:'yyyy-MM-dd'}}</span></div>
+                        <div class="col text-right"><button ng-if="borrowlist.borrowRepaymentstatus!=4" style="border: 1px solid #fc6969;background: none;color: #fc6969;border-radius: 15px;" ng-click="repaylink(borrowlist.borrowRepaymentId,0)">还款</button><button ng-if="borrowlist.borrowRepaymentstatus==4" style="border: 1px solid #999;background: none;color: #999;border-radius: 15px;">还款中</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ion-infinite-scroll ng-if="!moredata" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+        <div ng-if="moredata && pointdetails.length > 0" style="color: #999;text-align: center;line-height: 40px;margin: 0 10px;border-bottom: 1px solid #dbdbdb;height: 0px;padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="padding:0px 10px; background:#f5f5f5;"><i class="icon ion-sad-outline" style="font-size: 18px; vertical-align: middle;"></i> 我是有底线的</span>
+        </div>
+    </ion-content>
+</ion-view>

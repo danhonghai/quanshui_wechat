@@ -1,0 +1,24 @@
+<ion-view view-title="银行卡管理">
+    <ion-content class="stable-bg">
+        <div class="list addressbox">
+            <div class="item" style="border-radius: 5px; background: url(img/bg_bankcard.png) no-repeat; background-size: 100% 100%;margin: 15px 15px 0; padding:16px; border:none;" ng-repeat="bankcard in [1,2,3]">
+                <div class="row padding0">
+                    <div class="col col-20 text-left font-size14">
+                        <img src="img/icon_gs.png" alt="">
+                    </div>
+                    <div class="col text-left font-size14">
+                        <p style="color: #fff;">中国工商银行</p>
+                        <p style="color: #fff;">储蓄卡</p>
+                        <p style="color: #fff;">6228 **** **** 5584 315</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item row addressbtn" ui-sref="addbankcard">
+            <div class="col col-33 cs3">添加银行卡</div>
+            <div class="col text-right">
+                <i class="icon ion-ios-arrow-right font-size20 vam"></i>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

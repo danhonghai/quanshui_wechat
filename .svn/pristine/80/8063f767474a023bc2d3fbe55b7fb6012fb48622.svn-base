@@ -1,0 +1,5 @@
+<ion-view title="安全保障">
+    <ion-content>
+        <img src="img/pic_safe.png">
+    </ion-content>
+</ion-view>

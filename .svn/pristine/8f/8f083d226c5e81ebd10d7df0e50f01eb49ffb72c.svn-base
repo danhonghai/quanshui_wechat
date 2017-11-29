@@ -1,0 +1,25 @@
+<ion-view>
+    <ion-content class="status-bg">
+    <h4 class="text-center">{{borrowName}}</h4>
+        <div class="row text-left stable-bg" style="height:34px; line-height:24px; border-bottom:1px solid #dbdbdb;">
+            <div class="col padding0 font-size14">
+                期数
+            </div>
+            <div class="col padding0 text-center font-size14">
+                金额
+            </div>
+            <div class="col padding0 text-center font-size14">
+                罚息
+            </div>
+            <div class="col padding0 text-right font-size14">
+                状态
+            </div>
+        </div>
+        <div class="row" style="border-bottom:1px solid #dbdbdb; margin-top:0px; padding-top:5px;" ng-repeat="invitelist in data">
+            <div class="col">{{invitelist.borrowsDqqs}}/{{invitelist.borrowQs}}</div>
+            <div class="col text-center">{{invitelist.borrowRepaymentMoney | number:2}}</div>
+            <div class="col text-center">{{invitelist.lateInterest | number:2}}</div>
+            <div class="col text-right">{{invitelist.borrowRepaymentstatus==0?"未还款":invitelist.borrowRepaymentstatus==1?"已还款":invitelist.borrowRepaymentstatus==4?"还款中":"已逾期"}}</div>
+        </div>
+    </ion-content>
+</ion-view>

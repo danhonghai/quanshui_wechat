@@ -1,0 +1,322 @@
+<ion-view title="关于我们">
+    <ion-content>
+    <style>
+		.cd-container {
+		  width: 90%;
+		  max-width: 1170px;
+		  margin: 0 auto;
+		}
+		.cd-container::after {
+		  content: '';
+		  display: table;
+		  clear: both;
+		}
+
+		#cd-timeline {
+		  position: relative;
+		  padding: 2em 0;
+		  margin-top: 2em;
+		  margin-bottom: 2em;
+		}
+		#cd-timeline::before {
+		  content: '';
+		  position: absolute;
+		  top: 0;
+		  left: 18px;
+		  height: 100%;
+		  width: 4px;
+		  background: #d7e4ed;
+		}
+		@media only screen and (min-width: 1170px) {
+		  #cd-timeline {
+		    margin-top: 3em;
+		    margin-bottom: 3em;
+		  }
+		  #cd-timeline::before {
+		    left: 50%;
+		    margin-left: -2px;
+		  }
+		}
+
+		.cd-timeline-block {
+		  position: relative;
+		  margin: 2em 0;
+		}
+		.cd-timeline-block:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+		.cd-timeline-block:first-child {
+		  margin-top: 0;
+		}
+		.cd-timeline-block:last-child {
+		  margin-bottom: 0;
+		}
+		@media only screen and (min-width: 1170px) {
+		  .cd-timeline-block {
+		    margin: 4em 0;
+		  }
+		  .cd-timeline-block:first-child {
+		    margin-top: 0;
+		  }
+		  .cd-timeline-block:last-child {
+		    margin-bottom: 0;
+		  }
+		}
+
+		.cd-timeline-img {
+		  position: absolute;
+		  top: 12px;
+		  left: 10px;
+		  width: 20px;
+		  height: 20px;
+		  border-radius: 50%;
+		  box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+		}
+		.cd-timeline-img img {
+		  display: block;
+		  width: 24px;
+		  height: 24px;
+		  position: relative;
+		  left: 50%;
+		  top: 50%;
+		  margin-left: -12px;
+		  margin-top: -12px;
+		}
+		.cd-timeline-img.cd-picture {
+		  background: #2196F3;
+		}
+		.cd-timeline-img.cd-movie {
+		  background: #2196F3;
+		}
+		.cd-timeline-img.cd-location {
+		  background: #2196F3;
+		}
+		@media only screen and (min-width: 1170px) {
+		  .cd-timeline-img {
+		    width: 60px;
+		    height: 60px;
+		    left: 50%;
+		    margin-left: -30px;
+		    /* Force Hardware Acceleration in WebKit */
+		    -webkit-transform: translateZ(0);
+		    -webkit-backface-visibility: hidden;
+		  }
+		  .cssanimations .cd-timeline-img.is-hidden {
+		    visibility: hidden;
+		  }
+		  .cssanimations .cd-timeline-img.bounce-in {
+		    visibility: visible;
+		    -webkit-animation: cd-bounce-1 0.6s;
+		    -moz-animation: cd-bounce-1 0.6s;
+		    animation: cd-bounce-1 0.6s;
+		  }
+		}
+
+		.cd-timeline-content {
+		  position: relative;
+		  margin-left: 40px;
+		  background: #e1e1e1;
+		  border-radius: 0.25em;
+		  /* padding: 1em; */
+		  box-shadow: 0 3px 0 #2196F3;
+		}
+		.cd-timeline-content:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+		.cd-timeline-content h2 {
+		  color: #fff;
+		  background: #2196F3;
+		  width: 30%;
+		  display: block;
+		  height: 50px;
+		  line-height: 50px;
+		  float: left;
+		  padding: 0 5px;
+		  font-size:18px;
+		  border-radius: 5px 0 0 3px;
+		  margin-bottom:0px; 
+		  text-align: center;
+		}
+		.cd-timeline-content p, .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+		  font-size: 13px;
+		}
+		.cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+		  display: inline-block;
+		}
+		.cd-timeline-content p {
+		  line-height: 1.6;
+		  width: 70%;
+		  float: left;
+		  display: block;
+		  padding: 5px;
+		  margin-bottom:0px; 
+		}
+		.cd-timeline-content .cd-read-more {
+		  float: right;
+		  padding: .8em 1em;
+		  background: #acb7c0;
+		  color: white;
+		  border-radius: 0.25em;
+		}
+		.no-touch .cd-timeline-content .cd-read-more:hover {
+		  background-color: #bac4cb;  
+		}
+		a.cd-read-more:hover{text-decoration:none; background-color: #424242;  }
+		.cd-timeline-content .cd-date {
+		  float: left;
+		  padding: .8em 0;
+		  opacity: .7;
+		}
+		.cd-timeline-content::before {
+		  content: '';
+		  position: absolute;
+		  top: 16px;
+		  right: 100%;
+		  height: 0;
+		  width: 0;
+		  border: 7px solid transparent;
+		  border-right: 7px solid #2196F3;
+		}
+		@media only screen and (min-width: 768px) {
+		  .cd-timeline-content h2 {
+		    font-size: 20px;
+		  }
+		  .cd-timeline-content p {
+		    font-size: 16px;
+		  }
+		  .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+		    font-size: 14px;
+		  }
+		}
+		@media only screen and (min-width: 1170px) {
+		  .cd-timeline-content {
+		    margin-left: 0;
+		    padding: 1.6em;
+		    width: 45%;
+		  }
+		  .cd-timeline-content::before {
+		    top: 24px;
+		    left: 100%;
+		    border-color: transparent;
+		    border-left-color: white;
+		  }
+		  .cd-timeline-content .cd-read-more {
+		    float: left;
+		  }
+		  .cd-timeline-content .cd-date {
+		    position: absolute;
+		    width: 100%;
+		    left: 122%;
+		    top: 6px;
+		    font-size: 16px;
+		  }
+		  .cd-timeline-block:nth-child(even) .cd-timeline-content {
+		    float: right;
+		  }
+		  .cd-timeline-block:nth-child(even) .cd-timeline-content::before {
+		    top: 24px;
+		    left: auto;
+		    right: 100%;
+		    border-color: transparent;
+		    border-right-color: white;
+		  }
+		  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-read-more {
+		    float: right;
+		  }
+		  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-date {
+		    left: auto;
+		    right: 122%;
+		    text-align: right;
+		  }
+		  .cssanimations .cd-timeline-content.is-hidden {
+		    visibility: hidden;
+		  }
+		  .cssanimations .cd-timeline-content.bounce-in {
+		    visibility: visible;
+		    -webkit-animation: cd-bounce-2 0.6s;
+		    -moz-animation: cd-bounce-2 0.6s;
+		    animation: cd-bounce-2 0.6s;
+		  }
+		}
+
+		@media only screen and (min-width: 1170px) {
+		  /* inverse bounce effect on even content blocks */
+		  .cssanimations .cd-timeline-block:nth-child(even) .cd-timeline-content.bounce-in {
+		    -webkit-animation: cd-bounce-2-inverse 0.6s;
+		    -moz-animation: cd-bounce-2-inverse 0.6s;
+		    animation: cd-bounce-2-inverse 0.6s;
+		  }
+		}
+
+    </style>
+    	<div class="about_top">
+			<h4>欢迎来到</h4>
+			<img class="icon" src="img/pic_about1-9926c4d4b9.png">
+			<span>www.ejufu.cn</span>
+			<p>
+			e聚富平台隶属于杭州泉水金融信息服务有限公司，由天天快递等 实力雄厚的大股东共同注资成立，注册资金2000万元，总部位于杭州。平台专注于产业垂直细分领域的互联网金融信息服务，依托互联网信息技术的进步和金融体系的创新，整合天天快递仓储物流、供应链金融，服务于线上有闲散资金但缺乏理财渠道的大众，使 得资金直接和小微企业的需求对接，让小微企业得到经营活动所需要的资金和更快捷灵活的服务，同时也为e聚富投资用户提供稳健、安全、可持续的理财产品，帮助用户实现财富增值。
+			</p>
+			<p>
+			我们秉承“稳健、务实、可持续性”的企业精神，以“开放、创新、分享”的企业心态去面对不断变化的市场，致力于开创互联网金融信息服务新格局，打造出国内一流的、专业的、创新型互联网惠普金融平台，为社会大众提供优质的产品与服务，不断创造社会价值! 
+			</p>
+    	</div>
+    	<div class="row">
+			<div class="col text-center">
+				<img style="width:60%;" src="img/icon_about1-1039640d85.png">
+				<h5 class="cs6 margin0">公司理念</h5>
+				<p class="cs9 margin0">稳健 开放<br>创新 分享</p>
+			</div>
+			<div class="col text-center">
+				<img style="width:60%;" src="img/icon_about2-1d429b6613.png">
+				<h5 class="cs6 margin0">核心价值观</h5>
+				<p class="cs9 margin0">为员工创造平台<br>为用户创造收益愿景</p>
+			</div>
+			<div class="col text-center">
+				<img style="width:60%;" src="img/icon_about3-84953748b2.png">
+				<h5 class="cs6 margin0">企业愿景</h5>
+				<p class="cs9 margin0">成为产业垂直细<br>分领域的领导者</p>
+			</div>
+    	</div>
+    	<section id="cd-timeline" class="cd-container">
+    		<div style=" width: 60px;height: 60px;position: absolute;z-index: 9;background: #2196f3;color: #fff;text-align: center;line-height: 60px;border-radius: 50%;top: -35px;left: -10px; font-size:16px;">大事记</div>
+			<div class="cd-timeline-block" ng-repeat="historydata in historydatas">
+				<div class="cd-timeline-img cd-picture">
+				</div>
+				<div class="cd-timeline-content">
+					<h2>{{historydata.time}}</h2>
+					<p>{{historydata.text}}</p>
+				</div>
+			</div>
+		</section>
+    	<div class="contact">
+    		<div class="contact_tit cs6">
+				<img src="img/icon_about4-097ddd14ed.png">联系我们
+    		</div>
+    		<div class="contact_cen">
+    			<div class="card_contact">
+					<p>联系·泉水金服</p>
+					<b>{{aboutdata[0].value}}</b>
+					<ul>
+						<li>
+							<i class="iocn ion-social-tux font-size20" style="vertical-align:middle;"></i>
+							<a href="http://wpa.qq.com/msgrd?V=1&Uin={{aboutdata[3].value}}Site=By%20Dvbbs&Menu=yes"> {{aboutdata[3].value}}</a>
+						</li>
+						<li>
+							<i class="iocn ion-android-mail font-size20" style="vertical-align:middle;"></i>
+							<a href="mailto:{{aboutdata[2].value}}"> {{aboutdata[2].value}}</a>
+						</li>
+						<li>
+							<i class="iocn ion-earth font-size20" style="vertical-align:middle;"></i>
+							
+							<a href="http://api.map.baidu.com/marker?location=120.184789,30.220735&title=浙江杭州市钱江路58号赞成大厦3幢6楼&content=赞成大厦3幢6楼&output=html"> {{aboutdata[1].value}}</a>
+						</li>
+					</ul>
+    			</div>
+    		</div>
+    	</div>
+    </ion-content>
+</ion-view>

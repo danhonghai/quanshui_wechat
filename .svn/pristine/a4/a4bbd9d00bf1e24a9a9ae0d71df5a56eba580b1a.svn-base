@@ -1,0 +1,82 @@
+<ion-view view-title="E聚富">
+    <ion-content>
+        <!-- 首页banner图 -->
+        <div class="home_top">
+            <!-- <div class="buttons buttons-right header-item">
+                <i class="ion-ios-bell-outline">
+                        <p class="badge badge-assertive">1</p>
+                      </i>
+            </div> -->
+            <div class="swiper-container swiper-container1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" ng-repeat="homebannerlist in homebannerlists">
+                    <img style="width: 100%;" ng-src="{{homebannerlist.imgUrl}}" onerror="javascript:this.src='img/logo1-38d0f79202.png'" /></div>
+                </div>
+            </div>
+        </div>
+        <!-- 首页平台公告 -->
+        <div class="home_notivce">
+            <div class="home_notivce_left"><i class="icon ion-android-volume-up"></i>平台公告</div>
+            <div class="home_notivce_right">
+                <div class="swiper-container swiper-container3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" ng-repeat="notic in noticList" ng-bind-html="notic.title | limitTo :14" ng-click="noticelink(notic.id)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 首页快捷菜单 -->
+        <div class="row home_menu">
+            <div class="col col-25 text-center">
+                <i><img src="img/homemenu_icon1-6a31c41cf5.png" ui-sref="tab.mall" alt="积分商城"></i>
+                <div>积分商城</div>
+            </div>
+            <div class="col col-25 text-center">
+                <i><img src="img/homemenu_icon2-ea50b13449.png" ui-sref="newuser" alt="新手指引"></i>
+                <div>新手指引</div>
+            </div>
+            <div class="col col-25 text-center" ui-sref="security">
+                <i><img src="img/homemenu_icon3-018afe9e4d.png" alt="安全保障"></i>
+                <div>安全保障</div>
+            </div>
+            <div class="col col-25 text-center" ui-sref="aboutlist">
+                <i><img src="img/homemenu_icon4-84a7d22e2c.png" alt="关于我们"></i>
+                <div>关于我们</div>
+            </div>
+        </div>
+        <!-- 首页新手专享 -->
+        <div class="newuser" ng-repeat="xspro in xslist" ng-click="goprodetail('{{xspro.id}}')">
+            <h4>新手专享<span>新手福利 放心首选</span></h4>
+            <div class="row" style="padding:0px 10px;">
+                <div class="col col-33">{{xslist[0].apr}}%
+                    <br><span>预期年化收益</span></div>
+                <div class="col col-40">{{xslist[0].borrowName}}
+                    <br><span>期限<i class="bule">{{xslist[0].timeLimit}}</i>天</span></div>
+            </div>
+        </div>
+        <div class="swiper-container swiper-container2">
+            <div class="swiper-wrapper" style="padding-bottom: 30px;">
+                <div class="swiper-slide" ng-repeat="tjpro in borrowInfoPage">
+                    <div class="text-center home_prolist" style="margin-top:20px;">
+                        <h4>{{tjpro.borrowName}}</h4>
+                        <canvas id="meter{{$index}}" width="180" height="180"></canvas>
+                        <div class="row text-center">
+                            <div class="col col-40"><span>年化收益:<b class="red font-size18">{{tjpro.apr}}%</b></span></div>
+                            <div class="col"><span>起投:{{tjpro.lowestAccount | number:2}}</span></div>
+                            <div class="col"><span>期限:{{tjpro.timeLimit}}{{tjpro.isDay==1?'天':'月'}}</span></div>
+                        </div>
+                        <div style="margin:0 15px;">
+                            <button class="button button-block button-positive" ng-click="goprodetail(tjpro.id)">
+                                立即投资
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 首页资质 -->
+        <div class="home_zizhi">
+            <img src="img/zizhi-025ba0ef6c.jpg" alt="新手专享">
+        </div>
+    </ion-content>
+</ion-view>

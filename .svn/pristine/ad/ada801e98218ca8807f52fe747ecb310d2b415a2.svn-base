@@ -1,0 +1,51 @@
+<ion-view view-title="三方回调">
+    <ion-content>
+    <style>
+        .success,
+        .error {
+            width: 100%;
+            max-width: 375px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 50px 0;
+        }
+
+        .success img,
+        .error img {
+            width: 60%;
+            display: block;
+            margin: 0 auto;
+        }
+        p {
+            line-height: 50px;
+            text-align: center;
+            color: #666;
+        }
+        button {
+                width: 60%;
+                margin: 0 auto;
+                display: block;
+                height: 30px;
+                border: none;
+                border-radius: 5px;
+                background: #F75454;
+                color: #fff;
+                font-size: 16px;
+        }
+    </style>
+    <div id="success" class="success" ng-if="data.code=='0000'">
+        <div class="successimg">
+            <img src="img/sucess-6d2dcf784b.png">
+        </div>
+    </div>
+    <div id="error" class="error" ng-if="data.code!='0000'">
+        <div class="errorimg">
+            <img src="img/error-4d414b044d.png">
+        </div>
+    </div>
+
+        <p class="msg" ng-bind="data.msg"></p>
+        <button id="autoback" style="margin-bottom:10px; background:#03A9F4;">{{data.time}}秒后自动返回</button>
+        <button ng-click="linkfun()">返回账户</button>
+    </ion-content>
+</ion-view>

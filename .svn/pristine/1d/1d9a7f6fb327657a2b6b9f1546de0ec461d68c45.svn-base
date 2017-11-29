@@ -1,0 +1,50 @@
+<ion-view>
+        <div class="paymentmanagetop">
+            <div class="row padding0">
+                <div class="col col-20 text-center" style="line-height: 34px;">时间:</div>
+                <div class="col padding0">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div ng-repeat="pro in prolisttit" class="paymentmanagetoptab swiper-slide" ng-class="{true: 'dq', false: ''}[pro.success]" ng-click="protittopfc($index)">{{pro.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <ion-content class="stable-bg" style="top:44px;">
+        <div class="list">
+            <div class="item paymentbox" ng-repeat="paymentlist in [1,2,3,4]">
+                <h2>推荐理财第一期</h2>
+                <div class="row paymentrowtop">
+                	<div class="col">需还本息<br><span>10000</span></div>
+                	<div class="col">待还本息<br><span>2000</span></div>
+                	<div class="col">期限<br><span>60天</span></div>
+                </div>
+                <div class="paymentrowbot">
+                	<div class="row">
+                		<div class="col col-50">1/3 本期应还本息:</div>
+                		<div class="col">3000</div>
+                		<div class="col col-20">
+                			<button class="button">已还款</button>
+                		</div>
+                	</div>
+                	<div class="row">
+                		<div class="col col-50">2/3 本期应还本息:</div>
+                		<div class="col red">3000</div>
+                		<div class="col col-20">
+                			<button class="button red">还款</button>
+                		</div>
+                	</div>
+
+                	<div class="row">
+                		<div class="col col-50">3/3 本期应还本息:</div>
+                		<div class="col">3000</div>
+                		<div class="col col-20">
+                			<button class="button">未出账</button>
+                		</div>
+                	</div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

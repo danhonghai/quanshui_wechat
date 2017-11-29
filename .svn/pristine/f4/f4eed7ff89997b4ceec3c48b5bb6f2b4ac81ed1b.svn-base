@@ -1,0 +1,15 @@
+<ion-view title="网络错误">
+    <ion-content>
+        <div class="list" style="margin-top: 44px;">
+            <div class="item">
+                <h2 class="cs6">请设置您的网络</h2>
+                <div class="cs9 font-size14" style="white-space: normal;">1、打开设备的“系统设置”>“无线和网络”>“移动网络”</div>
+                <div class="cs9 font-size14" style="white-space: normal;">2、打开设备的“系统设置”>“WLAN”，启动WLAN后从中选择一个可用的热点连接。</div>
+            </div>
+            <div class="item">
+                <h2 class="cs6">如果你已经连接WI-Fi网络</h2>
+                <div class="cs9 font-size14" style="white-space: normal;">请确认你所连接的Wi-Fi网络已经接入互联网。或者确认你的设备是否被允许访问该热点</div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

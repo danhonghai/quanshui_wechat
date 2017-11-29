@@ -1,0 +1,144 @@
+ <ion-view view-title="个人资料">
+    <ion-content class="stable-bg">
+        <style>
+            @charset "utf-8";
+            .htmleaf-container{
+                margin: 0 auto;
+                text-align: center;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                background: #000;
+                display: none;
+                z-index: 9999999;
+            }
+            .htmleaf-content {
+                font-size: 150%;
+                padding: 1em 0;
+            }
+
+            .htmleaf-content h2 {
+                margin: 0 0 2em;
+                opacity: 0.1;
+            }
+
+            .htmleaf-content p {
+                margin: 1em 0;
+                padding: 5em 0 0 0;
+                font-size: 0.65em;
+            }
+            #clipArea {
+                height: 93%;
+            }
+
+
+            /*上传图标*/
+            #file{
+                float: left;
+                height: 100%;
+            }
+            #clipBtn{
+                float: right;
+                height: 100%;
+                background: none;
+                border: 0;
+                outline: none;
+                color: #fff;
+                z-index: 999;
+                width: 50%;
+            }
+            .foot-use{
+                height: 7%;
+                width: 100%;
+                position: relative;
+                background: rgba(51,51,51,.6);
+            }
+            .uploader1 {
+                position: absolute;
+                cursor: default;
+                height: 100%;
+                float: left;
+                width: 50%
+            }
+            .uploader1 input[type=file] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                border: 0;
+                padding: 0;
+                margin: 0;
+                height:8rem;
+                width: 100%;
+                cursor: pointer;
+                border: solid 1px #ddd;
+                opacity: 0;
+            }
+            input[type=button]::-moz-focus-inner {
+                padding: 0;
+                border: 0 none;
+                -moz-box-sizing: content-box;
+            }
+
+            input[type=button]::-webkit-focus-inner {
+                padding: 0;
+                border: 0 none;
+                -webkit-box-sizing: content-box;
+            }
+
+            input[type=text]::-moz-focus-inner {
+                padding: 0;
+                border: 0 none;
+                -moz-box-sizing: content-box;
+            }
+
+            input[type=text]::-webkit-focus-inner {
+                padding: 0;
+                border: 0 none;
+                -webkit-box-sizing: content-box;
+            }
+
+            .blue .buttonimg {
+                color: #fff;
+                height: 100%;
+                width: 100%;
+                border: none;
+                background: none;
+
+            }
+        </style>
+        <article class="htmleaf-container">
+            <div id="clipArea"></div>
+            <div class="foot-use">
+                <div class="uploader1 blue">
+                    <input type="button" name="file" class="buttonimg" value="上传"/>
+                    <input id="file" type="file" ng-model="touxiang" ng-change="setImagePreview()" accept="image/*" multiple  />
+                </div>
+                <button class="buttonimg" id="clipBtn">确定</button>
+            </div>
+            <div id="view"></div>
+        </article>
+        <div class="myuser_topbox" id="logox">
+            <div class="list myuser_top" style="background: url('{{userInfosession.litpic?userInfosession.litpic:'img/touxiang-e26c15d235.png'}}') left top no-repeat;background-size: 100% 2.4rem;">
+            </div>
+            <div class="touxiang_box">
+                <div class="touxiang">
+                    <img ng-src="{{userInfosession.litpic?userInfosession.litpic:'img/touxiang-e26c15d235.png'}}">
+                </div>
+                <p>点击修改头像</p>
+            </div>
+        </div>
+        <div class="myuserlist">
+            <div class="row">
+                <div class="col col-33">账户</div>
+                <div class="col">{{userInfosession.mobile | mphone}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-33">实名</div>
+                <div class="col blue">{{userInfosession.realName?userInfosession.realName:'立即认证'}}<span ng-class="{true:'green',false:'red'}[userInfosession.realVerifyStatus==1]">{{userInfosession.realVerifyStatus==1?'已认证':'未认证'}}</span></div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
