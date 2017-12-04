@@ -120,28 +120,27 @@ angular.module('my.controllers', [])
                                     }
                                 })
                             },600000);
-                            $state.go("tab.my");
+                            $scope.optionsPopup = $ionicPopup.show({
+                                template: "<img width='70' src='img/icon_register.png' />" + "<h4>注册成功</h4>" + "<p>完成三方认证，即可投资</p>",
+                                title: "温馨提示",
+                                scope: $scope,
+                                buttons: [{
+                                    text: "先逛逛",
+                                    onTap: function(e) {
+                                        $state.go("tab.home");
+                                    }
+                                }, {
+                                    text: "去认证",
+                                    type: "calm",
+                                    onTap: function(e) {
+                                        $state.go("certification");
+                                    }
+                                }]
+                            });
                         }else{
                             Services.ionicLoading(2000, data.msg);
                         }
                 })
-                $scope.optionsPopup = $ionicPopup.show({
-                    template: "<img width='70' src='img/icon_register.png' />" + "<h4>注册成功</h4>" + "<p>完成三方认证，即可投资</p>",
-                    title: "温馨提示",
-                    scope: $scope,
-                    buttons: [{
-                        text: "先逛逛",
-                        onTap: function(e) {
-                            $state.go("tab.home");
-                        }
-                    }, {
-                        text: "去认证",
-                        type: "calm",
-                        onTap: function(e) {
-                            $state.go("certification");
-                        }
-                    }]
-                });
             })
         }
             //登入
@@ -208,7 +207,7 @@ angular.module('my.controllers', [])
                         title: "温馨提示",
                         scope: $scope,
                         buttons: [{
-                            text: "确定"
+                            text: "确定",
                         }]
                     });
                     }else{
@@ -225,11 +224,15 @@ angular.module('my.controllers', [])
                 $ionicLoading.hide();
                 if (data.code == "0000") {
                     $scope.optionsPopup = $ionicPopup.show({
-                        template: "密码找回成功",
+                        template: "密码修改成功",
                         title: "温馨提示",
                         scope: $scope,
                         buttons: [{
-                            text: "确定"
+                            text: "确定",
+                            type: "calm",
+                            onTap: function(e) {
+                                $state.go("setting");
+                            }
                         }]
                     });
                 }else{
